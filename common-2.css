@@ -1,0 +1,30 @@
+.list-unstyled {
+    padding-top: 0;
+    list-style: none;
+}
+li {
+    display: list-item;
+    text-align: match-parent;
+}
+a, a:hover {
+    text-decoration: none;
+    transition: all .2s ease;
+}
+ul {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.bg-white {
+    background: #fff;
+}
+.d-flex {
+    display: flex;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
