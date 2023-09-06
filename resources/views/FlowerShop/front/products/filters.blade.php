@@ -7,6 +7,24 @@ $filters = ProductFilter::filters();
     <div class="filter-wrapper">
         <span style = "font-weight:bold; font-size = 18px;" >Bộ lọc</span>
         <?php
+        $brands = ProductFilter::brands($section['url']);
+        ?>
+        @if(count($brands)>0)
+        <div class="filter-item">
+            <span style = "font-weight:bold;">Brand</span>
+            <form action="" method = "post">
+                @foreach($brands as $key => $brand)
+                <div class="form-check">
+                    <input class="form-check-input brand" type="checkbox" value="{{$brand['id']}}" id="brand{{$key}}">
+                    <label class="form-check-label" for="brand{{$key}}">
+                    {{$brand['name']}}
+                    </label>
+                </div>
+                @endforeach
+            </form>
+        </div>
+        @endif
+        <?php
         $sizes = ProductFilter::sizes($section['url']);
         ?>
         @if(count($sizes)>0)

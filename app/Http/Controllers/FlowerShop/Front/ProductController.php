@@ -25,6 +25,6 @@ class ProductController extends Controller
         $products = $products->get()->toArray();
         $count = count($products);
         // dd($products);
-        return view('FlowerShop.front.products.listing', compact('products', 'section', 'count'));
+        return view('FlowerShop.front.products.listing', compact('products', 'section', 'count', 'url'));
     }
 }

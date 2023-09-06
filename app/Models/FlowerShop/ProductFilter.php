@@ -39,4 +39,11 @@ class ProductFilter extends Model
         $colors = Product::select('product_color')->whereIn('id', $product_id_collection)->groupBy('product_color')->pluck('product_color')->toArray();
         return $colors;
     }
+    public static function brands($url){
+        $section = Section::where('url', $url)->first()->toArray();
+        $product_id_collection = Product::select('id')->where(['section_id'=> $section['id'], 'status' => 1])->pluck('id')->toArray();
+        $brand_id_collection = Product::select('brand_id')->whereIn('id', $product_id_collection)->groupBy('brand_id')->pluck('brand_id')->toArray();
+        $brands = Brand::select('id', 'name')->whereIn('id', $product_id_collection)->get()->toArray();
+        return $brands;
+    }
 }

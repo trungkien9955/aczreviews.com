@@ -1,0 +1,1 @@
+<h1>Ajax products listing here</h1>

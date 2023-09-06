@@ -24,7 +24,8 @@
             <div class="col ">
                 <div class="sorter-wrapper clearfix">
                     <div class="sorter w-20" >
-                        <form action="">
+                        <form action="" name = "sorter" id = "sorter">
+                            <input type="hidden" name = "url" id= "url" value = {{$url}}>
                             <div class="form-group">
                                 <select name="sorter" id="sorter" class = "form-control" method = "GET">
                                     <option value="">Sắp xếp</option>
