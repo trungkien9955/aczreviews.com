@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function listing(){
         // dd($url);
         $url = Route::getFacadeRoot()->current()->uri(); 
-        $section = Section::select('id', 'section_name')->where('url', $url)->first()->toArray();
+        $section = Section::select('id', 'section_name', 'url')->where('url', $url)->first()->toArray();
         $products = Product::where('section_id', $section['id']);
         if(isset($_GET['sorter']) && !empty($_GET['sorter'])){
             if($_GET['sorter'] == "lowest") {

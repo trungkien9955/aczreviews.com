@@ -38,29 +38,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3">
-                <div class="filter-wrapper">
-                    <span>Bộ lọc</span>
-                    <div class="filter-item">
-                        <form action="">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Default checkbox
-                                </label>
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Default checkbox
-                                </label>
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Default checkbox
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            @include('FlowerShop.front.products.filters')
             <div class="col-lg-9">
                 <div class="row gy-2">
                     @foreach($products as $product)

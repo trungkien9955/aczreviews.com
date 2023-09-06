@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('product_filter_values', function (Blueprint $table) {
             $table->id();
+            $table->integer('filter_id');
+            $table->string('filter_value');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

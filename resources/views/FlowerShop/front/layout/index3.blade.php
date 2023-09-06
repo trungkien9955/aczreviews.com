@@ -250,7 +250,7 @@
                     <div class="container">
                         <div class="block-wrapper">
                             <div class="block-title">
-                                <a href=""><h2>Hoa hội nghị</h2></a>
+                                <a href="/hoa-hoi-nghi"><h2>Hoa hội nghị</h2></a>
                                 <ul class="block-links d-none d-md-block">
                                     <li><a href="">Size S</a></li>
                                     <li><a href="">Size M</a></li>
@@ -308,7 +308,7 @@
                     <div class="container">
                         <div class="block-wrapper">
                             <div class="block-title">
-                                <a href=""><h2>Cho thuê xe cưới</h2></a>
+                                <a href="/xe-cuoi"><h2>Cho thuê xe cưới</h2></a>
                                 <ul class="block-links d-none d-md-block">
                                     <li><a href="">Mercedes</a></li>
                                     <li><a href="">Audi</a></li>
