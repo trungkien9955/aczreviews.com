@@ -24,7 +24,7 @@
             <div class="col ">
                 <div class="sorter-wrapper clearfix">
                     <div class="sorter w-20" >
-                        <form action="" name = "sorter" id = "sorter">
+                        <form action="" name = "sorter">
                             <input type="hidden" name = "url" id= "url" value = {{$url}}>
                             <div class="form-group">
                                 <select name="sorter" id="sorter" class = "form-control" method = "GET">
@@ -41,7 +41,7 @@
         <div class="row">
             @include('FlowerShop.front.products.filters')
             <div class="col-lg-9">
-                <div class="row gy-2">
+                <div class="row gy-2 filter-products-container">
                     @foreach($products as $product)
                     <div class="col-lg-3 col-md-4 col-xs-2">
                         <div class="item m-auto">
