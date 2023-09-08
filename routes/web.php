@@ -40,5 +40,6 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
         Route::match(['get', 'post'],'/'.$url, 'ProductController@listing');
     }
     // Route::match(['get', 'post'],'/{url}', 'ProductController@listing');
+    Route::get('/product/{id}', 'ProductController@detail');
 });
 

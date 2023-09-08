@@ -123,5 +123,29 @@ $filters = ProductFilter::filters();
                 }
             })
         })
+        $('.price').on('change', function(){
+            var brand = get_filter('brand');
+            var size = get_filter('size');
+            var color = get_filter('color');
+            var sorter = $('#sorter').val();
+            var url = $('#url').val();
+            var price = get_filter('price');
+
+            $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'GET',
+                url:url,
+                data: {brand:brand, size:size, color:color, sorter:sorter, url, price:price, @foreach($filters as $filter) {{$filter['filter_column']}}:{{$filter['filter_column']}}, @endforeach},
+                success: function(resp){
+                    // alert(resp);
+                    $('.filter-products-container').html(resp);
+                },
+                error: function(){
+                    alert('error');
+                }
+            })
+        })
     })
 </script>

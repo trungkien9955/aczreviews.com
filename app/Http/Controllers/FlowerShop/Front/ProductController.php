@@ -37,6 +37,21 @@ class ProductController extends Controller
                 $product_id_array = ProductAttribute::select('product_id')->whereIn('size', $data['size'])->pluck('product_id')->toArray();
                 $products->whereIn('id',  $product_id_array);
             }
+            if(isset($data['price']) && !empty($data['price'])) {
+                foreach($data['price'] as $key => $price){
+                    $priceArr = explode("-",  $price);
+                    $productIds[]  = Product::select('id')->whereBetween('product_price', [$priceArr[0], $priceArr[1]])->pluck('id')->toArray();
+                }
+                $productIds = call_user_func_array('array_merge', $productIds);
+                $products->whereIn('id', $productIds);
+            }
+            // $filters = ProductFilter::filters();
+            // foreach($filters as $key => $filter) {
+            //     //if filter is selected
+            //     if(isset($filter['filter_column']) && isset($data[$filter['filter_column']]) && !empty($filter['filter_column']) && !empty($data[$filter['filter_column']])) {
+            //         $products->whereIn($filter['filter_column'], $data[$filter['filter_column']]);
+            //     }
+            // }
             $products = $products->get()->toArray();
             return view('FlowerShop.front.products.ajax_products_listing', compact('products'));
         }
@@ -58,5 +73,8 @@ class ProductController extends Controller
             return view('FlowerShop.front.products.listing', compact('products', 'section', 'count', 'url'));
         }
         // dd($url);
+    }
+    public function detail($id){
+        return view('FlowerShop.front.products.detail');
     }
 }

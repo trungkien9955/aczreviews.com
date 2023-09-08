@@ -58,7 +58,7 @@
                     <div class="container">
                         <div class="block-wrapper">
                             <div class="block-title">
-                                <a href="/hoa-moi-ve"><h2>Hoa mới về</h2></a>
+                                <a href="/hoa-moi-ve"><h2>Hoa cưới hot</h2></a>
                                 <ul class="block-links d-none d-md-block">
                                     <li><a href="">Size S</a></li>
                                     <li><a href="">Size M</a></li>
@@ -415,6 +415,34 @@
                                     <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
                                 </div> 
                             </div>
+                            <div class="col-lg-12 comment-item">
+                                <div class="comment-author-image my-1">
+                                    <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
+                                </div>
+                                <div class="comment-author-name my-0 py-0">
+                                    <span>NGUYỄN LỆ THỦY</span>
+                                </div>
+                                <div class="comment-author-address my-0  py-0">
+                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
+                                </div>
+                                <div class="comment-content mt-2">
+                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+                                </div> 
+                            </div>
+                            <div class="col-lg-12 comment-item">
+                                <div class="comment-author-image my-1">
+                                    <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
+                                </div>
+                                <div class="comment-author-name my-0 py-0">
+                                    <span>NGUYỄN LỆ THỦY</span>
+                                </div>
+                                <div class="comment-author-address my-0  py-0">
+                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
+                                </div>
+                                <div class="comment-content mt-2">
+                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+                                </div> 
+                            </div>
                             <a style = "text-decoration: underline; margin-left:10px;"href="">Xem tất cả</a>
                         </div>
                     </div>
@@ -431,6 +459,22 @@
                             </div>
                         </div>
                         <div class="news-item-wrapper row mt-2">
+                            <div class="news-item col-lg-6 col-xs-12">
+                                <div class="news-item-image">
+                                    <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">
+                                </div>
+                                <div class="news-item-title">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class="news-item col-lg-6 col-xs-12">
+                                <div class="news-item-image">
+                                <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-2.jpg')}}" alt="">
+                                </div>
+                                <div class="news-item-title">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </div>
                             <div class="news-item col-lg-6 col-xs-12">
                                 <div class="news-item-image">
                                     <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">

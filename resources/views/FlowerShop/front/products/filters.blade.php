@@ -14,7 +14,7 @@ $filters = ProductFilter::filters();
             <form action="" method = "post">
                 @foreach($prices as $key => $price)
                 <div class="form-check">
-                    <input class="form-check-input brand" type="checkbox" value="{{$price}}" id="price{{$key}}">
+                    <input class="form-check-input price" type="checkbox" value="{{$price}}" id="price{{$key}}">
                     <label class="form-check-label" for="price{{$key}}">
                     {{$price}}
                     </label>
