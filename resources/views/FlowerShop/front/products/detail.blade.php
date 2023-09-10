@@ -20,17 +20,34 @@
         <div class="detail-wrapper">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-xs-12">
-                    <div class="zoom-area">
-                        <img  src="{{url('front/images-3/new_images/new-flower-2.jpg')}}" alt="">
-                        <div class="gallery">
-                        </div>
+                    <div class="easyzoom easyzoom--overlay easyzoom--with-thumbnails">
+                        <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-1-large.jpg')}}">
+                            <img src="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-1-medium.jpg')}}" alt="" width="640" height="360" />
+                        </a>
                     </div>
+                    <ul class="thumbnails d-flex justify-content-evenly mt-2">
+                        <li>
+                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-2-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-2-medium.jpg')}}">
+                                <img width = "150" height = "150" src="{{url('FlowerShop/front/images-3/new_images/new-flower-2.jpg')}}" alt="" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-3-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-3-medium.jpg')}}">
+                                <img width = "150" height = "150" src="{{url('FlowerShop/front/images-3/new_images/new-flower-3.jpg')}}" alt="" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-4-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-4-medium.jpg')}}">
+                                <img width = "150" height = "150" src="{{url('FlowerShop/front/images-3/new_images/new-flower-4.jpg')}}" alt="" />
+                            </a>
+                        </li>
+                    </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div class="information-wrapper">
-                        <div class="information-title">
-                            <div class="product-title">
-                                <a href=""><h1>Product name</h1></a>
+                        <div class="information-title ">
+                            <div class="product-title ">
+                                <a href=""><h2>{{$product['product_name']}}</h2></a>
                             </div>
                             <ol class="breadcrumb ">
                                 <li class="breadcrumb-item"><a href="">Link 1</a></li>
@@ -39,30 +56,30 @@
                             </ol>
                         </div>
                         <div class="information-description">
-                            <h6>Mô tả sản phẩm:</h6>
+                            <h6><b>Mô tả sản phẩm:</b></h6>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                             </p>
                         </div>
                         <div class="information-price">
                             <div class="info-price"><h4>200000đ</h4></div>
                             <div class="info-original-price">
-                                <span>Original price:</span>
+                                <span><b>Giá gốc:</b></span>
                                 <span>200000đ</span>
                             </div>
                             <div class="info-discount">
-                                <span>Discount:</span>
+                                <span><b>Giảm giá:</b></span>
                                 <span>15%</span>
                             </div>
                             <div class="info-save">
-                                <span>Save:</span>
+                                <span><b>Tiết kiệm:</b></span>
                                 <span>20000đ</span>
                             </div>
                         </div>
                         <div class="information-sku">
-                            <h6>SKU:</h6>
+                            <h6><b>SKU:</b></h6>
                             <div class="info-availability">
                                 <span>Tình trạng:</span>
-                                <span>Còn hàng</span>
+                                <span >Còn hàng</span>
                             </div>
                             <div class="info-stock">
                                 <span>Trong kho:</span>
@@ -103,13 +120,13 @@
                         <div class="detail-tabs-nav">
                             <ul>
                                 <li class="nav-item">
-                                    <a href="">Mô tả</a>
+                                    <a href="" class = "nav-link active">Mô tả</a>
                                 </li>
                                 <li class="nav-item">
-                                <a href="">Thông số</a>
+                                <a href="" class = "nav-link ">Thông số</a>
                                 </li>
                                 <li class="nav-item">
-                                <a href="">Đánh giá</a>
+                                <a href="" class = "nav-link ">Đánh giá</a>
                                 </li>
                             </ul>
                         </div>
@@ -161,16 +178,207 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <div class="your-rating-wrapper">
-                                                <h6>Post your review:</h6>
+                                            <div class="your-review-wrapper">
+                                                <h6>Gửi đánh giá của bạn:</h6>
                                                 <form action="">
-                                                    
+                                                    <div class="form-group">
+                                                        <label for="review-author">Họ tên</label>
+                                                        <input type="text" class="form-control" name = "review-author" id="review-author"  >
+                                                        <label for="review-email">Email</label>
+                                                        <input type="email" class="form-control" name = "review-email" id="review-email" >
+                                                        <label for="review-title">Tiêu đề</label>
+                                                        <input type="text" class="form-control" name = "review-title" id="review-title"  >
+                                                        <label for="review-title">Nội dung đánh giá</label>
+                                                        <input type="text" class="form-control" name = "review-content" id="review-title" >
+                                                    </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
                                                 </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="review-data-wrapper">
+                                                <div class="review-data-header">
+                                                    <h6>Đánh giá <span>15</span></h6>
+                                                </div>
+                                                <div class="review-data-items">
+                                                    <div class="review-item">
+                                                        <div class="review-item-author">
+                                                            <h5>Ngọc Anh</h5>
+                                                            <h6>08-07-2023</h6>
+                                                        </div>
+                                                        <div class="review-item-content">
+                                                            <p>Sản phẩm tốt!</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-item">
+                                                        <div class="review-item-author">
+                                                            <h5>Ngọc Anh</h5>
+                                                            <h6>08-07-2023</h6>
+                                                        </div>
+                                                        <div class="review-item-content">
+                                                            <p>Sản phẩm tốt!</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-item">
+                                                        <div class="review-item-author">
+                                                            <h5>Ngọc Anh</h5>
+                                                            <h6>08-07-2023</h6>
+                                                        </div>
+                                                        <div class="review-item-content">
+                                                            <p>Sản phẩm tốt!</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="similar-products-section">
+    <div class="container overflow-hidden">
+        <div class="similar-products-wrapper">
+            <div class="row">
+                <div class="col">
+                    <div class="similar-products-header">
+                        <h4>Sản phẩm tương tự</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="recent-products-section">
+    <div class="container overflow-hidden">
+        <div class="recent-products-wrapper">
+            <div class="row">
+                <div class="col">
+                    <div class="recent-products-header">
+                        <h4>Sản phẩm đã xem</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-xs-6">
+                    <div class="item m-auto">
+                        <a href="" class="item-image-wrapper">
+                            <div class="item-image">
+                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                            </div>
+                        </a>
+                        <div class="item-details mt-2">
+                            <h3 class="item-name">HOA LY</h3>
+                            <p class="item-description"><strong>Mã:</strong> LY01</p>
+                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
                         </div>
                     </div>
                 </div>

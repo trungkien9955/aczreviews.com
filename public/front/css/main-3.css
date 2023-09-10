@@ -372,7 +372,19 @@ h1 {
 .listing-title span, i {
     color:  var(--color-5);
 }
+/* detail */
+.product-title a h2 {
+    text-transform: uppercase;
 
+}
+.information-price .info-price h4 {
+    font-weight: 700;
+    font-size: 24px;
+    color: #e02027;
+}
+.info-availability span:nth-child(2) {
+    color: var(--color-success);
+}
 /* .header-logo {
     flex: 0 0 270px;
     max-width: 270px;

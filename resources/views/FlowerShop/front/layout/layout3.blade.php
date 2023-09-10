@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="{{url('front/vendors/ti-icons/css/themify-icons.css')}}">
     <!-- <link rel="icon" type="image/x-icon" href="{{url('front/images/logo4.png')}}"> -->
     <link rel="icon" type="image/x-icon" href="{{url('front/images/flower-logo2.png')}}">
+    <!-- Easy zoom -->
+    <link rel="stylesheet" href="{{url('FlowerShop/front/zoom/i-like-robots-EasyZoom-55afefc/css/easyzoom.css')}}"> 
+
 
 
     <!-- <script src="script_carousel.js"></script> -->
@@ -40,7 +43,38 @@
     <script src="{{url('front/OwlCarousel2-2.3.4/docs/assets/owlcarousel/owl.carousel.min.js')}}" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
+    <script src="{{url('FlowerShop/front/zoom/i-like-robots-EasyZoom-55afefc/dist/easyzoom.js')}}"></script>
     @include('FlowerShop.front.layout.scripts')
+    <script>
+		// Instantiate EasyZoom instances
+		var $easyzoom = $('.easyzoom').easyZoom();
 
+		// Setup thumbnails example
+		var api1 = $easyzoom.filter('.easyzoom--with-thumbnails').data('easyZoom');
+
+		$('.thumbnails').on('click', 'a', function(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+
+			// Use EasyZoom's `swap` method
+			api1.swap($this.data('standard'), $this.attr('href'));
+		});
+
+		// Setup toggles example
+		var api2 = $easyzoom.filter('.easyzoom--with-toggle').data('easyZoom');
+
+		$('.toggle').on('click', function() {
+			var $this = $(this);
+
+			if ($this.data("active") === true) {
+				$this.text("Switch on").data("active", false);
+				api2.teardown();
+			} else {
+				$this.text("Switch off").data("active", true);
+				api2._init();
+			}
+		});
+	</script>
 </body>
 </html>

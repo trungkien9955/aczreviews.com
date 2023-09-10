@@ -75,6 +75,8 @@ class ProductController extends Controller
         // dd($url);
     }
     public function detail($id){
-        return view('FlowerShop.front.products.detail');
+        $product = Product::find($id)->toArray();
+
+        return view('FlowerShop.front.products.detail', compact('product'));
     }
 }
