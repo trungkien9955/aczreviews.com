@@ -373,6 +373,9 @@ h1 {
     color:  var(--color-5);
 }
 /* detail */
+.thumbnails li {
+    display: inline-block;
+}
 .product-title a h2 {
     text-transform: uppercase;
 
@@ -382,8 +385,88 @@ h1 {
     font-size: 24px;
     color: #e02027;
 }
+.information-price div {
+    display: inline-block;
+    margin-right: 12px;
+}
+.info-original-price span {
+    font-weight: 600;
+    text-decoration: line-through;
+    font-size: 18px;
+}
 .info-availability span:nth-child(2) {
     color: var(--color-success);
+}
+.info-offer .offer-content i{
+    color: var(--color-success);
+}
+.info-offer span {
+    margin-left: 12px;
+}
+.information-sku div {
+    display: inline-block;
+    margin-right: 12px;
+}
+.information-variants select {
+    display:inline-block;
+    /* max-width: 150px; */
+}
+.information-variants div {
+    display:inline-block;
+}
+.info-action a {
+    color: #fff;
+    padding: 12px 36px;
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+    border-radius: 3px;
+    font-weight: 600;
+}
+.info-action .buy-button {
+    background-color: var(--color-red);
+
+}
+.info-action .cart-button {
+    background-color: var(--color-success);
+}
+.detail-tabs-nav {
+    border-bottom: 1px solid var(--color-5);
+}
+.total-score-wrapper {
+    text-align: center;
+}
+.total-score-wrapper .circle-wrapper {
+    width: 120px;
+    height: 120px;
+    border: 2px solid black;
+    border-radius: 50%;
+    color: #e02027;
+    margin: auto;
+
+}
+.total-score-wrapper h6 {
+    margin: 12px 0;
+}
+.circle-wrapper span {
+    line-height: 120px;
+    font-size: 60px;
+    font-weight: 600;
+}
+.review-data-header h6 {
+    font-weight: 600;
+    font-size: 18px;
+}
+.similar-products-header, .recent-products-header {
+    border-bottom: 1px solid var(--color-5);
+}
+.similar-products-header h4 {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.recent-products-header h4 {
+    font-weight: 600;
+    text-transform: uppercase;
 }
 /* .header-logo {
     flex: 0 0 270px;
@@ -970,10 +1053,6 @@ h1 {
     padding: 5px 10px;
     border: 2px solid #FBC403;
 }
-
-.tab-content>.tab-pane {
-    display: block;
-}
 .pdLoopItem .itemLoop {
     padding: 10px;
 }
@@ -1466,11 +1545,7 @@ h1 {
     border: 1px solid rgba(230, 34, 99, 0.25);
     border-bottom: 0;
 }
-.tab-content {
-    width: 590px;
-    height: 590px;
-    overflow: hidden;
-}
+
 .tab-content .sub-content-holder1 {
     border: 1px solid rgba(230, 34, 99, 0.25);
 }
