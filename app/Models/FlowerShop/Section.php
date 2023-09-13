@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     use HasFactory;
+    public function products(){
+        return $this->hasMany('App\Models\FlowerShop\Product');
+    }
 }

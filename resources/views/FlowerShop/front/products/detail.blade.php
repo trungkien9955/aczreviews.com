@@ -6,9 +6,9 @@
             <div class="col">
                 <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb ">
-                            <li class="breadcrumb-item"><a href="">Link 1</a></li>
-                            <li class="breadcrumb-item"><a href="">Link 2</a></li>
-                            <li class="breadcrumb-item active"><a href="">Link 3</a></li>
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/{{$section['url']}}">{{$section['section_name']}}</a></li>
+                            <li class="breadcrumb-item active"><a href="/product/{{$product['id']}}">{{$product['product_name']}}</a></li>
                         </ol>
                     </div>
                 </div>

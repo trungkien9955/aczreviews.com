@@ -30,7 +30,15 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
+Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->group(function(){
+    Route::match(['get', 'post'],'login', 'AdminController@login');
+    Route::group(['middleware'=>['admin']], function() {
+        Route::get('dashboard', 'AdminController@dashboard');
+        //products
+        Route::get('products', 'ProductController@products');
+        Route::match(['get', 'post'], 'add-edit-products/{id?}', 'ProductController@add_edit_products');
+    });
+});
 Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::match(['get', 'post'],'/', 'IndexController@index');
     //Listing

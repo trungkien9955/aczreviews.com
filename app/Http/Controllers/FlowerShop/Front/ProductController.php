@@ -76,7 +76,7 @@ class ProductController extends Controller
     }
     public function detail($id){
         $product = Product::find($id)->toArray();
-
-        return view('FlowerShop.front.products.detail', compact('product'));
+        $section = Section::where('id', $product['section_id'])->first()->toArray();
+        return view('FlowerShop.front.products.detail', compact('product', 'section'));
     }
 }
