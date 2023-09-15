@@ -11,4 +11,21 @@ class Product extends Model
     public function section(){
         return $this->belongsTo('App\Models\FlowerShop\Section', 'section_id');
     }
+    public function brand(){
+        return $this->belongsTo('App\Models\FlowerShop\Brand', 'brand_id');
+    }
+    public function attributes(){
+        return $this->hasMany('App\Models\FlowerShop\ProductAttribute');
+    }
+    public function images(){
+        return $this->hasMany('App\Models\FlowerShop\ProductImage');
+    }
+    public static function discounted_price($id){
+        $product_details = Product::select('id', 'product_price', 'product_discount')->where('id', $id)->first()->toArray();
+        if($product_details['product_discount']> 0){
+            $discounted_price = $product_details['product_price'] - ($product_details['product_price']*$product_details['product_discount']/100);
+            $saving = $product_details['product_price'] -  $discounted_price;
+        }
+        return array('discounted_price'=> $discounted_price, 'saving'=>$saving);
+    }
 }

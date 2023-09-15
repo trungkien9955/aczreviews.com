@@ -75,8 +75,10 @@ class ProductController extends Controller
         // dd($url);
     }
     public function detail($id){
-        $product = Product::find($id)->toArray();
-        $section = Section::where('id', $product['section_id'])->first()->toArray();
-        return view('FlowerShop.front.products.detail', compact('product', 'section'));
+        $product_details = Product::with(['section', 'brand', 'attributes' => function($query){
+            $query->where('stock', '>', 0)->where('status', 1);
+        }, 'images'])->find($id)->toArray();
+        $section_details = Section::where('id', $product_details['section_id'])->first()->toArray();
+        return view('FlowerShop.front.products.detail', compact('product_details', 'section_details'));
     }
 }

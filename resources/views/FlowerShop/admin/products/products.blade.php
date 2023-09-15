@@ -66,7 +66,7 @@
                           </td>
                           <td>
                           @if(!empty($product['product_image']))
-                          <img style = "width: 150px; height: 150px"src="{{asset('front/images/product_images/small/'.$product['product_image'])}}" alt="">
+                          <img style = "width: 150px; height: 150px"src="{{asset('FlowerShop/front/images-3/product_images/small/'.$product['product_image'])}}" alt="">
                           @else
                           <img style = "width: 150px; height: 150px" src="{{asset('front/images/product_images/small/no-image.png')}}" alt="">
                           @endif

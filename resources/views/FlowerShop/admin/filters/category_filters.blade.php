@@ -1,12 +1,13 @@
 <?php 
 use App\Models\FlowerShop\ProductFilter; 
-$productFilters = ProductFilter::filters();
+$filters = ProductFilter::filters();
 if(isset($product['section_id'])){
     $section_id = $product['section_id'];
-    $section_url = $section['url'];
+    $section_url = $section_details['url'];
+    // dd($section_url);
 }
 ?>
-@foreach($productFilters as $filter)
+@foreach($filters as $filter)
 @if(isset($section_id))
 <?php 
 $filterAvailable = ProductFilter::available_filters( $section_url, $filter['id']);

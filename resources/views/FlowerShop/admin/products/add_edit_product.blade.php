@@ -71,7 +71,7 @@
                         <label for="product_image">Product Image (Recommend size: 1000x1000)</label>
                         <input type="file" class="form-control" id="product_image" name = "product_image"  >
                         @if(!empty($product['product_image']))
-                        <a href="{{url('front/images/product_images/large/'.$product['product_image'])}}">View image</a>
+                        <a href="{{url('FlowerShop/front/images-3/product_images/large/'.$product['product_image'])}}">View image</a>
                         <a href = "javascript:void(0)" class = "confirmDelete" module = "product-image" moduleid = "{{$product['id']}}">Delete image</a>
                         @endif
                         </div>

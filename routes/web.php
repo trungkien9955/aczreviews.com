@@ -37,6 +37,11 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         //products
         Route::get('products', 'ProductController@products');
         Route::match(['get', 'post'], 'add-edit-products/{id?}', 'ProductController@add_edit_products');
+        //filters
+        Route::get('filters', 'FilterController@filters');
+        Route::match(['get', 'post'], 'add-edit-filters/{id?}', 'FilterController@add_edit_filters');
+        //images
+        Route::match(['get', 'post'], 'add-images/{id}', 'ProductController@add_images');
     });
 });
 Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){

@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
         // $this->call(ProductFiltersTableSeeder::class);
         // $this->call(ProductFilterValuesTableSeeder::class);
         // $this->call(BrandsTableSeeder::class);
-        $this->call(FlowerShopAdminsTableSeeder::class);
+        // $this->call(FlowerShopAdminsTableSeeder::class);
+        // $this->call(ProductFilterValuesTableSeeder::class);
+        // $this->call(ProductsTableSeeder::class);
+        $this->call(SectionsTableSeeder::class);
     }
 }

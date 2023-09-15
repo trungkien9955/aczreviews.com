@@ -1,3 +1,7 @@
+<?php 
+use App\Models\FlowerShop\Product;
+use App\Models\FlowerShop\ProductAttribute;
+?>
 @extends('FlowerShop.front.layout.layout3')
 @section('content')
 <div class="breadcrumb-section">
@@ -7,8 +11,8 @@
                 <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb ">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/{{$section['url']}}">{{$section['section_name']}}</a></li>
-                            <li class="breadcrumb-item active"><a href="/product/{{$product['id']}}">{{$product['product_name']}}</a></li>
+                            <li class="breadcrumb-item"><a href="/{{$section_details['url']}}">{{$section_details['section_name']}}</a></li>
+                            <li class="breadcrumb-item active"><a href="/product_details/{{$product_details['id']}}">{{$product_details['product_name']}}</a></li>
                         </ol>
                     </div>
                 </div>
@@ -21,66 +25,64 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div class="easyzoom easyzoom--overlay easyzoom--with-thumbnails">
-                        <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-1-large.jpg')}}">
-                            <img src="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-1-medium.jpg')}}" alt="" width="640" height="240" />
+                        <a href="{{url('FlowerShop/front/images-3/product_images/large/'.$product_details['product_image'])}}">
+                            <img src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product_details['product_image'])}}" alt="" width="640" height="240" />
                         </a>
                     </div>
                     <ul class="thumbnails  mt-2">
+                        @foreach($product_details['images'] as $image)
                         <li>
-                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-2-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-2-medium.jpg')}}">
-                                <img width = "100" height = "100" src="{{url('FlowerShop/front/images-3/new_images/new-flower-2.jpg')}}" alt="" />
+                            <a href="{{url('FlowerShop/front/images-3/product_images/large/'.$image['image'])}}" data-standard="{{url('FlowerShop/front/images-3/product_images/medium/'.$image['image'])}}">
+                                <img width = "120" height = "120" src="{{url('FlowerShop/front/images-3/product_images/small/'.$image['image'])}}" alt="" />
                             </a>
                         </li>
-                        <li>
-                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-3-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-3-medium.jpg')}}">
-                                <img width = "100" height = "100" src="{{url('FlowerShop/front/images-3/new_images/new-flower-3.jpg')}}" alt="" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-4-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-4-medium.jpg')}}">
-                                <img width = "100" height = "100" src="{{url('FlowerShop/front/images-3/new_images/new-flower-4.jpg')}}" alt="" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{url('FlowerShop/front/images-3/new_images_large/new-flower-4-large.jpg')}}" data-standard="{{url('FlowerShop/front/images-3/new_images_medium/new-flower-4-medium.jpg')}}">
-                                <img width = "100" height = "100" src="{{url('FlowerShop/front/images-3/new_images/new-flower-4.jpg')}}" alt="" />
-                            </a>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div class="information-wrapper px-2">
                         <div class="information-title ">
                             <div class="product-title ">
-                                <a href=""><h2>{{$product['product_name']}}</h2></a>
+                                <a href=""><h2>{{$product_details['product_name']}}</h2></a>
                             </div>
                         </div>
+                        @if($product_details['product_discount'] > 0)
                         <div class="information-price mt-4">
-                            <div class="info-price"><h4>200000đ</h4></div>
+                            <?php $discounted_price = Product::discounted_price($product_details['id'])?>
+                            <div class="info-price"><h4><?php echo number_format($discounted_price['discounted_price']) ?>đ</h4></div>
                             <div class="info-original-price">
-                                <span>200000đ</span>
+                                <span><?php echo number_format($product_details['product_price']) ?>đ</span>
                             </div>
                             <div class="info-discount">
-                                (-<span style = "color: #e02027;">15%</span>)
+                                (-<span style = "color: #e02027;">{{$product_details['product_discount']}}%</span>)
                             </div>
                             <div class="info-save">
                                 <span><b>Tiết kiệm:</b></span>
-                                <span style = "color: #e02027;">20000đ</span>
+                                <span style = "color: #e02027;"><?php echo number_format($discounted_price['saving']) ?>đ</span>
                             </div>
                         </div>
+                        @else
+                        <div class="information-price mt-4">
+                            <div class="info-price"><h4><?php echo number_format($product_details['product_price']) ?>đ</h4></div>
+                        </div>
+                        @endif
                         <div class="information-description mt-3">
                             <h6><b>Mô tả sản phẩm:</b></h6>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            </p>
+                            <p>{{$product_details['description']}}</p>
                         </div>
                         <div class="information-sku">
                             <div class="info-code">
                                 <span><b>Mã sản phẩm</b>:</span>
-                                <span >HL01</span>
+                                <span >{{$product_details['product_code']}}</span>
                             </div>
                             <div class="info-availability">
                                 <span><b>Tình trạng:</b></span>
+                                <?php $stock = ProductAttribute::stock($product_details['id'], "Small", "")?>
+                                @if($stock > 0)
                                 <span >Còn hàng</span>
+                                @else
+                                <span >Tạm hết hàng</span>
+                                @endif
                             </div>
                             <div class="info-stock">
                                 <span><b>Trong kho:</b></span>

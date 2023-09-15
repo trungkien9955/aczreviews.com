@@ -11,4 +11,9 @@ class Section extends Model
     public function products(){
         return $this->hasMany('App\Models\FlowerShop\Product');
     }
+    public static function name($id){
+        $section = Section::find($id)->toArray();
+        $name = $section['section_name'];
+        return $name;
+    }
 }

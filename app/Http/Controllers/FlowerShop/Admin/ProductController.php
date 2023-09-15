@@ -8,6 +8,7 @@ use App\Models\FlowerShop\Product;
 use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\ProductFilter;
 use App\Models\FlowerShop\Brand;
+use App\Models\FlowerShop\ProductImage;
 use Validator;
 use Image;
 class ProductController extends Controller
@@ -25,19 +26,18 @@ class ProductController extends Controller
         else{
             $title = "Edit Product";
             $product = Product::find($id);
-            $section = Section::where('id', $product['section_id'])->first()->toArray();
+            $section_details = Section::where('id', $product['section_id'])->first()->toArray();
             // echo "<pre>"; print_r($product);
             $message = "Product updated successfully!";
             // dd($product);
-            
         }
         if($request->isMethod('post')) {
             $data = $request->all();
+            // dd($section_details);
             $validator = Validator::make($data, $rules = [
-                'product_name' => 'required|regex:/^[\pL\s\-]+$/u',
-                'product_code' => 'required|regex:/^\w+$/',
+                'product_name' => 'required|regex:/^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i',
                 'product_price' => 'required|numeric',
-                'product_color' => 'required|regex:/^[\pL\s\-]+$/u',
+                'product_color' => 'required|regex:/^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i',
                 'url' => 'required'
             ],
             $customMessages = [
@@ -60,10 +60,9 @@ class ProductController extends Controller
                      $largeImagePath = 'FlowerShop/front/images-3/product_images/large/'.$imageName;
                      $mediumImagePath = 'FlowerShop/front/images-3/product_images/medium/'.$imageName;
                      $smallImagePath = 'FlowerShop/front/images-3/product_images/small/'.$imageName;
-
                    Image::make($image_tmp)->resize(1000,1000)->save($largeImagePath);
                    Image::make($image_tmp)->resize(500,500)->save($mediumImagePath);
-                   Image::make($image_tmp)->resize(250,250)->save($smallImagePath);
+                   Image::make($image_tmp)->resize(277,366)->save($smallImagePath);
                    $product->product_image = $imageName;
                }
             }
@@ -78,18 +77,20 @@ class ProductController extends Controller
                     $product->product_video = $videoName;
                 }
             }
-            $section_details = Section::find($data['section_id']);
-            $product->section_id = $section_details['section_id'];
-            $product->brand_id = $data['brand_id'];
-            $product_filters = ProductFilter::filters();
-            foreach($product_filters as $filter){
-                $available_filter = ProductFilter::available_filters($section['url'], $filter['id']);
+            //add filters
+            $filters = ProductFilter::filters();
+            foreach($filters as $filter){
+                $available_filter = ProductFilter::available_filters($section_details['url'], $filter['id']);
+                // echo $data[$filter['filter_column']]; die;
                 if($available_filter == "Yes") {
                     if(isset($filter['filter_column']) && $data[$filter['filter_column']]){
                         $product->{$filter['filter_column']} = $data[$filter['filter_column']];
                     }
                 }
             }
+            $product->section_id = $data['section_id'];
+            $product->brand_id = $data['brand_id'];
+  
             if(empty($data['product_price'])) {
                 $data['product_price'] = 0;
             } 
@@ -116,6 +117,34 @@ class ProductController extends Controller
         }  
         $sections = Section::get()->toArray();
         $brands = Brand::where('status', 1)->get()->toArray();
-        return view('FlowerShop.admin.products.add_edit_product')->with(compact('title', 'sections', 'brands', 'product', 'section'));
+        return view('FlowerShop.admin.products.add_edit_product')->with(compact('title', 'sections', 'brands', 'product', 'section_details'));
+    }
+    public function add_images(Request $request, $id){
+        $product_details = Product::with('images')->find($id);
+        if($request->isMethod('post')){
+            if($request->hasFile('images')){
+                $images = $request->file('images');
+                foreach($images as $key=>$image){
+                    $image_tmp = Image::make($image);
+                    $image_original_name = $image->getClientOriginalName();
+                    $extension = $image->getClientOriginalExtension();
+                    $image_name = rand(111, 99999).'.'.$extension;
+                    $large_image_path = 'FlowerShop/front/images-3/product_images/large/'.$image_name;
+                    $medium_image_path = 'FlowerShop/front/images-3/product_images/medium/'.$image_name;
+                    $small_image_path = 'FlowerShop/front/images-3/product_images/small/'.$image_name;
+                    Image::make($image_tmp)->resize(1000, 1000)->save($large_image_path);
+                    Image::make($image_tmp)->resize(1000, 1000)->save($medium_image_path);
+                    Image::make($image_tmp)->resize(1000, 1000)->save($small_image_path);
+                    //add images to db
+                    $image = new ProductImage;
+                    $image->product_id = $id;
+                    $image->image = $image_name;
+                    $image->status = 1;
+                    $image->save();
+                }
+            }
+            return redirect()->back()->with('success_message', 'Đã thêm hình ảnh sản phẩm!');
+        }
+        return view('FlowerShop/admin.product_images.add_images', compact('product_details'));
     }
 }

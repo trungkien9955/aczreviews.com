@@ -58,7 +58,7 @@
                     <div class="container">
                         <div class="block-wrapper">
                             <div class="block-title">
-                                <a href="/hoa-moi-ve"><h2>Hoa cưới hot</h2></a>
+                                <a href="/hoa-moi-ve"><h2>Sản phẩm hot</h2></a>
                                 <ul class="block-links d-none d-md-block">
                                     <li><a href="">Size S</a></li>
                                     <li><a href="">Size M</a></li>
@@ -72,46 +72,20 @@
                                         <div class="block-content-wrapper">
                                             <div class="block-items " >
                                                 <div class="block-items-slider owl-carousel owl-carousel-new-flowers">
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                            <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                                                @foreach($featured_products as $product)
+                                                <div class="item m-auto">
+                                                            <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
+                                                                <div class="item-image">
+                                                                    <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="item-details mt-2">
+                                                                <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA LY</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                            <img  src="{{url('front/images-3/new_images/new-flower-2.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details  mt-2">
-                                                            <h3 class="item-name">HOA HỒNG THẮM</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> HO01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 700,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                            <img  src="{{url('front/images-3/new_images/new-flower-3.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA HUỆ</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> HU01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/new_images/new-flower-4.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA LAN</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -139,46 +113,20 @@
                                         <div class="block-content-wrapper">
                                             <div class="block-items" >
                                                 <div class="block-items-slider  owl-carousel owl-carousel-wedding-flowers">
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/wedding_images/wedding-flower-1.jpg')}}" alt="">
+                                                    @foreach($wedding_flowers as $product)
+                                                        <div class="item m-auto">
+                                                            <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
+                                                                <div class="item-image">
+                                                                    <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="item-details mt-2">
+                                                                <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA LAN</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/wedding_images/wedding-flower-2.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA LAN</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/wedding_images/wedding-flower-3.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA LAN</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto" >
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/wedding_images/wedding-flower-4.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA LAN</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -207,36 +155,20 @@
                                         <div class="block-content-wrapper">
                                             <div class="block-items" >
                                                 <div class="block-items-slider  owl-carousel owl-carousel-wedding-trays">
-                                                    <div class="item m-auto">
-                                                        <div class="item-image ">
-                                                            <img  src="{{url('front/images-3/tray_images/tray-1.jpg')}}" alt="">
+                                                    @foreach($wedding_trays as $product)
+                                                        <div class="item m-auto">
+                                                            <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
+                                                                <div class="item-image">
+                                                                    <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="item-details mt-2">
+                                                                <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">TRÁP 1</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/tray_images/tray-2.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">TRÁP 2</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/tray_images/tray-3.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">TRÁP 3</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 800,000Đ</p>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -265,36 +197,20 @@
                                         <div class="block-content-wrapper">
                                             <div class="block-items" >
                                                 <div class="block-items-slider  owl-carousel owl-carousel-meeting-flowers">
-                                                    <div class="item m-auto">
-                                                        <div class="item-image ">
-                                                            <img  src="{{url('front/images-3/meeting_images/meeting-1.jpg')}}" alt="">
+                                                    @foreach($meeting_flowers as $product)
+                                                        <div class="item m-auto">
+                                                            <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
+                                                                <div class="item-image">
+                                                                    <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="item-details mt-2">
+                                                                <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA HỘI NGHỊ 1</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/meeting_images/meeting-2.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA HỘI NGHỊ 2</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/meeting_images/meeting-3.jpg')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">HOA HỘI NGHỊ 3</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 800,000Đ</p>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -323,36 +239,20 @@
                                         <div class="block-content-wrapper">
                                             <div class="block-items" >
                                                 <div class="block-items-slider  owl-carousel owl-carousel-wedding-cars">
-                                                    <div class="item m-auto">
-                                                        <div class="item-image ">
-                                                            <img  src="{{url('front/images-3/car_images/car-1.jpg')}}" alt="">
+                                                    @foreach($wedding_cars as $product)
+                                                        <div class="item m-auto">
+                                                            <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
+                                                                <div class="item-image">
+                                                                    <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
+                                                                </div>
+                                                            </a>
+                                                            <div class="item-details mt-2">
+                                                                <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="item-details mt-2">
-                                                            <h3 class="item-name">XE CƯỚI 1</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/car_images/car-2.png')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                        <h3 class="item-name">XE CƯỚI 2</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 600,000Đ</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="item m-auto">
-                                                        <div class="item-image">
-                                                        <img  src="{{url('front/images-3/car_images/car-3.png')}}" alt="">
-                                                        </div>
-                                                        <div class="item-details mt-2">
-                                                        <h3 class="item-name">XE CƯỚI 3</h3>
-                                                            <p class="item-description"><strong>Mã:</strong> LA01</p>
-                                                            <p class="item-description"><strong>Giá:</strong> 800,000Đ</p>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
