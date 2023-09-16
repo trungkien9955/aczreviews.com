@@ -42,6 +42,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         Route::match(['get', 'post'], 'add-edit-filters/{id?}', 'FilterController@add_edit_filters');
         //images
         Route::match(['get', 'post'], 'add-images/{id}', 'ProductController@add_images');
+        //attributes
+        Route::match(['get', 'post'], 'add-edit-attributes/{id}', 'ProductController@add_edit_attributes');
+
     });
 });
 Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
@@ -53,6 +56,7 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
         Route::match(['get', 'post'],'/'.$url, 'ProductController@listing');
     }
     // Route::match(['get', 'post'],'/{url}', 'ProductController@listing');
-    Route::get('/product/{id}', 'ProductController@detail');
+    Route::match(['get', 'post'],'/product/{id}', 'ProductController@detail');
+    Route::post('/product/size-selection', 'ProductController@display_on_size_selection');
 });
 

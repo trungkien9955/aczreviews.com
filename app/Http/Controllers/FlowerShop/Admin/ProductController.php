@@ -9,6 +9,8 @@ use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\ProductFilter;
 use App\Models\FlowerShop\Brand;
 use App\Models\FlowerShop\ProductImage;
+use App\Models\FlowerShop\ProductAttribute;
+
 use Validator;
 use Image;
 class ProductController extends Controller
@@ -146,5 +148,41 @@ class ProductController extends Controller
             return redirect()->back()->with('success_message', 'Đã thêm hình ảnh sản phẩm!');
         }
         return view('FlowerShop/admin.product_images.add_images', compact('product_details'));
+    }
+    public function add_edit_attributes(Request $request, $id){
+        $product_details = Product::with('attributes')->find($id);
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // dd($data);
+            foreach($data['sku'] as $key => $value){
+                if(!empty($value)) {
+                    $attribute = new ProductAttribute;
+                    if(!empty($data['image'][$key])){
+                        $image = $data['image'][$key];
+                        $image_tmp = Image::make($image);
+                        $image_original_name = $image->getClientOriginalName();
+                        $extension = $image->getClientOriginalExtension();
+                        $image_name = 'attribute'.'-product-'.$id.'-'.rand(111, 999).'.'.$extension;
+                        $large_image_path = 'FlowerShop/front/images-3/product_images/large/'.$image_name;
+                        $medium_image_path = 'FlowerShop/front/images-3/product_images/medium/'.$image_name;
+                        $small_image_path = 'FlowerShop/front/images-3/product_images/small/'.$image_name;
+                        Image::make($image_tmp)->resize(1000, 1000)->save($large_image_path);
+                        Image::make($image_tmp)->resize(1000, 1000)->save($medium_image_path);
+                        Image::make($image_tmp)->resize(1000, 1000)->save($small_image_path);
+                        $attribute->image = $image_name;
+                    }
+                    $attribute->product_id = $id;
+                    $attribute->sku = $value;
+                    $attribute->size = $data['size'][$key];
+                    $attribute->price = $data['price'][$key];
+                    $attribute->color = $data['color'][$key];
+                    $attribute->stock = $data['stock'][$key];
+                    $attribute->status = 1;
+                    $attribute->save();
+                }
+            }
+            return redirect()->back()->with('success_message', 'Đã thêm thuộc tính sản phẩm!');
+        }
+        return view('FlowerShop.admin.attributes.add_edit_attributes', compact('product_details'));
     }
 }

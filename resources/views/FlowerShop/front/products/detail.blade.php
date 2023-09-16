@@ -77,7 +77,10 @@ use App\Models\FlowerShop\ProductAttribute;
                             </div>
                             <div class="info-availability">
                                 <span><b>Tình trạng:</b></span>
-                                <?php $stock = ProductAttribute::stock($product_details['id'], "Small", "")?>
+                                <?php 
+                                $stock = ProductAttribute::stock($product_details['id'], "S", "Red");
+                                $attributes = Product::with('attributes')->where('id',$product_details['id'])->first()->toArray();
+                                ?>
                                 @if($stock > 0)
                                 <span >Còn hàng</span>
                                 @else
@@ -86,7 +89,7 @@ use App\Models\FlowerShop\ProductAttribute;
                             </div>
                             <div class="info-stock">
                                 <span><b>Trong kho:</b></span>
-                                <span style = "color: var(--color-success);">40</span>
+                                <span style = "color: var(--color-success);">{{$stock}}</span>
                             </div>
                         </div>
                         <div class="info-offer mt-2">
@@ -110,30 +113,33 @@ use App\Models\FlowerShop\ProductAttribute;
                             </div>
                         </div>
                         <div class="information-variants mt-3">
-                            <div class="info-color-variants w-33">
-                                <div class="form-group">
-                                    <label for="color-selection">Chọn màu</label>
-                                    <select name="" id="" class = "form-control" >
-                                    <option value="">Đỏ</option>
-                                    <option value="">Vàng</option>
-                                    <option value="">Tím</option>
-                                </select>
+                            <form action="" id = "variants_form" name = "variants_form" method = "post">@csrf
+                                <input type="hidden" name= "product_id" id = "product_id" value = "{{$product_details['id']}}">
+                                <div class="info-color-variants w-33">
+                                    <div class="form-group">
+                                        <label for="color_selection">Chọn màu</label>
+                                        <select name="color_selection" id="color_selection" class = "form-control" >
+                                        <option value="Red">Đỏ</option>
+                                        <option value="Yellow">Vàng</option>
+                                        <option value="Purple">Tím</option>
+                                    </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="info-color-variants w-25">
-                                <span>Chọn size:</span>
-                                <select class = "form-control" name="" id="">
-                                    <option value="">S</option>
-                                    <option value="">M</option>
-                                    <option value="">L</option>
-                                </select>
-                            </div>
-                            <div class="info-quantity w-25">
-                                <div class="form-group">
-                                <label for="color-selection">Số lượng:</label>
-                                <input class = "form-control" type="text" value = "1">
+                                <div class="info-color-variants w-25">
+                                    <span>Chọn size:</span>
+                                    <select class = "form-control" name="size_selection" id="size_selection">
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="info-quantity w-25">
+                                    <div class="form-group">
+                                    <label for="color-selection">Số lượng:</label>
+                                    <input class = "form-control" type="text" value = "1">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="info-action mt-3">
                             <a href="" class = "buy-button">MUA NGAY</a>

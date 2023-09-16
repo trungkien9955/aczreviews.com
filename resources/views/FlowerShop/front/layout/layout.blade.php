@@ -13,6 +13,7 @@
     <!-- Main -->
     <link rel="stylesheet" href="{{url('front/css/common.css')}}">    
     <link rel="stylesheet" href="{{url('front/css/main.css')}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- Owl carousel -->
     <link rel="stylesheet" href="{{url('front/OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{url('front/OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.theme.default.min.css')}}"> 

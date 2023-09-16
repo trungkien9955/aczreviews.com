@@ -69,7 +69,7 @@
   <!-- Custom js for this page-->
   <script src="{{url('FlowerShop/admin/js/dashboard.js')}}"></script>
   <script src="{{url('FlowerShop/admin/js/Chart.roundedBarCharts.js')}}"></script>
-  <!-- <script src="{{url('FlowerShop/admin/js/custom.js')}}"></script> -->
+  <script src="{{url('FlowerShop/admin/js/custom.js')}}"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- End custom js for this page-->
