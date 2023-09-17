@@ -1,9 +1,6 @@
 
 #app {
-    background-color: var(--color-2);
-}
-h1 {
-    color: red;
+    /* background-color: var(--color-2); */
 }
 .header-page__wrapper {
     display: flex;
@@ -373,12 +370,27 @@ h1 {
     color:  var(--color-5);
 }
 /* detail */
-.thumbnails li {
+.product-detail-image img {
+    border: 1px solid #cccccc;
+}
+.gallery li {
     display: inline-block;
 }
-.product-title a h2 {
-    text-transform: uppercase;
+.gallery img {
+    border: 1px solid #cccccc;
+}
+.information-wrapper > div {
+    border: 1px solid #e5e5e5;
+    padding: 6px 12px;
+}
+.information-title {
+    border: 1px solid #cccccc;
+    border-right: 1px solid #eb4e82;
 
+}
+.product-title h2 {
+    font-weight: 700;
+    padding: 14px;
 }
 .information-price .info-price h4 {
     font-weight: 700;
@@ -411,9 +423,23 @@ h1 {
     display:inline-block;
     /* max-width: 150px; */
 }
-.information-variants div {
-    display:inline-block;
-}
+
+.variant_selection input[type="checkbox"] {
+    display: none;
+  }
+  
+  .variant_selection span {
+    display: inline-block;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    border: 1px solid var(--primary_color);
+  }
+  
+  .variant_selection input[type="checkbox"]:checked + span {
+    background-color: var(--primary_color);
+    color: #fff;
+  }
 .info-action a {
     color: #fff;
     padding: 12px 36px;
@@ -429,6 +455,17 @@ h1 {
 }
 .info-action .cart-button {
     background-color: var(--color-success);
+}
+.detail-tabs-wrapper {
+    margin-top: 24px;
+}
+.tab-content {
+    margin-top: 36px;
+    max-width: 75%;
+    margin: auto;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: justify;
 }
 .detail-tabs-nav {
     border-bottom: 1px solid var(--color-5);
@@ -456,6 +493,10 @@ h1 {
 .review-data-header h6 {
     font-weight: 600;
     font-size: 18px;
+}
+.review-item {
+    border-top: 1px solid var(--primary_color);
+    padding: 12px;
 }
 .similar-products-header, .recent-products-header {
     border-bottom: 1px solid var(--color-5);

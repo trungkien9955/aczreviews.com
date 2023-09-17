@@ -8,6 +8,7 @@ use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\Product;
 use App\Models\FlowerShop\ProductAttribute;
 use Route;
+use Illuminate\Support\Facades\View;
 class ProductController extends Controller
 {
     public function listing(Request $request){
@@ -76,20 +77,42 @@ class ProductController extends Controller
     }
     public function detail(Request $request, $id){
         $product_details = Product::with(['section', 'brand', 'attributes' => function($query){
-            $query->where('stock', '>', 0)->where('status', 1);
+            $query->where('status', 1);
         }, 'images'])->find($id)->toArray();
         $section_details = Section::where('id', $product_details['section_id'])->first()->toArray();
 
         return view('FlowerShop.front.products.detail', compact('product_details', 'section_details'));
     }
-    public function display_on_size_selection(Request $request){
+    public function display_price_on_size_selection(Request $request){
         if($request->ajax()){
-            echo "hello"; die;
+            $data=$request->all();
+            $product_details = Product::select('product_price', 'product_discount')->find($data['product_id']);
+            $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'size'=>$data['size'], 'status'=>1])->first()->toArray();
+            $attr_stock = $attribute['stock'];
+            $attr_image = $attribute['image'];
+            $attr_price =  $attribute['price'];
+            if($product_details['product_discount']>0){
+                $product_discount= $product_details['product_discount'];
+                $attr_discounted_price = $attr_price - ($attr_price*$product_details['product_discount']/100);
+                $attr_saving = $attr_price - $attr_discounted_price;
+            }
+            else{
+                $product_discount= "";
+                $attr_discounted_price = "";
+                $attr_saving = "";
+            }
+            return response()->json(['view' => (String)View::make('FlowerShop.front.products.attribute_price_2', compact('product_discount','attr_price', 'attr_discounted_price', 'attr_saving')), 'attr_stock'=> $attr_stock]);
         }
     }
-    public function size_selection(Request $request){
+    public function display_image_on_color_selection(Request $request){
         if($request->ajax()){
-            echo "hello"; die;
+            // echo "hello"; die;
+            $data=$request->all();
+            $product_details = Product::select('id')->find($data['product_id']);
+            $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'color'=>$data['color'], 'status'=>1])->first()->toArray();
+            $attr_stock = $attribute['stock'];
+            $attr_image = $attribute['image'];
+            return response()->json(['image'=>$attr_image, 'attr_stock'=>$attr_stock]);
         }
     }
 }

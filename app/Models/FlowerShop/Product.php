@@ -20,6 +20,9 @@ class Product extends Model
     public function images(){
         return $this->hasMany('App\Models\FlowerShop\ProductImage');
     }
+    public function descriptions(){
+        return $this->hasMany('App\Models\FlowerShop\ProductDescription');
+    }
     public static function discounted_price($id){
         $product_details = Product::select('id', 'product_price', 'product_discount')->where('id', $id)->first()->toArray();
         if($product_details['product_discount']> 0){
@@ -27,5 +30,9 @@ class Product extends Model
             $saving = $product_details['product_price'] -  $discounted_price;
         }
         return array('discounted_price'=> $discounted_price, 'saving'=>$saving);
+    }
+    public static function get_description($id){
+        $description = ProductDescription::where('product_id', $id)->first()->toArray();
+        return $description;
     }
 }
