@@ -208,30 +208,53 @@ use App\Models\FlowerShop\ProductFilter;
                                 </div>
                             </div>
                             <div class="tab-pane fade"id="detail-tab-review"role="tabpanel">
+                                <?php $rating_info = Product::get_rating_info($product_details['id'])?>
                                     <h3 style = "text-align:center; font-weight: 600;color: #6C757D;margin-bottom: 24px;margin-top: 24px;">Đánh giá sản phẩm {{$product_details['product_name']}}</h3>
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-xs-12 overflow-hidden">
                                             <div class="total-score-wrapper mt-5">
                                                 <h6>Điểm đánh giá</h6>
                                                 <div class="circle-wrapper">
-                                                    <span>8.5</span>
+                                                    <span>{{$rating_info['product_rating']}}</span>
                                                 </div>
-                                                <h6>23 đánh giá</h6>
+                                                <h6>{{$rating_info['product_rate_count']}} đánh giá</h6>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-xs-12 ">
                                             <div class="your-review-wrapper mt-3">
+                                                @if(Session::has('success_message'))
+                                                <div class = "alert alert-success alert-dismissible fade show" role = "alert">
+                                                <strong>Thành công:</strong>{{Session::get('success_message')}}
+                                                </div>
+                                                @endif
+                                                @if(Session::has('error_message'))
+                                                <div class = "alert alert-warning alert-dismissible fade show" role = "alert">
+                                                <strong>Lỗi:</strong>{{Session::get('error_message')}}
+                                                </div>
+                                                @endif
+                                                @if($errors->any())
+                                                <div class = "alert alert-warning alert-dismissible fade show" role = "alert">
+                                                <strong>Lỗi:</strong>    
+                                                <?php echo implode('', $errors->all('<div>:message</div>')); ?>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                @endif
                                                 <h5>Gửi đánh giá của bạn:</h5>
-                                                <form action="">
+                                                <form action="/product-rating-form" method= "post">@csrf
+                                                    <input type="hidden" id= "product_id" name = "product_id" value = "{{$product_details['id']}}">
                                                     <div class="form-group">
-                                                        <label for="review-author">Tên</label>
-                                                        <input type="text" class="form-control" name = "review-author" id="review-author"  >
-                                                        <label for="review-email">Email</label>
-                                                        <input type="email" class="form-control" name = "review-email" id="review-email" >
-                                                        <label for="review-email">Nhập điểm đánh giá (Từ 1 đến 10)</label>
-                                                        <input type="number" class="form-control" name = "review-score" id="review-score" >
-                                                        <label for="review-title">Nhập nội dung đánh giá</label>
-                                                        <textarea class="form-control"  rows="2"></textarea>
+                                                        <label for="review_author">Tên</label>
+                                                        <input type="text" class="form-control" name = "review_author" id="review_author" required >
+                                                        <label for="review_email">Email</label>
+                                                        <input type="email" class="form-control" name = "review_email" id="review_email" maxlength = "500" required>
+                                                        <label for="review_phone">Số điện thoại (Không bắt buộc)</label>
+                                                        <input type="text" class="form-control" name = "review_phone" id="review_phone" maxlength = "12">
+                                                        <label for="review_score">Nhập điểm đánh giá (Từ 5 đến 10)</label>
+                                                        <input type="number" class="form-control" name = "review_score" id="review_score" min = "5" max = "10" required>
+                                                        <label for="review_content">Nhập nội dung đánh giá</label>
+                                                        <textarea class="form-control" name = "review_content" id = "review_content" rows="2" maxlength = "500" required></textarea>
                                                     </div>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary mt-2">Gửi đánh giá</button>
@@ -242,36 +265,27 @@ use App\Models\FlowerShop\ProductFilter;
                                         <div class="col">
                                             <div class="review-data-wrapper m-auto">
                                                 <div class="review-data-header">
-                                                    <h6>Đánh giá (<span>15</span>):</h6>
+                                                    <h6>Đánh giá (<span>{{$rating_info['product_rate_count']}}</span>):</h6>
                                                 </div>
                                                 <div class="review-data-items">
+                                                    @foreach($rating_info['rating_info'] as $rating)
                                                     <div class="review-item mb-2">
                                                         <div class="review-item-author">
-                                                            <h6><b>Ngọc Anh</b></h6>
-                                                            <h6>08-07-2023</h6>
+                                                            <h6><b>{{$rating['name']}}</b> (Điểm đánh giá: <span style = "color: #e62263;">{{$rating['rating']}}</span>)</h6>
+                                                            @if(!empty($rating['created_at']))
+                                                            <h6>{{$rating['created_at']}}</h6>
+                                                            @else
+                                                            <h6>...</h6>
+                                                            @endif
                                                         </div>
                                                         <div class="review-item-content">
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                                                            <p>{{$rating['comment']}} </p>
                                                         </div>
                                                     </div>
-                                                    <div class="review-item mb-2">
-                                                        <div class="review-item-author">
-                                                        <h6><b>Ngọc Anh</b></h6>
-                                                            <h6>08-07-2023</h6>
-                                                        </div>
-                                                        <div class="review-item-content">
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="review-item mb-2">
-                                                        <div class="review-item-author">
-                                                        <h6><b>Ngọc Anh</b></h6>
-                                                            <h6>08-07-2023</h6>
-                                                        </div>
-                                                        <div class="review-item-content">
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                <div class="pagination">
+                                                {{$rating_info['rating_info']->links()}}
                                                 </div>
                                             </div>
                                         </div>

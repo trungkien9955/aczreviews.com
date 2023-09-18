@@ -8,6 +8,8 @@ use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\Product;
 use App\Models\FlowerShop\ProductAttribute;
 use Route;
+use DB;
+use Validator;
 use Illuminate\Support\Facades\View;
 class ProductController extends Controller
 {
@@ -113,6 +115,37 @@ class ProductController extends Controller
             $attr_stock = $attribute['stock'];
             $attr_image = $attribute['image'];
             return response()->json(['image'=>$attr_image, 'attr_stock'=>$attr_stock]);
+        }
+    }
+    public function rating_form_handler(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // dd($data);
+            $validator = Validator::make($data, $rules = [
+                'review_author' => 'regex:/^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i',
+                'review_email' => 'email',
+            ], $customMessages = [
+                // Add Custom Messages here
+                'review_author.regex' => ' Tên không hợp lệ',
+                'email.email' => ' Email không hợp lệ',
+            ])->validate();
+            if(!empty($data['review_phone'])) {
+                $phone = $data['review_phone'];
+            }
+            else{
+                $phone = "";
+            }
+            DB::table('rating_infos')->insert(['product_id'=>$data['product_id'], 'name' =>$data['review_author'],'email' =>$data['review_email'],'phone' =>$phone,'rating' =>$data['review_score'],'comment' =>$data['review_content'], 'status'=>1]);
+            return redirect()->back()->with('success_message', ' Đã gửi đánh giá!');
+        }
+        else {
+            return redirect()->back()->with('error_message', ' Đã xảy ra lỗi, vui lòng tải lại trang!');
+        }
+    }
+    public function product_comment(Request $request){
+        if($request->ajax()){
+            $rating_comment = RatingInfo::where('product_id', $request['product_id'])->paginate(5);
+            return view('FlowerShop.front.products.product_comments', compact('rating_comment'));
         }
     }
 }

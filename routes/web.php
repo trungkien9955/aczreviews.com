@@ -59,6 +59,9 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::match(['get', 'post'],'/product/{id}', 'ProductController@detail');
     Route::post('/size-selection', 'ProductController@display_price_on_size_selection');
     Route::post('/color-selection', 'ProductController@display_image_on_color_selection');
+    //product rating form 
+    Route::post('/product-rating-form', 'ProductController@rating_form_handler');
+    Route::get('/product-rating-form', 'ProductController@rating_form_handler');
 
 });
 

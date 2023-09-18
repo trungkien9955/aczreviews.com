@@ -35,4 +35,14 @@ class Product extends Model
         $description = ProductDescription::where('product_id', $id)->first()->toArray();
         return $description;
     }
+    public static function get_rating_info($id){
+        $rating_info = RatingInfo::where('product_id', $id)->Paginate(5);
+        $rating_comment = RatingInfo::where('product_id', $id)->get()->toArray();
+        // dd($rating_info);
+        $product_rate_count =count(RatingInfo::where('product_id', $id)->get()->toArray());
+        $product_total_score = array_sum(RatingInfo::where('product_id', $id)->pluck('rating')->toArray());
+        $product_rating_float = $product_total_score/$product_rate_count;
+        $product_rating = round($product_rating_float, 1);
+        return array('rating_info'=> $rating_info,'product_rate_count'=> $product_rate_count, 'product_rating'=> $product_rating);
+    }
 }
