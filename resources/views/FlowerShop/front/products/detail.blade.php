@@ -44,6 +44,7 @@ use App\Models\FlowerShop\ProductFilter;
                             </div>
                         </div>
                         <div class="information-price mt-4">
+                            @if($product_details['product_attribute'] == 'no')
                             @if($product_details['product_discount'] > 0)
                             <?php $discounted_price = Product::discounted_price($product_details['id'])?>
                             <div class="info-price"><h4><?php echo number_format($discounted_price['discounted_price']) ?>đ</h4></div>
@@ -60,6 +61,24 @@ use App\Models\FlowerShop\ProductFilter;
                             @else
                             <div class="info-price"><h4><?php echo number_format($product_details['product_price']) ?>đ</h4></div>
                             @endif
+                            @else
+                            <?php $lowest_price = ProductAttribute::get_lowest_attr_price($product_details['id']);?>
+                            @if($product_details['product_discount'] > 0)
+                            <div class="info-price"><h4><?php echo number_format($lowest_price_discounted = $lowest_price- $lowest_price*$product_details['product_discount']/100) ?>đ</h4></div>
+                            <div class="info-original-price">
+                                <span><?php echo number_format($lowest_price) ?>đ</span>
+                            </div>
+                            <div class="info-discount">
+                                (-<span style = "color: #e02027;">{{$product_details['product_discount']}}%</span>)
+                            </div>
+                            <div class="info-save">
+                                <span><b>Tiết kiệm:</b></span>
+                                <span style = "color: #e02027;"><?php echo number_format($lowest_price - $lowest_price_discounted) ?>đ</span>
+                            </div>
+                            @else
+                            <div class="info-price"><h4><?php echo number_format($lowest_price) ?>đ</h4></div>
+                            @endif
+                            @endif
                         </div>
                         <div class="information-description mt-3">
                             <h6><b>Mô tả sản phẩm:</b></h6>
@@ -72,21 +91,38 @@ use App\Models\FlowerShop\ProductFilter;
                             </div>
                             <div class="info-availability">
                                 <span><b>Tình trạng:</b></span>
-                                <?php 
-                                $stock = ProductAttribute::stock($product_details['id']);
-                                $attributes = Product::with('attributes')->where('id',$product_details['id'])->first()->toArray();
-                                ?>
+                                @if($product_details['product_attribute'] == 'no')
                                 <div class="stock-check">
-                                @if($stock > 0)
+                                @if($product_details['product_stock'] > 0)
                                 <span style = "color: #5CB85C;font-weight: 700;">Còn hàng</span>
                                 @else
                                 <span style = "color: #e02027;font-weight: 700;" >Tạm hết hàng</span>
                                 @endif 
                                 </div>
+                                @else
+                                <?php 
+                               $lowest_attr = ProductAttribute::get_attr_with_lowest_price($product_details['id']);
+                                ?>
+                                <div class="stock-check">
+                                @if($lowest_attr['stock'] > 0)
+                                <span style = "color: #5CB85C;font-weight: 700;">Còn hàng</span>
+                                @else
+                                <span style = "color: #e02027;font-weight: 700;" >Tạm hết hàng</span>
+                                @endif 
+                                </div>
+                                @endif
                             </div>
                             <div class="info-stock">
+                                @if($product_details['product_attribute'] == 'no')
                                 <span><b>Trong kho:</b></span>
-                                <span class = "stock-data" style = "color: var(--color-success); font-weight: 900;">{{$stock}}</span>
+                                <span class = "stock-data" style = "color: var(--color-success); font-weight: 900;">{{$product_details['product_stock']}}</span>
+                                @else
+                                <?php 
+                               $lowest_attr = ProductAttribute::get_attr_with_lowest_price($product_details['id']);
+                                ?>
+                                <span><b>Trong kho:</b></span>
+                                <span class = "stock-data" style = "color: var(--color-success); font-weight: 900;">{{$lowest_attr['stock']}}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="info-offer mt-2">
@@ -109,37 +145,55 @@ use App\Models\FlowerShop\ProductFilter;
                                 </div>
                             </div>
                         </div>
-                        <div class="information-variants mt-3">
-                            <form action="" id = "variants_form" name = "variants_form" method = "post">@csrf
+                        @if(Session::has('success_message'))
+                        <div class = "alert alert-success alert-dismissible fade show" role = "alert">
+                        <strong>Thành công:</strong>{{Session::get('success_message')}}
+                        </div>
+                        @endif
+                        @if(Session::has('error_message'))
+                        <div class = "alert alert-danger alert-dismissible fade show" role = "alert">
+                        <strong>Lỗi:</strong>{{Session::get('error_message')}}
+                        </div>
+                        @endif
+                        <form action="/cart/add" id = "cart_form" name = "cart_form" method = "post">@csrf
+                            <div class="information-variants mt-3">
                                 <input type="hidden" name= "product_id" id = "product_id" value = "{{$product_details['id']}}">
+                                @if($product_details['product_attribute'] == 'yes')
+                                <?php 
+                                $attr_with_color = ProductAttribute::get_attr_with_color($product_details['id']);
+                                ?>
                                 <div class="info-color-variants">
                                     <p style = "margin: 0"><b>Chọn màu:</b></p>
                                     <div class="variant_selection">
-                                        @foreach($product_details['attributes'] as $attribute)
-                                        <label><input type="checkbox" name="color" class = "color_option" value="{{$attribute['color']}}"><span>{{$attribute['v_color']}}</span></label>
+                                        @foreach($attr_with_color as $attr)
+                                        <label><input type="checkbox" name="color" class = "color_option" value="{{$attr['color']}}"><span>{{$attr['v_color']}}</span></label>
                                         @endforeach
                                     </div>
                                 </div>
+                                <?php 
+                                $attr_with_size = ProductAttribute::get_attr_with_size($product_details['id']);
+                                ?>
                                 <div class="info-color-variants mt-3">
                                     <p style = "margin: 0"><b>Chọn size:</b></p>
                                     <div class="variant_selection">
-                                        @foreach($product_details['attributes'] as $attribute)
-                                        <label><input type="checkbox" name="size" class = "size_option" value="{{$attribute['size']}}"><span>{{$attribute['size']}}</span></label>
+                                        @foreach( $attr_with_size as $attr)
+                                        <label><input type="checkbox" name="size" class = "size_option" value="{{$attr['size']}}"><span>{{$attr['size']}}</span></label>
                                         @endforeach
                                     </div>
                                 </div>
+                                @endif
                                 <div class="info-quantity mt-3 w-25">
                                     <div class="form-group">
                                     <label for="color-selection"><b>Số lượng:</b></label>
-                                    <input class = "form-control" type="text" value = "1">
+                                    <input class = "form-control" name = "quantity" type="text" value = "1">
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="info-action mt-3">
-                            <a href="" class = "buy-button">MUA NGAY</a>
-                            <a href="" class = "cart-button">+ GIỎ HÀNG</a>
-                        </div>
+                            </div>
+                            <div class="info-action mt-3">
+                                <button type = "submit" class = "buy-button">MUA NGAY</button>
+                                <button type = "submit" class = "cart-button">+ GIỎ HÀNG</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -284,9 +338,6 @@ use App\Models\FlowerShop\ProductFilter;
                                                     </div>
                                                     @endforeach
                                                 </div>
-                                                <div class="pagination">
-                                                {{$rating_info['rating_info']->links()}}
-                                                </div>
                                             </div>
                                         </div>
                                         </div>
@@ -306,67 +357,27 @@ use App\Models\FlowerShop\ProductFilter;
             <div class="row">
                 <div class="col">
                     <div class="similar-products-header">
-                        <h4>Sản phẩm tương tự</h4>
+                        <h5>Sản phẩm tương tự</h5>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
+                @foreach($similar_products as $product)
                 <div class="col-lg-3 col-md-4 col-xs-6">
                     <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
+                        <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                             <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                                <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
                             </div>
                         </a>
                         <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                            <h3 class="item-name">{{$product['product_name']}}</h3>
+                            <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                            <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
-                            <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
-                            </div>
-                        </a>
-                        <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
-                            <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
-                            </div>
-                        </a>
-                        <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
-                            <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
-                            </div>
-                        </a>
-                        <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -377,67 +388,27 @@ use App\Models\FlowerShop\ProductFilter;
             <div class="row">
                 <div class="col">
                     <div class="recent-products-header">
-                        <h4>Sản phẩm đã xem</h4>
+                        <h5>Sản phẩm đã xem</h5>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
+                @foreach($viewed_products as $product)
                 <div class="col-lg-3 col-md-4 col-xs-6">
                     <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
+                        <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                             <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
+                                <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
                             </div>
                         </a>
                         <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
+                            <h3 class="item-name">{{$product['product_name']}}</h3>
+                            <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                            <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
-                            <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
-                            </div>
-                        </a>
-                        <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
-                            <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
-                            </div>
-                        </a>
-                        <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
-                        <a href="" class="item-image-wrapper">
-                            <div class="item-image">
-                                <img  src="{{url('front/images-3/new_images/new-flower-1.jpg')}}" alt="">
-                            </div>
-                        </a>
-                        <div class="item-details mt-2">
-                            <h3 class="item-name">HOA LY</h3>
-                            <p class="item-description"><strong>Mã:</strong> LY01</p>
-                            <p class="item-description"><strong>Giá:</strong> 500,000Đ</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

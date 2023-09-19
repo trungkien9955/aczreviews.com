@@ -21,6 +21,7 @@
     align-items: center;
     flex-wrap: wrap;
     padding: 10px 0;
+    justify-content: space-between;
 }
 .header-logo {
     flex: 0 0 120px;
@@ -30,6 +31,47 @@
 }
 .header-search {
     flex: 1;
+    max-width: 600px;
+}
+.cart-container {
+    flex:1;
+    text-align: right;
+    max-width: 200px;
+    margin-left:auto;
+}
+.cart-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.cart-wrapper i {
+    font-size: 24px;
+    color: #333333;
+}
+.cart-wrapper .cart-count {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 16px;
+    height: 16px;
+    background-color: var(--color-red);
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    align-items: center;
+    padding: 0;
+    font-size:12px
+}
+.cart-container span {
+    display: inline-block;
+    margin-left: 4px;
+}
+.header-action {
+    flex: 0 0 240px;
+    max-width: 240px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 .header-nav {
     display: flex;
@@ -440,7 +482,7 @@
     background-color: var(--primary_color);
     color: #fff;
   }
-.info-action a {
+.info-action button {
     color: #fff;
     padding: 12px 36px;
     display: inline-block;
@@ -448,6 +490,7 @@
     text-align: center;
     border-radius: 3px;
     font-weight: 600;
+    border:none;
 }
 .info-action .buy-button {
     background-color: var(--color-red);
@@ -498,16 +541,28 @@
     border-top: 1px solid var(--primary_color);
     padding: 12px;
 }
+.load-more-parent {
+    position:relative;
+    padding-bottom: 24px;
+}
+.load-more-btn {
+    border:none;
+    text-decoration: underline;
+    position: absolute;
+    bottom: -24px;
+    display:block;
+    left:50%;
+}
 .similar-products-header, .recent-products-header {
     border-bottom: 1px solid var(--color-5);
 }
-.similar-products-header h4 {
+.similar-products-header h5 {
     font-weight: 600;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
-.recent-products-header h4 {
+.recent-products-header h5 {
     font-weight: 600;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 /* .header-logo {
     flex: 0 0 270px;
@@ -518,10 +573,6 @@
 .header-logo img {
     /* max-height: 60px; */
     width: auto;
-}
-.header-search {
-    flex: 1;
-    padding-left: 30px;
 }
 .frmSearch {
     position: relative;
@@ -592,19 +643,7 @@
     font-weight: bold;
 }
 
-.header-action {
-    flex: 0 0 350px;
-    max-width: 350px;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-.header-action .item {
-    display: flex;
-    align-items: center;
-    position: relative;
-}
+
 .header-action__cart {
     margin-left: 10px;
 }

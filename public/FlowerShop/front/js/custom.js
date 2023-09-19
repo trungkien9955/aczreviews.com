@@ -47,23 +47,27 @@ $(document).ready(function(){
          })
      })
      //product comment
-     $(document).on('click', '.pagination a', function(event){
-        event.preventDefault();
-        var page = $(this).attr('href').split('page=')[1];
-        var product_id = $('#product_id').val();
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            method: "post",
-            url: "/product/"+product_id+"?page="+page,
-            data: {product_id: product_id},
-            success:function(resp){
-                $('.review-data-items').html(resp);
-            },
-            error: function(){
-                alert('Error');
-            }
-        })
-     })
+})
+// $(document).on('click', '.pagination a', function(event){
+//     event.preventDefault();
+//     var page = $(this).attr('href').split('page=')[1];
+//     var product_id = $('#product_id').val();
+//     $.ajax({
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         method: "post",
+//         url: "/product-comment",
+//         data: {product_id: product_id},
+//         success:function(resp){
+//             $('.review-data-items').html(resp);
+//         },
+//         error: function(){
+//             alert('Error');
+//         }
+//     })
+// })
+$(document).on('click', '.load-more-btn', function(){
+    $(this).parent().attr('style', 'height:auto');
+    $(this).remove();
 })

@@ -19,6 +19,13 @@
                         
                     </div>
                 </div>
+                <div class="cart-container">
+                    <div class="cart-wrapper">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <div class="cart-count">1</div>
+                    </div>
+                    <span>Giỏ hàng</span>
+                </div>
                 <div class="header-action">
                     <div class="header-action-wrapper">
                         <button class="btn btn-outline-dark">Đăng ký</button>

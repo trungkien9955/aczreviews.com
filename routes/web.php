@@ -61,7 +61,10 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('/color-selection', 'ProductController@display_image_on_color_selection');
     //product rating form 
     Route::post('/product-rating-form', 'ProductController@rating_form_handler');
-    Route::get('/product-rating-form', 'ProductController@rating_form_handler');
+    Route::post('/product-comment', 'ProductController@product_comment');
+    //cart
+    Route::post('/cart/add', 'ProductController@cart_add');
+    Route::get('/cart', 'ProductController@cart');
 
 });
 

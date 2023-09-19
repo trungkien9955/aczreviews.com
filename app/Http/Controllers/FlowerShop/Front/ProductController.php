@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\Product;
 use App\Models\FlowerShop\ProductAttribute;
+use App\Models\FlowerShop\Cart;
 use Route;
 use DB;
 use Validator;
+use Session;
+use App\Models\FlowerShop\RatingInfo;
 use Illuminate\Support\Facades\View;
 class ProductController extends Controller
 {
@@ -82,8 +85,21 @@ class ProductController extends Controller
             $query->where('status', 1);
         }, 'images'])->find($id)->toArray();
         $section_details = Section::where('id', $product_details['section_id'])->first()->toArray();
-
-        return view('FlowerShop.front.products.detail', compact('product_details', 'section_details'));
+        $similar_products = Product::where('section_id', $product_details['section_id'])->where('id', '!=', $id)->limit(4)->inRandomOrder()->get()->toArray();
+        if(empty(Session::get('session_id'))){
+            $session_id = md5(uniqid(rand(), true)); 
+       }else{
+           $session_id = Session::get('session_id');
+       }
+       Session::put('session_id', $session_id);
+       //insert product in talbe if not already exists
+       $viewed_products_count = DB::table('viewed_products')->where(['product_id'=> $id, 'session_id'=> $session_id])->count();
+       if($viewed_products_count ==0){
+           DB::table('viewed_products')->insert(['product_id'=> $id, 'session_id'=> $session_id]);
+       }
+       $viewed_product_id_collection = DB::table('viewed_products')->select('product_id')->where('product_id', '!=', $id)->where('session_id', $session_id)->inRandomOrder()->get()->take(4)->pluck('product_id');
+       $viewed_products = Product::whereIn('id', $viewed_product_id_collection)->get()->toArray();
+        return view('FlowerShop.front.products.detail', compact('product_details', 'section_details', 'similar_products', 'viewed_products'));
     }
     public function display_price_on_size_selection(Request $request){
         if($request->ajax()){
@@ -144,8 +160,42 @@ class ProductController extends Controller
     }
     public function product_comment(Request $request){
         if($request->ajax()){
-            $rating_comment = RatingInfo::where('product_id', $request['product_id'])->paginate(5);
-            return view('FlowerShop.front.products.product_comments', compact('rating_comment'));
+            $ajax_rating_info = RatingInfo::where('product_id', $request['product_id'])->get()->toArray();
+            // return $rating_comment;
+            // echo "1";
+            return view('FlowerShop.front.products.product_comments', compact('ajax_rating_info'));
         }
+    }
+    public function cart_add(Request $request) {
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $product_details = Product::find($data['product_id']);
+            //check single product or versions
+            if($product_details['product_attribute'] = "no"){
+                //check stock
+                if($data['quantity']< $product_details['product_stock']){
+                    //create session id
+                    if(empty(Session::get('session_id'))){
+                        $session_id = md5(uniqid(rand(), true)); 
+                   }else{
+                       $session_id = Session::get('session_id');
+                   }
+                   //create cart
+                   $item = new Cart;
+                   $item->session_id = $session_id;
+                   $item->product_id = $data['product_id'];
+                   $item->size = '';
+                   $item->color = '';
+                   $item->quantity = $data['product_id'];
+                   $item->save();
+                   return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                }else{
+                    return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
+                }
+            }
+        }
+    }
+    public function cart(){
+        return view('FlowerShop.front.products.cart');
     }
 }

@@ -36,7 +36,7 @@ class Product extends Model
         return $description;
     }
     public static function get_rating_info($id){
-        $rating_info = RatingInfo::where('product_id', $id)->Paginate(5);
+        $rating_info = RatingInfo::where('product_id', $id)->get()->toArray();
         $rating_comment = RatingInfo::where('product_id', $id)->get()->toArray();
         // dd($rating_info);
         $product_rate_count =count(RatingInfo::where('product_id', $id)->get()->toArray());

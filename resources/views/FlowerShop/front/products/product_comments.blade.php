@@ -1,4 +1,4 @@
-@foreach($rating_info['rating_info'] as $rating)
+@foreach($ajax_rating_info as $rating)
     <div class="review-item mb-2">
         <div class="review-item-author">
             <h6><b>{{$rating['name']}}</b> (Điểm đánh giá: <span style = "color: #e62263;">{{$rating['rating']}}</span>)</h6>
@@ -13,4 +13,4 @@
         </div>
     </div>
 @endforeach
-{{$rating_info['rating_info']->links()}}
+<!-- <h1>hello</h1> -->
