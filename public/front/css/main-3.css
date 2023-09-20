@@ -564,6 +564,28 @@
     font-weight: 600;
     /* text-transform: uppercase; */
 }
+/* cart section */
+.cart-section {
+}
+.cart-table-wrapper {
+    padding: 48px;
+}
+.cart-table-wrapper td{
+    vertical-align: middle;
+}
+.cart-item img{
+    display: inline-block;
+    width: 100px;
+    height:100px;
+}
+.cart-item h5 {
+    display: inline-block;
+    font-weight: 700;
+    margin-left: 12px;
+}
+.cart-item-versions {
+    padding-left: 12px;
+}
 /* .header-logo {
     flex: 0 0 270px;
     max-width: 270px;

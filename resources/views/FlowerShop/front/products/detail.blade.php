@@ -47,7 +47,7 @@ use App\Models\FlowerShop\ProductFilter;
                             @if($product_details['product_attribute'] == 'no')
                             @if($product_details['product_discount'] > 0)
                             <?php $discounted_price = Product::discounted_price($product_details['id'])?>
-                            <div class="info-price"><h4><?php echo number_format($discounted_price['discounted_price']) ?>đ</h4></div>
+                            <div class="info-price"><h4><span><?php echo number_format($discounted_price['discounted_price']) ?></span>đ</h4></div>
                             <div class="info-original-price">
                                 <span><?php echo number_format($product_details['product_price']) ?>đ</span>
                             </div>
@@ -64,7 +64,7 @@ use App\Models\FlowerShop\ProductFilter;
                             @else
                             <?php $lowest_price = ProductAttribute::get_lowest_attr_price($product_details['id']);?>
                             @if($product_details['product_discount'] > 0)
-                            <div class="info-price"><h4><?php echo number_format($lowest_price_discounted = $lowest_price- $lowest_price*$product_details['product_discount']/100) ?>đ</h4></div>
+                            <div class="info-price"><h4><span><?php echo number_format($lowest_price_discounted = $lowest_price- $lowest_price*$product_details['product_discount']/100) ?></span>đ</h4></div>
                             <div class="info-original-price">
                                 <span><?php echo number_format($lowest_price) ?>đ</span>
                             </div>

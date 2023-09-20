@@ -67,7 +67,11 @@ $(document).ready(function(){
 //         }
 //     })
 // })
-$(document).on('click', '.load-more-btn', function(){
-    $(this).parent().attr('style', 'height:auto');
-    $(this).remove();
+$(document).on('click', '.info-action .buy-button', function(){
+    // event.preventDefault();
+    var price_element = $('.info-price h4 span').html();
+    var price_string = price_element.replace(',', '');
+    var price = parseInt(price_string);
+    // alert(price);
+    $('#cart_form').append(`<input type = "hidden" name = "price" id = "price_${price} "value= "${price}">`)
 })

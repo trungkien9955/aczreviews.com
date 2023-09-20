@@ -12,6 +12,7 @@ use Route;
 use DB;
 use Validator;
 use Session;
+use Auth;
 use App\Models\FlowerShop\RatingInfo;
 use Illuminate\Support\Facades\View;
 class ProductController extends Controller
@@ -180,22 +181,38 @@ class ProductController extends Controller
                    }else{
                        $session_id = Session::get('session_id');
                    }
+                   //check user id
+                   if(Auth::check()){
+                    $user_id = Auth::user()->id;
+                    $item_count = Cart::where(['product_id'=>$data['product_id'], 'user_id'=> $user_id])->count();
+                   }else{
+                    $user_id = 0;
+                    $item_count = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->count();
+                   }
+                    //  dd($item_count);
                    //create cart
                    $item = new Cart;
                    $item->session_id = $session_id;
+                   $item->user_id = $user_id;
                    $item->product_id = $data['product_id'];
                    $item->size = '';
                    $item->color = '';
-                   $item->quantity = $data['product_id'];
+                   $item->price =   $data['price'];
+                   $item->quantity = $data['quantity'];
+                   $item->sub_total = $data['quantity']*$data['price'];
                    $item->save();
                    return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
                 }else{
                     return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
                 }
-            }
+            }else{
+                return redirect()->back()->with('error_message', ' Sản phẩm có nhiều version!');
         }
     }
+}
     public function cart(){
-        return view('FlowerShop.front.products.cart');
+        $items = Cart::get_items();
+        // dd($items);
+        return view('FlowerShop.front.products.cart', compact('items'));
     }
 }

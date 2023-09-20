@@ -21,7 +21,7 @@
                 </div>
                 <div class="cart-container">
                     <div class="cart-wrapper">
-                        <i class="fa-solid fa-cart-shopping"></i>
+                        <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
                         <div class="cart-count">1</div>
                     </div>
                     <span>Giỏ hàng</span>

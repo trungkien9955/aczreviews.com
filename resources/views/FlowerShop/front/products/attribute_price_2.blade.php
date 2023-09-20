@@ -1,7 +1,7 @@
 
 <div class="information-price mt-4">
     @if($product_discount >0)
-    <div class="info-price"><h4><?php echo number_format($attr_discounted_price) ?>đ</h4></div>
+    <div class="info-price"><h4><span><?php echo number_format($attr_discounted_price) ?></span>đ</h4></div>
     <div class="info-original-price">
         <span><?php echo number_format($attr_price) ?>đ</span>
     </div>
