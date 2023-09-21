@@ -11,6 +11,8 @@ $(document).ready(function(){
             data: {product_id: product_id, size:size},
             success: function(resp){
                 $('.information-price').html(resp.view);
+                $('.info-code .attr-sku').html(resp.attr_sku);
+
                 if(resp.attr_stock > 0) {
                     $('.info-stock span.stock-data').html(resp.attr_stock);
                     $('.stock-check').html("<span style = 'color: #5CB85C;font-weight: 700;'>Còn hàng</span>");
@@ -70,8 +72,30 @@ $(document).ready(function(){
 $(document).on('click', '.info-action .buy-button', function(){
     // event.preventDefault();
     var price_element = $('.info-price h4 span').html();
+    var attr_sku = $('.attr-sku').html();
     var price_string = price_element.replace(',', '');
     var price = parseInt(price_string);
     // alert(price);
-    $('#cart_form').append(`<input type = "hidden" name = "price" id = "price_${price} "value= "${price}">`)
+    $('#cart_form').append(`<input type = "hidden" name = "price" id = "price_${price} "value= "${price}">`);
+    $('#cart_form').append(`<input type = "hidden" name = "attr_sku" id = "sku_${attr_sku} "value= "${attr_sku}">`);
+
+})
+$(document).on('click', '.cart-item-delete-btn', function(){
+    $confirm = confirm('Xóa sản phẩm này khỏi giỏ hàng?')
+    if($confirm)
+    var cart_item_id = $(this).data('cart-item-id');
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        method: 'post',
+        url: '/cart/delete',
+        data: {cart_item_id: cart_item_id},
+        success: function(resp){
+            $('.cart-table-container').html(resp.view);
+        },
+        error: function(){
+            alert('error');
+        }
+    })
 })

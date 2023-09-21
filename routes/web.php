@@ -64,6 +64,7 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('/product-comment', 'ProductController@product_comment');
     //cart
     Route::post('/cart/add', 'ProductController@cart_add');
+    Route::post('/cart/delete', 'ProductController@cart_delete');
     Route::get('/cart', 'ProductController@cart');
 
 });

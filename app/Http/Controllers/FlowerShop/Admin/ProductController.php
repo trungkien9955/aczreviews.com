@@ -10,6 +10,7 @@ use App\Models\FlowerShop\ProductFilter;
 use App\Models\FlowerShop\Brand;
 use App\Models\FlowerShop\ProductImage;
 use App\Models\FlowerShop\ProductAttribute;
+use App\Models\FlowerShop\Color;
 
 use Validator;
 use Image;
@@ -151,6 +152,7 @@ class ProductController extends Controller
     }
     public function add_edit_attributes(Request $request, $id){
         $product_details = Product::with('attributes')->find($id);
+        $colors = Color::select('id', 'name', 'v_name')->get()->toArray();
         if($request->isMethod('post')){
             $data = $request->all();
             // dd($data);
@@ -171,11 +173,20 @@ class ProductController extends Controller
                         Image::make($image_tmp)->resize(1000, 1000)->save($small_image_path);
                         $attribute->image = $image_name;
                     }
+                    if($data['color'][$key] == "red"){
+                        $v_color = "Đỏ";
+                    }
+                    else if ($data['color'][$key] == "pink") {
+                        $v_color = "Hồng";
+                    }else if ($data['color'][$key] == "green") {
+                        $v_color = "Xanh lục";
+                    }
                     $attribute->product_id = $id;
                     $attribute->sku = $value;
                     $attribute->size = $data['size'][$key];
                     $attribute->price = $data['price'][$key];
                     $attribute->color = $data['color'][$key];
+                    $attribute->v_color = $v_color;
                     $attribute->stock = $data['stock'][$key];
                     $attribute->status = 1;
                     $attribute->save();
@@ -183,6 +194,6 @@ class ProductController extends Controller
             }
             return redirect()->back()->with('success_message', 'Đã thêm thuộc tính sản phẩm!');
         }
-        return view('FlowerShop.admin.attributes.add_edit_attributes', compact('product_details'));
+        return view('FlowerShop.admin.attributes.add_edit_attributes', compact('product_details', 'colors'));
     }
 }

@@ -87,7 +87,14 @@ use App\Models\FlowerShop\ProductFilter;
                         <div class="information-sku">
                             <div class="info-code">
                                 <span><b>Mã sản phẩm</b>:</span>
+                                @if($product_details['product_attribute'] == 'no')
                                 <span style = "color: #e62263;font-weight: 700;">{{$product_details['product_code']}}</span>
+                                @else
+                                <?php 
+                               $lowest_attr = ProductAttribute::get_attr_with_lowest_price($product_details['id']);
+                                ?>
+                                <span style = "color: #e62263;font-weight: 700;" class = "attr-sku"> {{$lowest_attr['sku']}}</span>
+                                @endif
                             </div>
                             <div class="info-availability">
                                 <span><b>Tình trạng:</b></span>

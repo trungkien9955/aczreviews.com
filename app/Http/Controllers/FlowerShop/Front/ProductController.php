@@ -110,6 +110,7 @@ class ProductController extends Controller
             $attr_stock = $attribute['stock'];
             $attr_image = $attribute['image'];
             $attr_price =  $attribute['price'];
+            $attr_sku =  $attribute['sku'];
             if($product_details['product_discount']>0){
                 $product_discount= $product_details['product_discount'];
                 $attr_discounted_price = $attr_price - ($attr_price*$product_details['product_discount']/100);
@@ -120,7 +121,7 @@ class ProductController extends Controller
                 $attr_discounted_price = "";
                 $attr_saving = "";
             }
-            return response()->json(['view' => (String)View::make('FlowerShop.front.products.attribute_price_2', compact('product_discount','attr_price', 'attr_discounted_price', 'attr_saving')), 'attr_stock'=> $attr_stock]);
+            return response()->json(['view' => (String)View::make('FlowerShop.front.products.attribute_price_2', compact('product_discount','attr_price', 'attr_discounted_price', 'attr_saving')), 'attr_stock'=> $attr_stock, 'attr_sku'=>$attr_sku]);
         }
     }
     public function display_image_on_color_selection(Request $request){
@@ -171,48 +172,149 @@ class ProductController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
             $product_details = Product::find($data['product_id']);
-            //check single product or versions
-            if($product_details['product_attribute'] = "no"){
-                //check stock
+            if($product_details['product_attribute'] == "no"){
                 if($data['quantity']< $product_details['product_stock']){
-                    //create session id
+                    
                     if(empty(Session::get('session_id'))){
                         $session_id = md5(uniqid(rand(), true)); 
                    }else{
                        $session_id = Session::get('session_id');
                    }
-                   //check user id
                    if(Auth::check()){
-                    $user_id = Auth::user()->id;
-                    $item_count = Cart::where(['product_id'=>$data['product_id'], 'user_id'=> $user_id])->count();
+                        $user_id = Auth::user()->id;
+                        $item_count = Cart::where(['product_id'=>$data['product_id'], 'user_id'=> $user_id])->count();
+                        if($item_count>0){
+                            $item = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->first()->toArray();
+                            $new_item_count = $item_count + $data['quantity'];
+                            DB::table('carts')->where(['user_id'=> $user_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_count]);
+                            
+                        }else{
+                            $item = new Cart;
+                            $item->session_id = $session_id;
+                            $item->user_id = $user_id;
+                            $item->product_id = $data['product_id'];
+                            $item->size = '';
+                            $item->color = '';
+                            $item->price =   $data['price'];
+                            $item->quantity = $data['quantity'];
+                            $item->sub_total = $data['quantity']*$data['price'];
+                            $item->save();
+                            return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                        }
                    }else{
-                    $user_id = 0;
-                    $item_count = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->count();
+                        $user_id = 0;
+                        $item_count = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->count();
+                        if($item_count>0){
+                            $item = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->first()->toArray();
+                            $new_item_count = $item['quantity'] + $data['quantity'];
+                            if( $new_item_count>$product_details['product_stock']) {
+                                return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
+                            }else{
+                                $new_sub_total = $new_item_count * $data['price'];
+                                DB::table('carts')->where(['session_id'=> $session_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_count, 'sub_total'=>$new_sub_total]);
+                                return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                            }
+                        }else{
+                            $item = new Cart;
+                            $item->session_id = $session_id;
+                            $item->user_id = 0;
+                            $item->product_id = $data['product_id'];
+                            $item->size = '';
+                            $item->color = '';
+                            $item->price =   $data['price'];
+                            $item->quantity = $data['quantity'];
+                            $item->sub_total = $data['quantity']*$data['price'];
+                            $item->save();
+                            return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                        }
                    }
-                    //  dd($item_count);
-                   //create cart
-                   $item = new Cart;
-                   $item->session_id = $session_id;
-                   $item->user_id = $user_id;
-                   $item->product_id = $data['product_id'];
-                   $item->size = '';
-                   $item->color = '';
-                   $item->price =   $data['price'];
-                   $item->quantity = $data['quantity'];
-                   $item->sub_total = $data['quantity']*$data['price'];
-                   $item->save();
-                   return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
                 }else{
                     return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
                 }
-            }else{
-                return redirect()->back()->with('error_message', ' Sản phẩm có nhiều version!');
+            }else if ($product_details['product_attribute'] == "yes"){
+                if(isset($data['attr_sku']) && !empty($data['attr_sku'])){
+                    $attr_sku = $data['attr_sku'];
+                    $attr = ProductAttribute::where('sku', $attr_sku)->first()->toArray();
+                    $attr_stock = $attr['stock'];  
+                }else{
+                    return redirect()->back()->with('error_message', ' Đã xảy ra lỗi. Vui lòng thử lại!');
+                }
+                if($data['quantity']<  $attr_stock){
+                    if(empty(Session::get('session_id'))){
+                        $session_id = md5(uniqid(rand(), true)); 
+                   }else{
+                       $session_id = Session::get('session_id');
+                   }
+                   if(Auth::check()){
+                    $user_id = Auth::user()->id;
+                    $item_count = Cart::where(['attr_sku'=>$data['product_id'], 'user_id'=> $user_id])->count();
+                    if($item_count>0){
+                        $new_item_count = $item_count + $data['quantity'];
+                        if($new_item_count< $attr_stock) {
+                            DB::table('carts')->where(['attr_sku'=> $attr_sku, 'session_id'=>$session_id])->update(['quantity'=>$new_item_count]);
+                        }else{
+
+                        }
+                    }else{
+                        $item = new Cart;
+                        $item->session_id = $session_id;
+                        $item->user_id = $user_id;
+                        $item->product_id = $data['product_id'];
+                        $item->size = '';
+                        $item->color = '';
+                        $item->price =   $data['price'];
+                        $item->quantity = $data['quantity'];
+                        $item->sub_total = $data['quantity']*$data['price'];
+                        $item->save();
+                        return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                    }
+                   }else{
+                    $user_id = 0;
+                    $item_count = Cart::where(['attr_sku'=>$data['attr_sku'], 'session_id'=> $session_id])->count();
+                    if($item_count>0){
+                        $item = Cart::where(['attr_sku'=>$data['attr_sku'], 'session_id'=> $session_id])->first()->toArray();
+                        $new_item_count = $item['quantity'] + $data['quantity'];
+                        if($new_item_count < $attr_stock) {
+                            $new_sub_total = $new_item_count *$data['price'];
+                            DB::table('carts')->where(['session_id'=> $session_id, 'attr_sku'=>$attr_sku])->update(['quantity'=>$new_item_count, 'sub_total'=>$new_sub_total]);
+                            return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                        }else{
+                            return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
+                        }
+                    }else{
+                        $item = new Cart;
+                        $item->session_id = $session_id;
+                        $item->user_id = 0;
+                        $item->product_id = $data['product_id'];
+                        $item->attr_id = $attr['id'];
+                        $item->attr_sku = $attr_sku;
+                        $item->size = $attr['size'];
+                        $item->color = $attr['color'];
+                        $item->price =   $data['price'];
+                        $item->quantity = $data['quantity'];
+                        $item->sub_total = $data['quantity']*$data['price'];
+                        $item->save();
+                        return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
+                    }
+                   }
+                }else{
+                    return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
+                }
+            }
         }
     }
-}
     public function cart(){
         $items = Cart::get_items();
         // dd($items);
-        return view('FlowerShop.front.products.cart', compact('items'));
+        $total_price = Cart::get_total_price();
+        return view('FlowerShop.front.products.cart', compact('items', 'total_price'));
+    }
+    public function cart_delete(Request $request){
+        if($request->ajax()){
+            $data = $request->all();
+            Cart::find($data['cart_item_id'])->delete();
+            $items = Cart::get_items();
+            return response()->json(['view'=>(String)View::make('FlowerShop.front.products.cart_table_container', compact('items'))]);
+        }
     }
 }

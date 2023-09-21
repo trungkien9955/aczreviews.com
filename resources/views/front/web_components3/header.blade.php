@@ -14,7 +14,7 @@
                     <div class="search-wrapper">
                         <form action="" class = "d-flex">
                             <input type="text" class = "form-control" placeholder = "Nhập ID học viên">
-                            <button type="submit" class="btn btn-warning">Search</button>
+                            <button type="submit" class="btn" style = "background-color: #e62263;">Search</button>
                         </form>
                         
                     </div>

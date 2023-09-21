@@ -51,9 +51,9 @@
                                 <div>
                                     <input type="text" name="size[]" placeholder="Size" required = "" style = "max-width: 240px;"/>
                                     <input type="text" name="sku[]" placeholder="SKU" required = "" style = "max-width: 240px;"/>
-                                    <input type="text" name="color[]" placeholder="Color" required = "" style = "max-width: 240px;"/>
-                                    <input type="text" name="price[]" placeholder="Price" required = "" style = "max-width: 240px;"/>
-                                    <input type="text" name="stock[]" placeholder="Stock" required = "" style = "max-width: 240px;"/><br>
+                                    <input type="text" name="color[]" placeholder="Màu" required = "" style = "max-width: 240px;"/>
+                                    <input type="text" name="price[]" placeholder="Giá" required = "" style = "max-width: 240px;"/>
+                                    <input type="text" name="stock[]" placeholder="Trong kho" required = "" style = "max-width: 240px;"/><br>
                                     <label for="">Hình ảnh</label>
                                     <input type="file" name="image[]" placeholder="Image" required = "" style = "max-width: 240px;"/>
                                     <br>
