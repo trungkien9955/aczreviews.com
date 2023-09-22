@@ -283,4 +283,10 @@ $(document).ready(function(){
             }
         })
     })
+    $(document).on('click', '#automatic_coupon', function(){
+        $('#coupon_field').hide();
+    })
+    $(document).on('click', '#manual_coupon', function(){
+        $('#coupon_field').show();
+    })
 })

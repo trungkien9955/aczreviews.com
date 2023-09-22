@@ -44,6 +44,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         Route::match(['get', 'post'], 'add-images/{id}', 'ProductController@add_images');
         //attributes
         Route::match(['get', 'post'], 'add-edit-attributes/{id}', 'ProductController@add_edit_attributes');
+        //coupons
+        Route::match(['get', 'post'], 'coupons', 'CouponController@coupons');
+        Route::match(['get', 'post'], 'add-edit-coupons/{id?}', 'CouponController@add_edit_coupons');
 
     });
 });

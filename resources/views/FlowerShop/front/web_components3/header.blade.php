@@ -13,7 +13,7 @@
                 <div class="header-search">
                     <div class="search-wrapper">
                         <form action="" class = "d-flex">
-                            <input type="text" class = "form-control" placeholder = "Nhập ID học viên">
+                            <input type="text" class = "form-control" placeholder = "Tìm kiếm ...">
                             <button type="submit" class="btn btn-warning" style = "background-color: #e62263; color: #fff; margin-left:6px;">Search</button>
                         </form>
                         

@@ -37,6 +37,7 @@
                 @endforeach
             </tbody>
         </table>
+        @if(count($items) > 0)
         <div class="total-price" style = "margin-top: 24px;">
             <div class="w-25" style = "margin-left: auto;border-bottom: 1px solid #e62263">
                 <h6><b>Tổng đơn hàng: </b> <span style ="color: #e02027; font-size: 18px; font-weight: 700; "><?php echo number_format($total_price) ?></span>đ</h6>
@@ -48,5 +49,12 @@
                 <a class="btn btn-secondary" href="/">Tiếp tục mua sắm</a>
             </div>
         </div>
+        @else
+        <div>
+            <h6 style = "margin:auto; width: 50%; text-align:center; padding: 12px 0px;">Chưa có sản phẩm nào trong giỏ hàng!</h6>
+            <a class="btn btn-secondary" style = "width: 20%;background-color: #e62263;border:none; display: block;margin:auto" href="/">Về trang chủ</a>
+        </div>
+        @endif
+
     </div>
 </form>
