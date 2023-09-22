@@ -23,6 +23,7 @@
                     </div>
                     @endif
                     <form class="forms-sample" @if(empty($filter['id'])) action = "{{url('admin/add-edit-coupons')}}"@else action = "{{url('admin/add-edit-coupons/'.$coupon['id'])}}" @endif method = "post" name = "updateAdminDetailsForm" id = "updateAdminDetailsForm" enctype = "multipart/form-data">@csrf
+                        @if(empty($coupon['coupon_code']))
                         <div class="form-group">
                         <label for="coupon_option">Tùy chọn Coupon</label>
                         <span><input type="radio" id = "automatic_coupon" name = "coupon_option" value = "Automatic" checked>Tự động</span><input  type="radio" id = "manual_coupon" name = "coupon_option" value = "Manual">Thủ công
@@ -31,23 +32,30 @@
                         <label for="coupon_code">Mã coupon</label>
                         <input type="text" class="form-control" id="filter_name" name = "coupon_code">
                         </div>
+                        @else
+                        <input type="hidden" name = "coupon_option" value = "{{$coupon['coupon_option']}}" checked>
+                        <div class="form-group" >
+                        <input type="hidden" class="form-control" id="coupon_code" name = "coupon_code" value = "{{$coupon['coupon_code']}}">
+                        <h6>Mã coupon: <span>{{$coupon['coupon_code']}}</span></h6>
+                        </div>
+                        @endif
                         <div class="form-group">
                         <label for="coupon_type">Loại Coupon</label>
-                        <span><input type="radio"  name = "coupon_type" value = "Multiple Times" checked>Multiple Times</span><input  type="radio" id = "manual_coupon" name = "coupon_type" value = "Single Time">Single Time
+                        <span><input type="radio"  name = "coupon_type" value = "Multiple Times" @if(isset($coupon['coupon_type']) && $coupon['coupon_type'] == "Multiple Times") checked @endif>Multiple Times</span><input  type="radio" id = "manual_coupon" name = "coupon_type" value = "Single Time" @if(isset($coupon['coupon_type']) && $coupon['coupon_type'] == "Single") checked @endif>Single Time
                         </div>
                         <div class="form-group">
                         <label for="amount_type">Đơn vị</label>
-                        <span><input type="radio"  name = "amount_type" value = "Percentage" checked>%</span><input  type="radio"  name = "amount_type" value = "Fixed">Cố định
+                        <span><input type="radio"  name = "amount_type" value = "Percentage" @if(isset($coupon['amount_type']) && $coupon['amount_type'] == "Percentage") checked @endif>%</span><input  type="radio"  name = "amount_type" value = "Fixed" @if(isset($coupon['amount_type']) && $coupon['amount_type'] == "Fixed") checked @endif>Cố định
                         </div>
                         <div class="form-group">
                         <label for="amount">Giá trị</label>
-                        <input type="text" class="form-control" id="amount" name = "amount">
+                        <input type="text" class="form-control" id="amount" name = "amount" @if(isset($coupon['amount']) value="{{$coupon['amount']}}" @else value = "{{old('amount')}}" @endif>
                         </div>
                         <div class="form-group">
                         <label for="section_id[]">Chọn section</label>
                         <select name="section_id[]" id="section_id" class = "form-control" multiple>
                         @foreach($sections as $section)
-                        <option value="{{$section['id']}}">{{$section['section_name']}}</option>
+                        <option value="{{$section['id']}}" @if(in_array($section['id'], $section_id_collection)) selected @endif>{{$section['section_name']}}</option>
                         @endforeach
                         </select>
                         </div>
@@ -55,13 +63,13 @@
                         <label for="admin_id[]">Chọn người dùng</label>
                         <select name="admin_id[]" id="admin_id" class = "form-control" multiple>
                         @foreach($admins as $admin)
-                        <option value="{{$admin['id']}}">{{$admin['name']}}</option>
+                        <option value="{{$admin['id']}}"  @if(in_array($admin['id'], $user_id_collection)) selected @endif>{{$admin['name']}}</option>
                         @endforeach
                         </select>
                         </div>
                         <div class="form-group">
                         <label for="expiry_date">Ngày hết hạn</label>
-                        <input type="date" class="form-control" id="expiry_date" name = "expiry_date">
+                        <input type="date" class="form-control" id="expiry_date" name = "expiry_date" @if(isset($coupon['expiry_date'])) value = "{{$coupon['expiry_date']}}" @endif>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
                         <button class="btn btn-light">Cancel</button>
