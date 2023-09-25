@@ -47,7 +47,6 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         //coupons
         Route::match(['get', 'post'], 'coupons', 'CouponController@coupons');
         Route::match(['get', 'post'], 'add-edit-coupons/{id?}', 'CouponController@add_edit_coupons');
-
     });
 });
 Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
@@ -69,6 +68,8 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('/cart/add', 'ProductController@cart_add');
     Route::post('/cart/delete', 'ProductController@cart_delete');
     Route::get('/cart', 'ProductController@cart');
-
+    
+    Route::group(['middleware'=>['auth']], function(){
+        Route::match(['get', 'post'], '/checkout', 'ProductController@checkout');
+    });
 });
-

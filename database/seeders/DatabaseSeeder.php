@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(ProductRatingsTableSeeder::class);
         // $this->call(RatingInfoTableSeeder::class);
         // $this->call(ColorsTableSeeder::class);
-        $this->call(CouponsTableSeeder::class);
+        // $this->call(CouponsTableSeeder::class);
+        $this->call(DeliveryAddressesTableSeeder::class);
     }
 }

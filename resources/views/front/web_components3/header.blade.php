@@ -21,8 +21,8 @@
                 </div>
                 <div class="header-action">
                     <div class="header-action-wrapper">
-                        <button class="btn btn-outline-dark">Đăng ký</button>
-                        <button class="btn btn-outline-dark">Đăng nhập</button>
+                        <a href = "/admin/register" class="btn btn-outline-dark">Đăng ký</a>
+                        <a href = "/admin/login" class="btn btn-outline-dark">Đăng nhập</a>
                     </div>
                 </div>
             </div>

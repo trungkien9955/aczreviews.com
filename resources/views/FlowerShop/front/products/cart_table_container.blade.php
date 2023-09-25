@@ -39,13 +39,13 @@
         </table>
         @if(count($items) > 0)
         <div class="total-price" style = "margin-top: 24px;">
-            <div class="w-25" style = "margin-left: auto;border-bottom: 1px solid #e62263">
+            <div class="w-50" style = "margin-left: auto;border-bottom: 1px solid #e62263">
                 <h6><b>Tổng đơn hàng: </b> <span style ="color: #e02027; font-size: 18px; font-weight: 700; "><?php echo number_format($total_price) ?></span>đ</h6>
             </div>
         </div>
         <div class="cart-action" style = "margin-top: 24px;">
-            <div class="cart-action-wrapper w-25" style = "margin-left:auto">
-                <button class="btn btn-danger" style = "background-color: #e62263">Đặt hàng</button>
+            <div class="cart-action-wrapper w-50" style = "margin-left:auto">
+                <a  href="{{url('/checkout')}}" class="btn btn-danger" style = "background-color: #e62263">Đến trang thanh toán</a>
                 <a class="btn btn-secondary" href="/">Tiếp tục mua sắm</a>
             </div>
         </div>

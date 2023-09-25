@@ -317,4 +317,8 @@ class ProductController extends Controller
             return response()->json(['view'=>(String)View::make('FlowerShop.front.products.cart_table_container', compact('items'))]);
         }
     }
+    public function checkout(){
+        $delivery_address = DeliveryAddress::get_delivery_address();
+        return view('FlowerShop.front.products.checkout', compact('delivery_address'));
+    }
 }
