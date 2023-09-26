@@ -27,10 +27,16 @@
                     <span>Giỏ hàng</span>
                 </div>
                 <div class="header-action">
+                    @if(Auth::check())
+                    <div class="profile-image">
+                        <img style = "width: 40px; height:40px;border-radius: 50%;" src="{{url('FlowerShop/front/images-3/profile_images/profile-image-1.jpg')}}" alt="">
+                    </div>
+                    @else
                     <div class="header-action-wrapper">
-                        <a href = "/admin/register"class="btn btn-outline-dark">Đăng ký</a>
+                        <a href = "/user/login-register"class="btn btn-outline-dark">Đăng ký</a>
                         <a href = "/admin/login" class="btn btn-outline-dark">Đăng nhập</a>
                     </div>
+                    @endif
                 </div>
             </div>
             <div class="header-nav">

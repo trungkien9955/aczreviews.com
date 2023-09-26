@@ -68,8 +68,8 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('/cart/add', 'ProductController@cart_add');
     Route::post('/cart/delete', 'ProductController@cart_delete');
     Route::get('/cart', 'ProductController@cart');
-    
-    Route::group(['middleware'=>['auth']], function(){
-        Route::match(['get', 'post'], '/checkout', 'ProductController@checkout');
-    });
+    //user login/register
+    Route::get('user/login-register', 'UserController@login_register');
+    Route::post('user/register', 'UserController@register');
+
 });

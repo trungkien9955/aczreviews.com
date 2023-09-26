@@ -99,3 +99,26 @@ $(document).on('click', '.cart-item-delete-btn', function(){
         }
     })
 })
+$('#register_form').submit(function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    // form_data = JSON.stringify(form_data);
+    var name = $('#name').val();
+    console.log(form_data);
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/user/register',
+        data: form_data,
+        success: function(resp){
+            alert(resp.url);
+           window.location.href = resp.url; 
+            // alert(resp);
+        },
+        error: function(){
+            alert('error');
+        }
+    })
+})
