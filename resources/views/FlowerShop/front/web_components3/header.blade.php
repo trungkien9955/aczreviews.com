@@ -31,10 +31,13 @@
                     <div class="profile-image">
                         <img style = "width: 40px; height:40px;border-radius: 50%;" src="{{url('FlowerShop/front/images-3/profile_images/profile-image-1.jpg')}}" alt="">
                     </div>
+                    <div class="logout" style = "margin-left: 6px;">
+                        <button class="user-logout-btn" style = "font-size:24px;border:none;"><i class="fa-solid fa-power-off"></i></button>
+                    </div>
                     @else
                     <div class="header-action-wrapper">
                         <a href = "/user/login-register"class="btn btn-outline-dark">Đăng ký</a>
-                        <a href = "/admin/login" class="btn btn-outline-dark">Đăng nhập</a>
+                        <a href = "/user/login-register" class="btn btn-outline-dark">Đăng nhập</a>
                     </div>
                     @endif
                 </div>

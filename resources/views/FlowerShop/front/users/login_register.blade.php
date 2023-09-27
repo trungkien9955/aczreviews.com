@@ -7,15 +7,26 @@
                 <div class="login-wrapper">
                     <h2>Đăng nhập</h2>
                     <h6>Mời bạn đăng nhập tài khoản người dùng.</h6>
-                    <form action="">@csrf
+                    <p id="login_error"></p>
+                    <form action="javascript:void(0);" id = "login_form">@csrf
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control"  name = "email" >
+                            <label for="login_email">Email</label>
+                            <input type="email" class="form-control"  name = "email" id = "login_email" >
+                            <p id="login_email_error"></p>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password">Mật khẩu</label>
-                            <input type="password" class="form-control" >
+                            <label for="login_password">Mật khẩu</label>
+                            <input type="password" class="form-control" name = "password">
+                            <p id="login_password_error"></p>
+
                         </div>
+                        <div class="form-check mb-3 mt-2">
+                            <input class="form-check-input" type="checkbox" value="accept" id="login_accept" name = "accept">
+                            <label class="form-check-label" for="login_accept">
+                                I understand and accept the <a style = "text-decoration: underline;"href="">Terms and Conditions</a>.
+                            </label>
+                        </div>
+                        <p id="login_accept_error"></p>
                         <button type="submit" class="btn btn-primary mr-2">Xác nhận</button>
                         <button class="btn btn-light">Hủy bỏ</button>
                     </form>
@@ -25,6 +36,8 @@
                 <div class="register-wrapper">
                     <h2>Đăng ký</h2>
                     <h6>Đăng ký tài khoản người dùng.</h6>
+                    <p id = "register_success_message"></p>
+                    <p id = "register_error_message"></p>
                     <form action="" id = "register_form" method = "post">@csrf
                         <div class="form-group">
                             <label for="name">Tên</label>
@@ -38,9 +51,15 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name = "email" >
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group ">
                             <label for="password">Mật khẩu</label>
                             <input type="password" class="form-control" id="password" name = "password" >
+                        </div>
+                        <div class="form-check mb-3 mt-2">
+                            <input class="form-check-input" type="checkbox" value="accept" id="register_accept" name = "accept">
+                            <label class="form-check-label" for="register_accept">
+                                I understand and accept the <a style = "text-decoration: underline;"href="">Terms and Conditions</a>.
+                            </label>
                         </div>
                         <button type="submit" class="btn btn-primary mr-2">Xác nhận</button>
                         <button class="btn btn-light">Hủy bỏ</button>

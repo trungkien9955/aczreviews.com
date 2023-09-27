@@ -70,6 +70,7 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::get('/cart', 'ProductController@cart');
     //user login/register
     Route::get('user/login-register', 'UserController@login_register');
-    Route::post('user/register', 'UserController@register');
-
+    Route::post('user/register', 'UserController@user_register');
+    Route::post('user/login', 'UserController@user_login');
+    Route::post('user/logout', 'UserController@user_logout');
 });

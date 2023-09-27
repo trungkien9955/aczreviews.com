@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Hash;
 use Auth;
+use Validator;
 use App\Models\FlowerShop\User;
+use App\Models\FlowerShop\Cart;
 class UserController extends Controller
 {
     public function login_register(){
         return view('FlowerShop.front.users.login_register');
     }
-    public function register(Request $request){
+    public function user_register(Request $request){
         if($request->ajax()){
             $data = $request->all();
             // $data= json_decode($request, true);
@@ -27,16 +29,66 @@ class UserController extends Controller
             $user->password = $password;
             $user->status =1;
             $user->save();
-            //sending email
+            //active user account after user confirms by email
             $email = $data['email'];
-            $message_data = ['name'=>$data['name'],'mobile'=>$data['mobile'],'email'=>$data['email']];
-            Mail::send('FlowerShop.front.emails.register', $message_data, function($message)use($email){
-                $message->to($email)->subject('Chào mừng bạn đến với FlowerShop');
+            $message_data = ['name'=>$data['name'],'email'=>$data['email'], 'code'=> base64_encode($data['email'])];
+            Mail::send('FlowerShop.front.emails.user_confirmation', $message_data, function($message)use($email){
+                $message->to($email)->subject('Xác nhận tài khoản FlowerShop');
             });
-            if(Auth::attempt(['email'=>$data['email'],'password' => $data['password']])){
-                $redirect = url('cart');
-                return response()->json(['url'=>$redirect]);
+            $redirect = url('/user/login-register');
+            return response()->json(['type'=>'success','url'=>$redirect, 'message'=>'Vui lòng xác nhận đăng ký tài khoản qua email!']);
+            //activate user account immediately
+            // $email = $data['email'];
+            // $message_data = ['name'=>$data['name'],'mobile'=>$data['mobile'],'email'=>$data['email']];
+            // Mail::send('FlowerShop.front.emails.register', $message_data, function($message)use($email){
+            //     $message->to($email)->subject('Chào mừng bạn đến với FlowerShop');
+            // });
+            // if(Auth::attempt(['email'=>$data['email'],'password' => $data['password']])){
+            //     $redirect = url('cart');
+            //     return response()->json(['url'=>$redirect]);
+            // }
+        }
+    }
+    public function user_login(Request $request){
+        if($request->ajax()){
+            $data = $request->all();
+            $validator = Validator::make($data, $rules = [
+                'email'=>'required|email|exists:users',
+                'password'=> 'required', 
+                'accept'=>'required'
+            ], [
+                'email.required' => "Vui lòng nhập email!",
+                'email.email' => "Email không hợp lệ!",
+                'email.exists:users' => "Email đã tồn tại!",
+                'password.required'=> 'Vui lòng nhập mật khẩu!', 
+                'accept.required' => 'Bạn cần đồng ý với điều khoản của chúng tôi để tiếp tục!'
+            ]);
+            if($validator->passes()){
+                if(Auth::attempt(['email'=>$data['email'],'password' => $data['password']])){
+                    if(Auth::user()->status == 0){
+                        Auth::logout();
+                        return response()->json(['type'=>'inactive', 'message'=>'Tài khoản chưa được kích hoạt! Vui lòng liên hệ admin!']);
+                    }
+                    //update cart  with user_id
+                    if(!empty(Session::get('session_id'))){
+                        $user_id = Auth::user()->id;
+                        $session_id = Session::get('session_id');
+                        Cart::where('session_id', $session_id)->update(['user_id'=>$user_id]);
+                    }
+                    $redirect = url('cart');
+                    return response()->json(['type'=>'success','url'=>$redirect]);
+                }else{
+                    return response()->json(['type'=>'incorrect', 'message'=>'Tài khoản hoặc mật khẩu không đúng!']);
+                }
+            }else{
+                return response()->json(['type'=>'error', 'errors'=>$validator->messages()]);
             }
         }
+    }
+    public function user_logout(Request $request){
+        if($request->ajax()){
+            Auth::logout();
+        }
+        return redirect('/product/1');
     }
 }

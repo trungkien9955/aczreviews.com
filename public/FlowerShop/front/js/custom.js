@@ -102,21 +102,88 @@ $(document).on('click', '.cart-item-delete-btn', function(){
 $('#register_form').submit(function(event){
     event.preventDefault();
     var form_data = $(this).serialize();
-    // form_data = JSON.stringify(form_data);
-    var name = $('#name').val();
-    console.log(form_data);
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         type: 'post',
         url: '/user/register',
-        data: form_data,
+        data:form_data,
         success: function(resp){
-            alert(resp.url);
-           window.location.href = resp.url; 
-            // alert(resp);
+            if(resp.type == "error"){
+                $.each(resp.errors, function(i, error){
+                    $('#login_'+i+'_error').attr('style', 'color:red');
+                    $('#login_'+i+'_error').html(error);
+                    setTimeout(function(){
+                        $('#login_'+i+'_error').css({
+                            'display': 'none'
+                        })
+                    }, 3000)
+                })
+            }else if (resp.type == "inactive"){
+                $('#login_error').attr('style', 'color:red');
+                $('#login_error').html(resp.message);
+            }else if(resp.type == "incorrect"){
+                $('#login_error').attr('style', 'color:red');
+                $('#login_error').html(resp.message);
+            }else if(resp.type == "success"){
+                $('#register_success_message').attr('style', 'color:green');
+                $('#register_success_message').html(resp.message);
+                setTimeout(function(){
+                    window.location.href = resp.url;
+                }, 2000);
+            }
         },
+        error: function(){
+            alert('error');
+        }
+    })
+})
+$('#login_form').submit(function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    // form_data = JSON.stringify(form_data);
+    console.log(form_data);
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/user/login',
+        data:form_data,
+        success: function(resp){
+            if(resp.type == "error"){
+                $.each(resp.errors, function(i, error){
+                    $('#login_'+i+'_error').attr('style', 'color:red');
+                    $('#login_'+i+'_error').html(error);
+                    setTimeout(function(){
+                        $('#login_'+i+'_error').css({
+                            'display': 'none'
+                        })
+                    }, 3000)
+                })
+            }else if (resp.type == "inactive"){
+                $('#login_error').attr('style', 'color:red');
+                $('#login_error').html(resp.message);
+            }else if(resp.type == "incorrect"){
+                $('#login_error').attr('style', 'color:red');
+                $('#login_error').html(resp.message);
+            }else if(resp.type == "success"){
+                window.location.href = resp.url;
+            }
+        },
+        error: function(){
+            alert('error');
+        }
+    })
+})
+$(document).on('click', '.user-logout-btn', function(){
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/user/logout',
         error: function(){
             alert('error');
         }
