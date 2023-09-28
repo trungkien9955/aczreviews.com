@@ -31,6 +31,14 @@
     <title>Flower shop</title>
 </head>
 <body>
+    <div id="loading">
+    <img id="loading-image" src="{{url('FlowerShop/front/images-3/Iphone-spinner-2.gif')}}" alt="Loading..." />
+    </div>
+    <div id="ajax_loading_overlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
     <div id="app">
         @include('FlowerShop.front.web_components3.header')
         @yield('content')
@@ -77,5 +85,17 @@
 			}
 		});
 	</script>
+    <script>
+        $(window).on('load', function () {
+            $('#loading').hide();
+        }) 
+    </script>
+    <script>
+        jQuery(function($){
+        $(document).ajaxSend(function() {
+            $("#ajax_loading_overlay").fadeIn(300);　
+        });
+        });
+    </script>
 </body>
 </html>

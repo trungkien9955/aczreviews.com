@@ -8,6 +8,10 @@ use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\Product;
 use App\Models\FlowerShop\ProductAttribute;
 use App\Models\FlowerShop\Cart;
+use App\Models\FlowerShop\DeliveryAddress;
+use App\Models\FlowerShop\Province;
+use App\Models\FlowerShop\District;
+use App\Models\FlowerShop\Ward;
 use Route;
 use DB;
 use Validator;
@@ -174,7 +178,6 @@ class ProductController extends Controller
             $product_details = Product::find($data['product_id']);
             if($product_details['product_attribute'] == "no"){
                 if($data['quantity']< $product_details['product_stock']){
-                    
                     if(empty(Session::get('session_id'))){
                         $session_id = md5(uniqid(rand(), true)); 
                    }else{
@@ -186,8 +189,7 @@ class ProductController extends Controller
                         if($item_count>0){
                             $item = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->first()->toArray();
                             $new_item_count = $item_count + $data['quantity'];
-                            DB::table('carts')->where(['user_id'=> $user_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_count]);
-                            
+                            DB::table('carts')->where(['user_id'=> $user_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_count]);   
                         }else{
                             $item = new Cart;
                             $item->session_id = $session_id;
@@ -236,6 +238,8 @@ class ProductController extends Controller
                     $attr_sku = $data['attr_sku'];
                     $attr = ProductAttribute::where('sku', $attr_sku)->first()->toArray();
                     $attr_stock = $attr['stock'];  
+                    $attr_size = $attr['size'];  
+                    $attr_color = $attr['color'];  
                 }else{
                     return redirect()->back()->with('error_message', ' Đã xảy ra lỗi. Vui lòng thử lại!');
                 }
@@ -253,15 +257,17 @@ class ProductController extends Controller
                         if($new_item_count< $attr_stock) {
                             DB::table('carts')->where(['attr_sku'=> $attr_sku, 'session_id'=>$session_id])->update(['quantity'=>$new_item_count]);
                         }else{
-
+                            return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
                         }
                     }else{
                         $item = new Cart;
                         $item->session_id = $session_id;
                         $item->user_id = $user_id;
                         $item->product_id = $data['product_id'];
-                        $item->size = '';
-                        $item->color = '';
+                        $item->attr_id = $attr['id'];
+                        $item->attr_sku = $attr_sku;
+                        $item->size = $attr_size;
+                        $item->color = $attr_color;
                         $item->price =   $data['price'];
                         $item->quantity = $data['quantity'];
                         $item->sub_total = $data['quantity']*$data['price'];
@@ -318,7 +324,31 @@ class ProductController extends Controller
         }
     }
     public function checkout(){
-        $delivery_address = DeliveryAddress::get_delivery_address();
-        return view('FlowerShop.front.products.checkout', compact('delivery_address'));
+        $provinces = Province::orderBy('name', 'Asc')->get()->toArray();
+        $districts = District::get()->toArray();
+        $wards = Ward::get()->toArray();
+        $total_price = Cart::get_total_price();
+        $items = Cart::get_items();
+        return view('FlowerShop.front.products.checkout', compact('items', 'total_price', 'provinces', 'districts', 'wards'));
+    }
+    public function get_districts_after_province(Request $request){
+        if($request->ajax()){
+            // echo 'hello';
+            $province_id = $request['province_id'];
+            // echo $province_id; die;
+            $districts = District::where('province_id', $province_id)->get()->toArray();
+            // $districts_json = json_encode($districts);
+            return $districts;
+        }
+    }
+    public function get_wards_after_district(Request $request){
+        if($request->ajax()){
+            // echo 'hello';
+            $district_id = $request['district_id'];
+            // echo $province_id; die;
+            $wards = Ward::where('district_id', $district_id)->get()->toArray();
+            // $districts_json = json_encode($districts);
+            return $wards;
+        }
     }
 }

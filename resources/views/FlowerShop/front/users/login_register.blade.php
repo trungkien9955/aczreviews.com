@@ -18,7 +18,6 @@
                             <label for="login_password">Mật khẩu</label>
                             <input type="password" class="form-control" name = "password">
                             <p id="login_password_error"></p>
-
                         </div>
                         <div class="form-check mb-3 mt-2">
                             <input class="form-check-input" type="checkbox" value="accept" id="login_accept" name = "accept">
@@ -27,7 +26,7 @@
                             </label>
                         </div>
                         <p id="login_accept_error"></p>
-                        <button type="submit" class="btn btn-primary mr-2">Xác nhận</button>
+                        <button type="submit" class="btn btn-primary mr-2" style = "background-color: #e62263; border:none;">Xác nhận</button>
                         <button class="btn btn-light">Hủy bỏ</button>
                     </form>
                 </div>
@@ -36,8 +35,13 @@
                 <div class="register-wrapper">
                     <h2>Đăng ký</h2>
                     <h6>Đăng ký tài khoản người dùng.</h6>
-                    <p id = "register_success_message"></p>
-                    <p id = "register_error_message"></p>
+                    <div id = "register_success_message"></div>
+                    <div id = "register_error_message"></div>
+                    @if(Session::has('success_message'))
+                    <div class = "alert alert-success alert-dismissible fade show mt-3" role = "alert">
+                        <strong>Thành công:</strong>{{Session::get('success_message')}}
+                    </div>
+                    @endif
                     <form action="" id = "register_form" method = "post">@csrf
                         <div class="form-group">
                             <label for="name">Tên</label>
@@ -61,7 +65,7 @@
                                 I understand and accept the <a style = "text-decoration: underline;"href="">Terms and Conditions</a>.
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Xác nhận</button>
+                        <button type="submit" class="btn btn-primary mr-2" style = "background-color: #e62263; border:none;">Xác nhận</button>
                         <button class="btn btn-light">Hủy bỏ</button>
                     </form>
                 </div>

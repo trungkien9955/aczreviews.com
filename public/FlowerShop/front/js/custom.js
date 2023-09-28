@@ -10,6 +10,7 @@ $(document).ready(function(){
             url: "/size-selection",
             data: {product_id: product_id, size:size},
             success: function(resp){
+                $("#ajax_loading_overlay").fadeOut(300);
                 $('.information-price').html(resp.view);
                 $('.info-code .attr-sku').html(resp.attr_sku);
 
@@ -40,10 +41,12 @@ $(document).ready(function(){
              url: "/color-selection",
              data: {product_id: product_id, color:color},
              success: function(resp){
+                $("#ajax_loading_overlay").fadeOut(300);
                  $image = resp.image;
                  $('.product-detail-image img').attr('src',"/FlowerShop/front/images-3/product_images/medium/"+ $image)
              },
              error: function(){
+                $("#ajax_loading_overlay").fadeOut(300);
                  alert('error');
              }
          })
@@ -110,6 +113,7 @@ $('#register_form').submit(function(event){
         url: '/user/register',
         data:form_data,
         success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
             if(resp.type == "error"){
                 $.each(resp.errors, function(i, error){
                     $('#login_'+i+'_error').attr('style', 'color:red');
@@ -127,11 +131,11 @@ $('#register_form').submit(function(event){
                 $('#login_error').attr('style', 'color:red');
                 $('#login_error').html(resp.message);
             }else if(resp.type == "success"){
-                $('#register_success_message').attr('style', 'color:green');
                 $('#register_success_message').html(resp.message);
+                $('#register_success_message').addClass('alert alert-success');
                 setTimeout(function(){
                     window.location.href = resp.url;
-                }, 2000);
+                }, 5000)
             }
         },
         error: function(){
@@ -152,6 +156,8 @@ $('#login_form').submit(function(event){
         url: '/user/login',
         data:form_data,
         success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            // alert(resp);
             if(resp.type == "error"){
                 $.each(resp.errors, function(i, error){
                     $('#login_'+i+'_error').attr('style', 'color:red');
@@ -169,10 +175,13 @@ $('#login_form').submit(function(event){
                 $('#login_error').attr('style', 'color:red');
                 $('#login_error').html(resp.message);
             }else if(resp.type == "success"){
+                $("#ajax_loading_overlay").fadeOut(300);
+                alert(resp);
                 window.location.href = resp.url;
             }
         },
         error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
             alert('error');
         }
     })
@@ -184,7 +193,65 @@ $(document).on('click', '.user-logout-btn', function(){
         },
         type: 'post',
         url: '/user/logout',
+        success: function(){
+            // alert(resp);
+            $("#ajax_loading_overlay").fadeOut(300);
+        },
         error: function(){
+            alert('error');
+        }
+    })
+})
+$('#vat_invoice').on('change', function(){
+    if(this.checked) {
+        $('#invoice-info').html('<input type="text" class="form-control"  name = "tax_code" id = "tax_code" placeholder = "Mã số thuế"><input type="text" class="form-control"  name = "invoice_name" id = "invoice_name" placeholder = "Tên công ty"><input type="text" class="form-control"  name = "invoice_address" id = "invoice_address" placeholder = "Địa chỉ">');
+    }else{
+        $('#invoice-info').html('');
+    }
+})
+$('#province').on('change', function(){
+    $('#district option').remove();
+    $('#ward option').remove();
+    var province_id = $('#province option:selected').val();
+
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/province-selected',
+        data: {province_id:province_id},
+        success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            $.each(resp, function(i){
+                $('#district').append(`<option value = "${resp[i].district_id}">${resp[i].name}</option>`)
+            })
+            
+        },
+        error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
+            alert('error');
+        }
+    })
+})
+$('#district').on('change', function(){
+    $('#ward option').remove();
+    var district_id = $('#district option:selected').val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/district-selected',
+        data: {district_id:district_id},
+        success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            $.each(resp, function(i){
+                $('#ward').append(`<option value = "${resp[i].ward_id}">${resp[i].name}</option>`)
+            })
+        },
+        error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
             alert('error');
         }
     })

@@ -68,9 +68,17 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('/cart/add', 'ProductController@cart_add');
     Route::post('/cart/delete', 'ProductController@cart_delete');
     Route::get('/cart', 'ProductController@cart');
+    //checkout
+    Route::get('/checkout', 'ProductController@checkout');
+    //select province
+    Route::post('/province-selected', 'ProductController@get_districts_after_province');
+    Route::post('/district-selected', 'ProductController@get_wards_after_district');
+
     //user login/register
     Route::get('user/login-register', 'UserController@login_register');
     Route::post('user/register', 'UserController@user_register');
     Route::post('user/login', 'UserController@user_login');
     Route::post('user/logout', 'UserController@user_logout');
+    //confirm user account
+    Route::get('/user/confirm/{code}', 'UserController@user_confirm');
 });

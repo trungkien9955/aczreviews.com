@@ -9,6 +9,7 @@ use Auth;
 use Validator;
 use App\Models\FlowerShop\User;
 use App\Models\FlowerShop\Cart;
+use Session;
 class UserController extends Controller
 {
     public function login_register(){
@@ -27,7 +28,7 @@ class UserController extends Controller
             $user->email = $data['email'];
             $user->mobile = $data['mobile'];
             $user->password = $password;
-            $user->status =1;
+            $user->status =0;
             $user->save();
             //active user account after user confirms by email
             $email = $data['email'];
@@ -36,7 +37,7 @@ class UserController extends Controller
                 $message->to($email)->subject('Xác nhận tài khoản FlowerShop');
             });
             $redirect = url('/user/login-register');
-            return response()->json(['type'=>'success','url'=>$redirect, 'message'=>'Vui lòng xác nhận đăng ký tài khoản qua email!']);
+            return response()->json(['type'=>'success','url'=>$redirect, 'message'=>'Thành công: Vui lòng xác nhận đăng ký tài khoản qua email!']);
             //activate user account immediately
             // $email = $data['email'];
             // $message_data = ['name'=>$data['name'],'mobile'=>$data['mobile'],'email'=>$data['email']];
@@ -69,13 +70,16 @@ class UserController extends Controller
                         Auth::logout();
                         return response()->json(['type'=>'inactive', 'message'=>'Tài khoản chưa được kích hoạt! Vui lòng liên hệ admin!']);
                     }
+                    
                     //update cart  with user_id
                     if(!empty(Session::get('session_id'))){
+                        // echo 'hello'; die;
                         $user_id = Auth::user()->id;
                         $session_id = Session::get('session_id');
                         Cart::where('session_id', $session_id)->update(['user_id'=>$user_id]);
                     }
-                    $redirect = url('cart');
+                    
+                    $redirect = url('/');
                     return response()->json(['type'=>'success','url'=>$redirect]);
                 }else{
                     return response()->json(['type'=>'incorrect', 'message'=>'Tài khoản hoặc mật khẩu không đúng!']);
@@ -89,6 +93,26 @@ class UserController extends Controller
         if($request->ajax()){
             Auth::logout();
         }
-        return redirect('/product/1');
+        return redirect('user/login-register');
+        // echo "hello"; die;
+    }
+    public function user_confirm($code){
+        $email = base64_decode($code);
+        $user_count = User::where('email', $email)->count();
+        if($user_count>0){
+            $user_details = User::where('email', $email)->first()->toArray();
+            if($user_details['status']==1){
+                return redirect('user/login-register')->with('error_message', 'Tài khoản của bạn đã được kích hoạt. Vui lòng đăng nhập!');
+            }else{
+                User::where('email', $email)->update(['status'=>1]);
+                $message_data = ['name'=>$user_details['name'],'mobile'=>$user_details['mobile'],'email'=>$user_details['email']];
+                Mail::send('FlowerShop.front.emails.register', $message_data, function($message)use($email){
+                    $message->to($email)->subject('Chào mừng bạn đến với FlowerShop');
+                });
+                return redirect('user/login-register')->with('success_message', ' Tài khoản của bạn đã được kích hoạt. Vui lòng đăng nhập!');
+            }
+        }else{
+            abort(404);
+        }
     }
 }
