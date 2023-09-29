@@ -45,7 +45,7 @@
                         </div>
                         <div class="form-group">
                         <label for="amount_type">Đơn vị</label>
-                        <span><input type="radio"  name = "amount_type" value = "Percentage" @if(isset($coupon['amount_type']) && $coupon['amount_type'] == "Percentage") checked @endif>%</span><input  type="radio"  name = "amount_type" value = "Fixed" @if(isset($coupon['amount_type']) && $coupon['amount_type'] == "Fixed") checked @endif>Cố định
+                        <span><input type="radio"  name = "amount_type" value = "Percentage" @if(isset($coupon['amount_type']) && $coupon['amount_type'] == "Percentage") checked @endif>%</span><input  type="radio"  name = "amount_type" value = "fixed" @if(isset($coupon['amount_type']) && $coupon['amount_type'] == "fixed") checked @endif>Cố định
                         </div>
                         <div class="form-group">
                         <label for="amount">Giá trị</label>

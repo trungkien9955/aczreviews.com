@@ -95,9 +95,11 @@ $(document).on('click', '.cart-item-delete-btn', function(){
         url: '/cart/delete',
         data: {cart_item_id: cart_item_id},
         success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
             $('.cart-table-container').html(resp.view);
         },
         error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
             alert('error');
         }
     })
@@ -249,6 +251,45 @@ $('#district').on('change', function(){
             $.each(resp, function(i){
                 $('#ward').append(`<option value = "${resp[i].ward_id}">${resp[i].name}</option>`)
             })
+        },
+        error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
+            alert('error');
+        }
+    })
+})
+// $('.coupon-field').on('click', function(){
+//     alert('hi');
+// })
+
+//check coupon in cart page
+$(document).on('click', '#coupon-submit-btn', function(){
+     var coupon_code = $('#coupon_code').val();
+     $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/coupon-code',
+        data: {coupon_code:coupon_code},
+        success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            if(resp.case == "invalid"){
+                $('#coupon_message_container').html(`<div class = "alert alert-danger alert-dismissible fade show" role = "alert"><strong>Lỗi:${resp.error_message}</strong></div>`)
+            }else if(resp.case == "used"){
+                $('#coupon_message_container').html(`<div class = "alert alert-danger alert-dismissible fade show" role = "alert"><strong>Lỗi:${resp.error_message}</strong></div>`)
+            }else if(resp.case == "expired"){
+                $('#coupon_message_container').html(`<div class = "alert alert-danger alert-dismissible fade show" role = "alert"><strong>Lỗi:${resp.error_message}</strong></div>`)
+            }else if(resp.case == "valid"){
+                if(resp.type == "fixed"){
+                    $('#total_price').html(resp.total_price);
+                    $('#coupon_message_container').html(`<div class = "alert alert-success alert-dismissible fade show" role = "alert"><strong>Thành công:${resp.success_message}</strong></div>`)
+                }else if(resp.type == "Percentage"){
+                    console.log(resp.view)
+                $('.cart-table-container').html(resp.view);
+                $('#coupon_message_container').html(`<div class = "alert alert-success alert-dismissible fade show" role = "alert"><strong>Thành công:${resp.success_message}</strong></div>`)
+                }
+            }
         },
         error: function(){
             $("#ajax_loading_overlay").fadeOut(300);

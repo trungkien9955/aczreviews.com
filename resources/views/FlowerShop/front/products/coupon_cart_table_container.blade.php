@@ -1,4 +1,4 @@
-    <div class="cart-table-wrapper" >
+<div class="cart-table-wrapper" >
         <table class = "table" style = "border: 1px solid #e62263;">
             <thead style = "background: #e62263; color: #fff; font-size: 16px;">
                 <tr>
@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($items as $item)
+                @foreach($coupon_items as $item)
                 <tr>
                     <td>
                         <div class="cart-item">
@@ -36,7 +36,7 @@
                 @endforeach
             </tbody>
         </table>
-        @if(count($items) > 0)
+        @if(count($coupon_items) > 0)
         <div class="coupon-field" style = "margin-top: 24px;">
             <div class="w-50" style = "margin-right: auto;">
                     <div class="coupon-input input-group">

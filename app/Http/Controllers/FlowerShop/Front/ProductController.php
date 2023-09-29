@@ -8,15 +8,18 @@ use App\Models\FlowerShop\Section;
 use App\Models\FlowerShop\Product;
 use App\Models\FlowerShop\ProductAttribute;
 use App\Models\FlowerShop\Cart;
+use App\Models\FlowerShop\CouponCart;
 use App\Models\FlowerShop\DeliveryAddress;
 use App\Models\FlowerShop\Province;
 use App\Models\FlowerShop\District;
 use App\Models\FlowerShop\Ward;
+use App\Models\FlowerShop\Coupon;
 use Route;
 use DB;
 use Validator;
 use Session;
 use Auth;
+use Carbon\Carbon;
 use App\Models\FlowerShop\RatingInfo;
 use Illuminate\Support\Facades\View;
 class ProductController extends Controller
@@ -194,6 +197,7 @@ class ProductController extends Controller
                             $item = new Cart;
                             $item->session_id = $session_id;
                             $item->user_id = $user_id;
+                            $item->section_id = $product_details['section_id'];
                             $item->product_id = $data['product_id'];
                             $item->size = '';
                             $item->color = '';
@@ -220,6 +224,7 @@ class ProductController extends Controller
                             $item = new Cart;
                             $item->session_id = $session_id;
                             $item->user_id = 0;
+                            $item->section_id = $product_details['section_id'];
                             $item->product_id = $data['product_id'];
                             $item->size = '';
                             $item->color = '';
@@ -263,6 +268,7 @@ class ProductController extends Controller
                         $item = new Cart;
                         $item->session_id = $session_id;
                         $item->user_id = $user_id;
+                        $item->section_id = $product_details['section_id'];
                         $item->product_id = $data['product_id'];
                         $item->attr_id = $attr['id'];
                         $item->attr_sku = $attr_sku;
@@ -291,6 +297,7 @@ class ProductController extends Controller
                         $item = new Cart;
                         $item->session_id = $session_id;
                         $item->user_id = 0;
+                        $item->section_id = $product_details['section_id'];
                         $item->product_id = $data['product_id'];
                         $item->attr_id = $attr['id'];
                         $item->attr_sku = $attr_sku;
@@ -321,6 +328,80 @@ class ProductController extends Controller
             Cart::find($data['cart_item_id'])->delete();
             $items = Cart::get_items();
             return response()->json(['view'=>(String)View::make('FlowerShop.front.products.cart_table_container', compact('items'))]);
+        }
+    }
+    public function check_coupon(Request $request){
+        if($request->ajax()){
+            $coupon_code =  $request['coupon_code'];
+            $coupon_count = Coupon::where('coupon_code', $coupon_code)->count();
+            if($coupon_count ==0) {
+                return response()->json(['case'=>'invalid', 'error_message' => ' Mã giảm giá không hợp lệ!']);
+            }else{
+                $coupon = Coupon::where('coupon_code', $coupon_code)->first()->toArray();
+                $validty = $coupon['validity'];
+                if($validty == "used"){
+                    return response()->json(['case'=>'used', 'error_message' => ' Mã giảm giá đã được sử dụng!']);
+                }else{
+                    $current_date = Carbon::now();
+                    $current_date_formatted = $current_date->format('Y-m-d');
+                    if($current_date_formatted > $coupon['expiry_date']) {
+                        return response()->json(['case'=>'expired', 'error_message' => ' Mã giảm giá đã hết hạn!']);
+                    }else{
+                        if($coupon['amount_type'] == "fixed"){
+                            // return response()->json(['case'=>'valid','type'=>'fixed','total_price'=>1111,'success_message' => ' Thành công: Đã áp dụng mã giảm giá']); die;
+                            $total_price = Cart::get_total_price();
+                            $total_price = $total_price - $coupon['amount'];
+                            $total_price = number_format($total_price);
+                            return response()->json(['case'=>'valid','type'=>'fixed','total_price'=> $total_price,'success_message' => ' Đã áp dụng mã giảm giá']);
+                        }else if($coupon['amount_type'] == "Percentage"){
+                            $total_price = Cart::get_total_price();
+                            $section_id_collection = explode(',',$coupon['sections']);
+                            $items = Cart::get_items();
+                            // return response()->json(['case'=>'valid','type' => 'Percentage', 'success_message' => ' Thành công: Đã áp dụng mã giảm giá','items'=>$items]); 
+                            foreach($items as $item){
+                                if(in_array($item['section_id'], $section_id_collection)){
+                                    $coupon_cart = new CouponCart;
+                                    $coupon_cart->session_id = $item['session_id'];
+                                    $coupon_cart->user_id = $item['user_id'];
+                                    $coupon_cart->section_id = $item['section_id'];
+                                    $coupon_cart->product_id = $item['product_id'];
+                                    $coupon_cart->attr_id = $item['attr_id'];
+                                    $coupon_cart->attr_sku = $item['attr_sku'];
+                                    $coupon_cart->size = $item['size'];
+                                    $coupon_cart->color = $item['color'];
+                                    $coupon_cart->price = $item['price']- ($item['price']*$coupon['amount']/100);
+                                    $coupon_cart->quantity = $item['quantity'];
+                                    $coupon_cart->sub_total = $item['sub_total'] - ($item['sub_total']*$coupon['amount']/100);
+                                    $coupon_cart->save();
+                                    $item_old_sub_total = $item['sub_total'];
+                                    $item_new_sub_total = $item_old_sub_total - $item_old_sub_total*$coupon['amount']/100;
+                                    $difference = $item_old_sub_total -  $item_new_sub_total;
+                                    $total_price = $total_price - $difference;
+                                }else{
+                                    $coupon_cart = new CouponCart;
+                                    $coupon_cart->session_id = $item['session_id'];
+                                    $coupon_cart->user_id = $item['user_id'];
+                                    $coupon_cart->section_id = $item['section_id'];
+                                    $coupon_cart->product_id = $item['product_id'];
+                                    $coupon_cart->attr_id = $item['attr_id'];
+                                    $coupon_cart->attr_sku = $item['attr_sku'];
+                                    $coupon_cart->size = $item['size'];
+                                    $coupon_cart->color = $item['color'];
+                                    $coupon_cart->price = $item['price'];
+                                    $coupon_cart->quantity = $item['quantity'];
+                                    $coupon_cart->sub_total = $item['sub_total'];
+                                    $coupon_cart->save();
+                                }
+                            }
+                            $coupon_items = CouponCart::get_items();
+                            $total_price = CouponCart::get_total_price();
+                            return response()->json(['case'=>'valid','type' => 'Percentage', 'success_message' => ' Thành công: Đã áp dụng mã giảm giá','view'=>(String)View::make('FlowerShop.front.products.coupon_cart_table_container', compact('coupon_items', 'total_price'))]); 
+                        }
+                        
+                    }
+                }
+                DB::table('coupon_carts')->truncate();
+            }
         }
     }
     public function checkout(){

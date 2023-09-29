@@ -13,17 +13,17 @@
                             <div class="d-flex gx-2">
                                 <div class="col">
                                     <label for="customer_name">Tên</label>
-                                    <input type="text" class="form-control"  name = "customer_name" id = "customer_name" >
+                                    <input type="text" class="form-control"  name = "customer_name" id = "customer_name" required>
                                 </div>
                                 <div class="col">
                                     <label for="customer_mobile">Số điện thoại</label>
-                                    <input type="text" class="form-control"  name = "customer_mobile" id = "customer_mobile" >
+                                    <input type="text" class="form-control"  name = "customer_mobile" id = "customer_mobile" required>
                                 </div>
                             </div>
                             <label for="">Địa chỉ</label>
                             <div class="d-flex gx-2 mt-2">
                                 <div class="col">
-                                    <select name="province" id="province" class = "form-control">
+                                    <select name="province" id="province" class = "form-control" required>
                                         <option value="">Tỉnh/Thành phố</option>
                                         @foreach($provinces as $province)
                                         <option value="{{$province['province_id']}}">{{$province['name']}}</option>
@@ -31,22 +31,22 @@
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <select name="district" id="district" class = "form-control">
+                                    <select name="district" id="district" class = "form-control"required>
                                         <option value="">Quận/Huyện</option>
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <select name="ward" id="ward" class = "form-control">
+                                    <select name="ward" id="ward" class = "form-control"required >
                                         <option value="">Xã/Phường</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group mt-1">
-                                <input type="text" class="form-control"  name = "address" id = "address" placeholder = "Số nhà/Tên đường/Thôn/Xóm">
+                                <input type="text" class="form-control"  name = "address" id = "address" placeholder = "Số nhà/Tên đường/Thôn/Xóm" required>
                             </div>
                             <div class="form-check-field mt-1" style = "border: 1px solid #ccc; padding: 6px 12px;">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" value="cod" id="payment_cod" name = "payment_method">
+                                    <input class="form-check-input" type="radio" value="cod" id="payment_cod" name = "payment_method" required>
                                     <label class="form-check-label" for="cod">
                                         Thanh toán khi nhận hàng
                                     </label>
