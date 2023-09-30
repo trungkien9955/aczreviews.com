@@ -29,7 +29,15 @@
                         </div>
                     </td>
                     <td style ="color: #e02027; font-size: 16px; font-weight: 700;"><?php echo number_format($item['price']) ?></td>
-                    <td><div>{{$item['quantity']}}</div></td>
+                    <td>
+                        <div id="failed_stock_message_{{$item['id']}}">
+                        </div>
+                        <div class = "cart-quantity ">
+                            <a href="javascript:void(0)" class = "update-quantity update-quantity-minus" data-quantity = "{{$item['quantity']}}" data-item-id = "{{$item['id']}}">-</a>
+                            <input type="number" value = "{{$item['quantity']}}" class = "quantity-input" data-item-id = "{{$item['id']}}" id = "quantity_input{{$item['id']}}" min = "1" max = "500">
+                            <a href="javascript:void(0)" class = "update-quantity update-quantity-plus"data-quantity = "{{$item['quantity']}}" data-item-id = "{{$item['id']}}">+</a>
+                        </div>
+                    </td>
                     <td style ="color: #e02027; font-size: 16px; font-weight: 700; "><?php echo number_format($item['sub_total']) ?></td>
                     <td><a style = "margin-right: 6px;" href="/cart" class="btn btn-primary">Refresh</a><button class="btn btn-danger cart-item-delete-btn" data-cart-item-id = "{{$item['id']}}" >Xóa</button></td>
                 </tr>

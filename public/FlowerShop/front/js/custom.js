@@ -285,7 +285,6 @@ $(document).on('click', '#coupon-submit-btn', function(){
                     $('#total_price').html(resp.total_price);
                     $('#coupon_message_container').html(`<div class = "alert alert-success alert-dismissible fade show" role = "alert"><strong>Thành công:${resp.success_message}</strong></div>`)
                 }else if(resp.type == "Percentage"){
-                    console.log(resp.view)
                 $('.cart-table-container').html(resp.view);
                 $('#coupon_message_container').html(`<div class = "alert alert-success alert-dismissible fade show" role = "alert"><strong>Thành công:${resp.success_message}</strong></div>`)
                 }
@@ -297,3 +296,93 @@ $(document).on('click', '#coupon-submit-btn', function(){
         }
     })
 })
+$(document).on('click', '.update-quantity', function(){
+    if($(this).hasClass('update-quantity-minus')){
+        var quantity = $(this).data('quantity');
+        if(quantity == 1){
+            alert('Số lượng sản phẩm phải lớn hơn 0!');
+            return false;
+        }else{
+            new_quantity = quantity-1;
+            var cart_item_id = $(this).data('item-id')
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'post',
+                url: 'cart-quantity-minus',
+                data: {new_quantity:new_quantity, cart_item_id: cart_item_id},
+                success: function(resp){
+                    $("#ajax_loading_overlay").fadeOut(300);
+                    $('.cart-table-container').html(resp.view);
+                },
+                error: function(){
+                    $("#ajax_loading_overlay").fadeOut(300);
+                    alert('error');
+                }
+            })
+        }
+    }
+})
+$(document).on('click', '.update-quantity', function(){
+   if($(this).hasClass('update-quantity-plus')){
+        var quantity = $(this).data('quantity');
+        new_quantity = quantity+1;
+        var cart_item_id = $(this).data('item-id')
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'post',
+            url: 'cart-quantity-plus',
+            data: {new_quantity:new_quantity, cart_item_id: cart_item_id},
+            success: function(resp){
+                $("#ajax_loading_overlay").fadeOut(300);
+                if(resp.case =="failed_stock"){
+                    $('#failed_stock_message_'+cart_item_id).html(`<div class = "alert alert-danger alert-dismissible fade show" role = "alert"><strong>Lỗi:${resp.error_message}</strong></div>`);
+                }
+                else if(resp.case =="product"){
+                    $('.cart-table-container').html(resp.view);
+                }
+                else if(resp.case =="attr"){
+                    $('.cart-table-container').html(resp.view);
+                }
+            },
+            error: function(){
+                $("#ajax_loading_overlay").fadeOut(300);
+                alert('error');
+            }
+        })
+    }
+})
+//show and hide quantity confirm button
+$(document).on('change','.quantity-input',function(){
+    var new_quantity = $(this).val();
+    var cart_item_id = $(this).data('item-id');
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: 'cart-quantity-change',
+        data: {new_quantity:new_quantity, cart_item_id: cart_item_id},
+        success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            if(resp.case =="failed_stock"){
+                $('#failed_stock_message_'+cart_item_id).html(`<div class = "alert alert-danger alert-dismissible fade show" role = "alert"><strong>Lỗi:${resp.error_message}</strong></div>`);
+            }
+            else if(resp.case =="product"){
+                $('.cart-table-container').html(resp.view);
+            }
+            else if(resp.case =="attr"){
+                $('.cart-table-container').html(resp.view);
+            }
+        },
+        error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
+            alert('error');
+        }
+    })
+})
+
+

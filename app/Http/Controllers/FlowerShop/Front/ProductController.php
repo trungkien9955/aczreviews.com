@@ -330,6 +330,72 @@ class ProductController extends Controller
             return response()->json(['view'=>(String)View::make('FlowerShop.front.products.cart_table_container', compact('items'))]);
         }
     }
+    public function cart_quantity_minus(Request $request){
+        if($request->ajax()){
+            $cart = Cart::find($request['cart_item_id']);
+            $sub_total = $request['new_quantity']*$cart['price'];
+            Cart::where('id', $request['cart_item_id'])->update(['quantity'=>$request['new_quantity'], 'sub_total' => $sub_total]);
+            $items = Cart::get_items();
+            $total_price = Cart::get_total_price();
+            return response()->json(['status'=>'true',  'view'=> (String)View::make('FlowerShop.front.products.cart_table_container',compact('items', 'total_price'))]);
+        }
+    }
+    public function cart_quantity_plus(Request $request){
+        if($request->ajax()){
+            $cart = Cart::find($request['cart_item_id']);
+            if(is_null($cart['attr_id'])){
+                $product_details = Product::select('product_stock')->where('id', $cart['product_id'])->first();
+                if($request['new_quantity']> $product_details['product_stock']){
+                    return response()->json(['case'=>'failed_stock',  'error_message' => ' Không đủ hàng trong kho!']);
+                }else{
+                    $sub_total = $request['new_quantity']*$cart['price'];
+                    Cart::where('id', $request['cart_item_id'])->update(['quantity'=>$request['new_quantity'], 'sub_total' => $sub_total]);
+                    $items = Cart::get_items();
+                    $total_price = Cart::get_total_price();
+                    return response()->json(['case'=>'product',  'view'=> (String)View::make('FlowerShop.front.products.cart_table_container',compact('items', 'total_price'))]);
+                }
+            }else{
+                $attr_details = ProductAttribute::select('price', 'stock')->where('id', $cart['attr_id'])->first();
+                if($request['new_quantity']> $attr_details['stock']){
+                    return response()->json(['case'=>'failed_stock',  'error_message' => ' Không đủ hàng trong kho!']);
+                }else{
+                    $sub_total = $request['new_quantity']*$cart['price'];
+                    Cart::where('id', $request['cart_item_id'])->update(['quantity'=>$request['new_quantity'], 'sub_total' => $sub_total]);
+                    $items = Cart::get_items();
+                    $total_price = Cart::get_total_price();
+                    return response()->json(['case'=>'attr',  'view'=> (String)View::make('FlowerShop.front.products.cart_table_container',compact('items', 'total_price'))]);
+                }
+            }
+        }
+    }
+    public function cart_quantity_change(Request $request){
+        if($request->ajax()){
+            $cart = Cart::find($request['cart_item_id']);
+            if(is_null($cart['attr_id'])){
+                $product_details = Product::select('product_stock')->where('id', $cart['product_id'])->first();
+                if($request['new_quantity']> $product_details['product_stock']){
+                    return response()->json(['case'=>'failed_stock',  'error_message' => ' Không đủ hàng trong kho!']);
+                }else{
+                    $sub_total = $request['new_quantity']*$cart['price'];
+                    Cart::where('id', $request['cart_item_id'])->update(['quantity'=>$request['new_quantity'], 'sub_total' => $sub_total]);
+                    $items = Cart::get_items();
+                    $total_price = Cart::get_total_price();
+                    return response()->json(['case'=>'product',  'view'=> (String)View::make('FlowerShop.front.products.cart_table_container',compact('items', 'total_price'))]);
+                }
+            }else{
+                $attr_details = ProductAttribute::select('price', 'stock')->where('id', $cart['attr_id'])->first();
+                if($request['new_quantity']> $attr_details['stock']){
+                    return response()->json(['case'=>'failed_stock',  'error_message' => ' Không đủ hàng trong kho!']);
+                }else{
+                    $sub_total = $request['new_quantity']*$cart['price'];
+                    Cart::where('id', $request['cart_item_id'])->update(['quantity'=>$request['new_quantity'], 'sub_total' => $sub_total]);
+                    $items = Cart::get_items();
+                    $total_price = Cart::get_total_price();
+                    return response()->json(['case'=>'attr',  'view'=> (String)View::make('FlowerShop.front.products.cart_table_container',compact('items', 'total_price'))]);
+                }
+            }
+        }
+    }
     public function check_coupon(Request $request){
         if($request->ajax()){
             $coupon_code =  $request['coupon_code'];
@@ -360,47 +426,19 @@ class ProductController extends Controller
                             // return response()->json(['case'=>'valid','type' => 'Percentage', 'success_message' => ' Thành công: Đã áp dụng mã giảm giá','items'=>$items]); 
                             foreach($items as $item){
                                 if(in_array($item['section_id'], $section_id_collection)){
-                                    $coupon_cart = new CouponCart;
-                                    $coupon_cart->session_id = $item['session_id'];
-                                    $coupon_cart->user_id = $item['user_id'];
-                                    $coupon_cart->section_id = $item['section_id'];
-                                    $coupon_cart->product_id = $item['product_id'];
-                                    $coupon_cart->attr_id = $item['attr_id'];
-                                    $coupon_cart->attr_sku = $item['attr_sku'];
-                                    $coupon_cart->size = $item['size'];
-                                    $coupon_cart->color = $item['color'];
-                                    $coupon_cart->price = $item['price']- ($item['price']*$coupon['amount']/100);
-                                    $coupon_cart->quantity = $item['quantity'];
-                                    $coupon_cart->sub_total = $item['sub_total'] - ($item['sub_total']*$coupon['amount']/100);
-                                    $coupon_cart->save();
-                                    $item_old_sub_total = $item['sub_total'];
-                                    $item_new_sub_total = $item_old_sub_total - $item_old_sub_total*$coupon['amount']/100;
-                                    $difference = $item_old_sub_total -  $item_new_sub_total;
-                                    $total_price = $total_price - $difference;
-                                }else{
-                                    $coupon_cart = new CouponCart;
-                                    $coupon_cart->session_id = $item['session_id'];
-                                    $coupon_cart->user_id = $item['user_id'];
-                                    $coupon_cart->section_id = $item['section_id'];
-                                    $coupon_cart->product_id = $item['product_id'];
-                                    $coupon_cart->attr_id = $item['attr_id'];
-                                    $coupon_cart->attr_sku = $item['attr_sku'];
-                                    $coupon_cart->size = $item['size'];
-                                    $coupon_cart->color = $item['color'];
-                                    $coupon_cart->price = $item['price'];
-                                    $coupon_cart->quantity = $item['quantity'];
-                                    $coupon_cart->sub_total = $item['sub_total'];
-                                    $coupon_cart->save();
+                                    $new_price = $item['price']-($item['price']*$coupon['amount']/100);
+                                    $difference = $item['price'] - $new_price;
+                                    Cart::where('id', $item['id'])->update(['price'=> $new_price, 'sub_total' => $item['sub_total']- $difference]);
                                 }
                             }
-                            $coupon_items = CouponCart::get_items();
-                            $total_price = CouponCart::get_total_price();
-                            return response()->json(['case'=>'valid','type' => 'Percentage', 'success_message' => ' Thành công: Đã áp dụng mã giảm giá','view'=>(String)View::make('FlowerShop.front.products.coupon_cart_table_container', compact('coupon_items', 'total_price'))]); 
+                            $items = Cart::get_items();
+                            $total_price = Cart::get_total_price();
+                            Coupon::where('coupon_code', $coupon_code)->update(['validity'=>'used']);
+                            return response()->json(['case'=>'valid','type' => 'Percentage', 'success_message' => ' Thành công: Đã áp dụng mã giảm giá','view'=>(String)View::make('FlowerShop.front.products.cart_table_container', compact('items', 'total_price'))]); 
                         }
                         
                     }
                 }
-                DB::table('coupon_carts')->truncate();
             }
         }
     }

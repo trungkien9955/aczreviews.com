@@ -18,6 +18,7 @@
     --color-12: #f01d7a;
     --color-red: #e02027;
     --color-success: #5CB85C;
+    --color-primary: #0d6efd;
     --color-text: #333333;
     --color-link: #0000FF;
     --color-link-hover: #FF0000;
@@ -87,3 +88,9 @@ li {
 .breadcrumb li a {
     text-decoration: none;
 }
+/* textarea, input[type="text"], input[type="tel"], input[type="button"], input[type="submit"], input[type="password"], input[type="email"], input[type="number"] {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+} */

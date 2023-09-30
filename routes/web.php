@@ -69,6 +69,10 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('/cart/delete', 'ProductController@cart_delete');
     Route::get('/cart', 'ProductController@cart');
     Route::post('/coupon-code', 'ProductController@check_coupon');
+    Route::post('/cart-quantity-minus', 'ProductController@cart_quantity_minus');
+    Route::post('/cart-quantity-plus', 'ProductController@cart_quantity_plus');
+    Route::post('/cart-quantity-change', 'ProductController@cart_quantity_change');
+
     //checkout
     Route::get('/checkout', 'ProductController@checkout');
     //select province

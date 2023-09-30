@@ -636,6 +636,30 @@
 .cart-item-versions {
     padding-left: 12px;
 }
+.cart-quantity {
+    width: 75%;
+}
+.cart-quantity .update-quantity-minus {
+    display:inline-block;
+    left:0;
+    width: 20%;
+    border: 1px solid #ccc;
+    text-align: center;
+
+}
+.cart-quantity .update-quantity-plus {
+    display:inline-block;
+    right: 0;
+    width: 20%;
+    border: 1px solid #ccc;
+    text-align: center;
+
+}
+.cart-quantity input {
+    text-align: center;
+    width: 50%;
+    display:inline-block;
+}
 
 /* .header-logo {
     flex: 0 0 270px;

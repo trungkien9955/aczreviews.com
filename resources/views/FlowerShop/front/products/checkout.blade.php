@@ -72,7 +72,7 @@
                                 <input type="text" class="form-control"  name = "customer_note" id = "customer_note" placeholder = "Để lại lời nhắn cho FlowerShop (nếu có)">
                             </div>
                             <div class="customer-action" style = "margin-top: 24px;">
-                                    <a  href="{{url('/checkout')}}" class="btn btn-danger" style = "background-color: #e62263; padding: 12px 24px">Đặt hàng</a>
+                                    <button type = "submit" class="btn btn-danger" style = "background-color: #e62263; padding: 12px 24px">Đặt hàng</button>
                             </div>
                         </form>
                     </div>
