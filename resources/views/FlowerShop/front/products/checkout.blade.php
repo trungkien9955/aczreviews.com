@@ -9,34 +9,38 @@
                         <div class="customer-info-header">
                             <h5><i class="fa-solid fa-location-dot"></i><b><span>Thông tin khách hàng</span></b></h5>
                         </div>
-                        <form action="">
+                        <form action="{{url('/place-order')}}" method = "post">@csrf
                             <div class="d-flex gx-2">
                                 <div class="col">
                                     <label for="customer_name">Tên</label>
-                                    <input type="text" class="form-control"  name = "customer_name" id = "customer_name" required>
+                                    <input type="text" class="form-control"  name = "name" id = "customer_name" required>
                                 </div>
                                 <div class="col">
                                     <label for="customer_mobile">Số điện thoại</label>
-                                    <input type="text" class="form-control"  name = "customer_mobile" id = "customer_mobile" required>
+                                    <input type="text" class="form-control"  name = "mobile" id = "customer_mobile" required>
+                                </div>
+                                <div class="col">
+                                    <label for="customer_email">Email</label>
+                                    <input type="email" class="form-control"  name = "email" id = "customer_email" required>
                                 </div>
                             </div>
                             <label for="">Địa chỉ</label>
                             <div class="d-flex gx-2 mt-2">
                                 <div class="col">
-                                    <select name="province" id="province" class = "form-control" required>
+                                    <select name="province_id" id="province" class = "form-control" required>
                                         <option value="">Tỉnh/Thành phố</option>
                                         @foreach($provinces as $province)
-                                        <option value="{{$province['province_id']}}">{{$province['name']}}</option>
+                                        <option value="{{$province['id']}}">{{$province['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <select name="district" id="district" class = "form-control"required>
+                                    <select name="district_id" id="district" class = "form-control"required>
                                         <option value="">Quận/Huyện</option>
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <select name="ward" id="ward" class = "form-control"required >
+                                    <select name="ward_id" id="ward" class = "form-control"required >
                                         <option value="">Xã/Phường</option>
                                     </select>
                                 </div>
@@ -71,10 +75,16 @@
                             <div class="form-group mt-1">
                                 <input type="text" class="form-control"  name = "customer_note" id = "customer_note" placeholder = "Để lại lời nhắn cho FlowerShop (nếu có)">
                             </div>
+                            <input type="hidden" name = "total_price" value = "{{$total_price}}">
                             <div class="customer-action" style = "margin-top: 24px;">
                                     <button type = "submit" class="btn btn-danger" style = "background-color: #e62263; padding: 12px 24px">Đặt hàng</button>
                             </div>
                         </form>
+                        @if(Session::has('success_message'))
+                        <div class = "alert alert-success alert-dismissible fade show mt-3" role = "alert">
+                        <strong>Thành công:</strong><?php echo Session::get('success_message'); ?>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">

@@ -660,7 +660,14 @@
     width: 50%;
     display:inline-block;
 }
+/* order section */
 
+.order-details-wrapper{
+    padding: 24px 12px;
+}
+.order-details-content{
+    margin-top: 12px;
+}
 /* .header-logo {
     flex: 0 0 270px;
     max-width: 270px;

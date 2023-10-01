@@ -47,8 +47,13 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         //coupons
         Route::match(['get', 'post'], 'coupons', 'CouponController@coupons');
         Route::match(['get', 'post'], 'add-edit-coupons/{id?}', 'CouponController@add_edit_coupons');
+        //order
+        Route::get('orders', 'OrderController@orders');
+        Route::get('order-pdf/{id}', 'OrderController@view_pdf_order');
     });
 });
+Route::get('order/invoice/download/{id}', 'OrderController@view_pdf_order');
+
 Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::match(['get', 'post'],'/', 'IndexController@index');
     //Listing
@@ -75,6 +80,10 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
 
     //checkout
     Route::get('/checkout', 'ProductController@checkout');
+    Route::post('/place-order', 'ProductController@place_order');
+    //order
+    Route::get('/order-details', 'ProductController@order_details');
+
     //select province
     Route::post('/province-selected', 'ProductController@get_districts_after_province');
     Route::post('/district-selected', 'ProductController@get_wards_after_district');

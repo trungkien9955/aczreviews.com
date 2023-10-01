@@ -226,7 +226,7 @@ $('#province').on('change', function(){
         success: function(resp){
             $("#ajax_loading_overlay").fadeOut(300);
             $.each(resp, function(i){
-                $('#district').append(`<option value = "${resp[i].district_id}">${resp[i].name}</option>`)
+                $('#district').append(`<option value = "${resp[i].id}">${resp[i].name}</option>`)
             })
             
         },
@@ -249,7 +249,7 @@ $('#district').on('change', function(){
         success: function(resp){
             $("#ajax_loading_overlay").fadeOut(300);
             $.each(resp, function(i){
-                $('#ward').append(`<option value = "${resp[i].ward_id}">${resp[i].name}</option>`)
+                $('#ward').append(`<option value = "${resp[i].id}">${resp[i].name}</option>`)
             })
         },
         error: function(){

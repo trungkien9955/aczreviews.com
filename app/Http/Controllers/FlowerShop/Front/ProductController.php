@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\FlowerShop\Front;
-
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\FlowerShop\Section;
@@ -14,6 +14,8 @@ use App\Models\FlowerShop\Province;
 use App\Models\FlowerShop\District;
 use App\Models\FlowerShop\Ward;
 use App\Models\FlowerShop\Coupon;
+use App\Models\FlowerShop\Order;
+use App\Models\FlowerShop\OrderProduct;
 use Route;
 use DB;
 use Validator;
@@ -433,7 +435,13 @@ class ProductController extends Controller
                             }
                             $items = Cart::get_items();
                             $total_price = Cart::get_total_price();
-                            Coupon::where('coupon_code', $coupon_code)->update(['validity'=>'used']);
+                            $session_id = Session::get('session_id');
+                            if(!empty(Auth::user()->id)){
+                                $user_id = Auth::user()->id;
+                            }else{
+                                $user_id = 0;
+                            }
+                            Coupon::where('coupon_code', $coupon_code)->update(['validity'=>'used', 'session_id'=>$session_id, 'user_id'=>$user_id]);
                             return response()->json(['case'=>'valid','type' => 'Percentage', 'success_message' => ' Thành công: Đã áp dụng mã giảm giá','view'=>(String)View::make('FlowerShop.front.products.cart_table_container', compact('items', 'total_price'))]); 
                         }
                         
@@ -469,5 +477,116 @@ class ProductController extends Controller
             // $districts_json = json_encode($districts);
             return $wards;
         }
+    }
+    public function place_order(Request $request){
+        $data=$request->all();
+        if(!empty(Auth::user()->id)){
+            $user_id = Auth::user()->id;
+            $session_id = Session::get('session_id');
+        }else{
+            $user_id = 0;
+            $session_id = Session::get('session_id');
+        }
+        $province = Province::find($data['province_id']);
+        $district = District::find($data['district_id']);
+        $ward = Ward::find($data['ward_id']);
+        $shipping_charges =  $province['shipping_charges'];
+        if(!empty(Auth::user()->id)){
+            $coupon = Coupon::where(['session_id'=> Session::get('session_id'), 'user_id'=>Auth::user()->id])->first();
+        }else{
+            $coupon = Coupon::where('session_id', Session::get('session_id'))->first();
+        }
+        $order = new Order;
+        $order->order_code = 'FS'.substr($data['mobile'], -3).rand(111,999);
+        $order->user_id =  $user_id;
+        $order->session_id =  $session_id;
+        $order->name =  $data['name'];
+        $order->address =  $data['address'];
+        $order->ward =  $ward['name'];
+        $order->district =   $district['name'];
+        $order->province =  $province['name'];
+        $order->mobile =  $data['mobile'];
+        $order->email =  $data['email'];
+        $order->shipping_charges =  $shipping_charges;
+        $order->coupon_code =   $coupon['coupon_code'];
+        $order->coupon_amount =  $coupon['amount'];
+        $order->order_status =  'confirming';
+        $order->payment_method =  $data['payment_method'];
+        $order->total_price =  $data['total_price'];
+        $order->save();
+        //email details
+        if(!empty(Auth::user()->id)){
+            $order_details = Order::where(['session_id'=> Session::get('session_id'), 'user_id'=>Auth::user()->id])->first();
+        }else{
+            $order_details = Order::where('session_id', Session::get('session_id'))->first();
+        }
+        $total_price = $order_details['total_price'];
+        $items = Cart::get_items();
+        $items_count = 0;
+        foreach( $items as $item){
+            $count = $item['quantity'];
+            $items_count = $items_count + $count;
+        }
+        $order_code = $order_details['order_code'];
+        if( $order_details['order_status'] == "confirming"){
+            $status = "Đang chờ xác nhận";
+        }else if($order_details['order_status'] == "shipping"){
+            $status = "Đang giao hàng";
+        }else if($order_details['order_status'] == "completed"){
+            $status = "Hoàn thành";
+        }
+        if( $order_details['payment_method'] == "cod"){
+            $payment_method = "Thanh toán khi nhận hàng";
+        }else if($order_details['payment_method'] == "transfer"){
+            $payment_method = "Chuyển khoản ngân hàng";
+        }
+        $email = $data['email'];
+        $message_data = ['name'=>$data['name'], 'order_details'=>$order_details, 'items'=>$items, 'order_code'=>$order_code, 'items_count'=>$items_count, 'total_price'=>$total_price, 'status'=>$status, 'payment_method'=>$payment_method];
+        Mail::send('FlowerShop.front.emails.order_email', $message_data, function($message)use($email){
+            $message->to($email)->subject('Thông tin đơn đặt hàng');
+        });
+        foreach($items as $item){
+            $order_product = new OrderProduct;
+            $order_product->order_id = $order_details['id'];
+            $order_product->session_id = $order_details['session_id'];
+            $order_product->user_id = $order_details['user_id'];
+            $order_product->product_id = $item['product_id'];
+            $order_product->product_code = $item['product']['product_code'];
+            $order_product->attr_id = $item['attr_id'];
+            $order_product->product_name = $item['product']['product_name'];
+            $order_product->product_size = $item['size'];
+            $order_product->product_color = $item['color'];
+            $order_product->product_price = $item['price'];
+            $order_product->product_quantity = $item['quantity'];
+            $order_product->sub_total = $item['sub_total'];
+            $order_product->save();
+            Cart::find($item['id'])->delete();
+            Session::forget('session_id');
+        }
+        return redirect()->back()->with('success_message', ' Đặt hàng thành công, vui lòng chờ shop liên hệ xác nhận đơn hàng! Xem chi tiết <a href="/order-details/" style = "color: #0000FF; text-decoration:underline;">Tại đây</a> hoặc kiểm tra email của bạn!');
+    }
+    public function order_details($id){
+        $order_details = Order::find($id);
+        $total_price = $order_details['total_price'];
+        $items = Order::get_order_products($order_details['id']);
+        $items_count = 0;
+        foreach( $items as $item){
+            $count = $item['product_quantity'];
+            $items_count = $items_count + $count;
+        }
+        $order_code = $order_details['order_code'];
+        if( $order_details['order_status'] == "confirming"){
+            $status = "Đang chờ xác nhận";
+        }else if($order_details['order_status'] == "shipping"){
+            $status = "Đang giao hàng";
+        }else if($order_details['order_status'] == "completed"){
+            $status = "Hoàn thành";
+        }
+        if( $order_details['payment_method'] == "cod"){
+            $payment_method = "Thanh toán khi nhận hàng";
+        }else if($order_details['payment_method'] == "transfer"){
+            $payment_method = "Chuyển khoản ngân hàng";
+        }
+        return view('FlowerShop.front.products.order_details', compact('order_details','items','order_code', 'items_count', 'total_price', 'status', 'payment_method'));
     }
 }
