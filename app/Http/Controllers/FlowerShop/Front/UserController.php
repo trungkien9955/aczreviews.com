@@ -72,14 +72,15 @@ class UserController extends Controller
                     }
                     
                     //update cart  with user_id
-                    if(!empty(Session::get('session_id'))){
-                        // echo 'hello'; die;
-                        $user_id = Auth::user()->id;
-                        $session_id = Session::get('session_id');
-                        Cart::where('session_id', $session_id)->update(['user_id'=>$user_id]);
-                    }
+                    // if(!empty(Session::get('session_id'))){
+                    //     // echo 'hello'; die;
+                    //     $user_id = Auth::user()->id;
+                    //     $session_id = Session::get('session_id');
+                    //     Cart::where('session_id', $session_id)->update(['user_id'=>$user_id]);
+                    // }
                     
                     $redirect = url('/');
+                    Session::forget('session_id');
                     return response()->json(['type'=>'success','url'=>$redirect]);
                 }else{
                     return response()->json(['type'=>'incorrect', 'message'=>'Tài khoản hoặc mật khẩu không đúng!']);
@@ -91,6 +92,7 @@ class UserController extends Controller
     }
     public function user_logout(Request $request){
         if($request->ajax()){
+            Session::forget('session_id');
             Auth::logout();
         }
         return redirect('user/login-register');

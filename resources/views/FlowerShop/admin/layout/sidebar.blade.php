@@ -105,6 +105,8 @@
                 <li class="nav-item"> <a  @if(Session::get('page') =="filters-values")  style = "background: #4B49AC !important; color: #fff !important;" @else style = "background: #fff !important; color: #4B49AC !important;" @endif class="nav-link" href="{{url('admin/filters-values')}}">Filter values</a></li>
                 <li class="nav-item"> <a  @if(Session::get('page') =="coupons")  style = "background: #4B49AC !important; color: #fff !important;" @else style = "background: #fff !important; color: #4B49AC !important;" @endif class="nav-link" href="{{url('admin/coupons')}}">Coupons</a></li>
                 <li class="nav-item"> <a  @if(Session::get('page') =="orders")  style = "background: #4B49AC !important; color: #fff !important;" @else style = "background: #fff !important; color: #4B49AC !important;" @endif class="nav-link" href="{{url('admin/orders')}}">Đơn đặt hàng</a></li>
+                <li class="nav-item"> <a  @if(Session::get('page') =="subscribers")  style = "background: #4B49AC !important; color: #fff !important;" @else style = "background: #fff !important; color: #4B49AC !important;" @endif class="nav-link" href="{{url('admin/subscribers')}}">Subscribers</a></li>
+
               </ul>
             </div>
           </li>

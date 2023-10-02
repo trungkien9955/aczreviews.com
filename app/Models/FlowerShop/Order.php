@@ -12,7 +12,11 @@ class Order extends Model
         return $this->hasMany('App\Models\FlowerShop\OrderProduct', 'order_id');
     }
     public static function get_order_products($id){
-        $order_products = OrderProduct::where('order_id', $id)->get()->toArray();
+        $order_products = OrderProduct::with(['product'=>function($query){
+            $query->select('id', 'section_id', 'product_name', 'product_code', 'product_color', 'product_image');
+        }, 'attr'=>function($query){
+            $query->select('id', 'size', 'price', 'color', 'v_color');
+        }])->where('order_id', $id)->get()->toArray();
         return $order_products;
     }
 }

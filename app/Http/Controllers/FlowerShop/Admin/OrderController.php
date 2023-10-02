@@ -22,11 +22,11 @@ class OrderController extends Controller
             $order_details = Order::where('session_id', Session::get('session_id'))->first();
         }
         $total_price = $order_details['total_price'];
-        $items = Cart::get_items();
+        $items = Order::get_order_products($id);
         // dd($items);
         $items_count = 0;
         foreach( $items as $item){
-            $count = $item['quantity'];
+            $count = $item['product_quantity'];
             $items_count = $items_count + $count;
         }
         $order_code = $order_details['order_code'];
@@ -83,9 +83,11 @@ class OrderController extends Controller
                             foreach($items as $item){
                                $html.= 
                                 '<tr>
-                                    <td>'.$item['product']['product_name'].'</td>
-                                    <td>'.$item['quantity'].'</td>
-                                    <td>'.  number_format($item['price']).'</td>
+                                    <td>'.$item['product']['product_name']
+                                        .',&nbsp;Size: <span>'.$item['product_size'].'</span><br>'
+                                        .',&nbsp;Màu: <span>'.$item['product_color'].'</span></td>
+                                    <td>'.$item['product_quantity'].'</td>
+                                    <td>'.  number_format($item['product_quantity']).'</td>
                                     <td>'.  number_format($item['sub_total']) .'</td>
                                 </tr>';
                             }
@@ -94,6 +96,7 @@ class OrderController extends Controller
                             <p><b>Tổng sản phẩm:&nbsp;</b><span>'.$items_count.'</span></p>
                             <p><b>Mã coupon:&nbsp;</b><span>'.$order_details['coupon_code'].'</span></p>
                             <p><b>Hình thức thanh toán:&nbsp;</b><span>'.$payment_method.'</span></p>
+                            <p><b>Phí giao hàng:&nbsp;</b><span>'.$order_details['shipping_charges'].'</span></p>
                             <p><b>Tổng giá thanh toán:&nbsp;</b><span style = "color: #e02027;"><'.number_format($total_price).'đ</span></p>
                         </div>
                     </div>

@@ -38,8 +38,8 @@
                                     ,&nbsp;Màu: <span>{{$item['attr']['v_color']}}</span>
                                     @endif
                                 </td>
-                                <td>{{$item['quantity']}}</td>
-                                <td><?php echo number_format($item['price']) ?></td>
+                                <td>{{$item['product_quantity']}}</td>
+                                <td><?php echo number_format($item['product_price']) ?></td>
                                 <td><?php echo number_format($item['sub_total']) ?></td>
                             </tr>
                                 @endforeach

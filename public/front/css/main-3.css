@@ -694,6 +694,42 @@
     font-size: 18px;
     margin-right: 6px;
 }
+/* newsletter */
+
+.newsletter-wrapper{
+    text-align:center;
+    background-color: #e62263;
+    padding: 24px 12px;
+    color: #fff;
+}
+.newsletter-wrapper form{
+    width: 50%;
+    margin:auto;
+}
+.newsletter-wrapper form button{
+    color: #fff;
+    border: 1px solid #fff;
+    margin-left:6px;
+}
+.shop-list-wrapper {
+    background-color: #060606;
+    color: #ccc;
+}
+.shop-list-header {
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+    letter-spacing: 2px;
+}
+.shop-list-content {
+    background-color: #1e1e1e;
+    padding: 36px 12px 12px 12px;
+}
+.end-section{
+    background-color: #000;
+    color: #ccc;
+}
 
 
 .header-logo img {

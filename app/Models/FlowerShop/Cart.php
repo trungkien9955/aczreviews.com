@@ -21,7 +21,7 @@ class Cart extends Model
                 $query->select('id', 'section_id', 'product_name', 'product_code', 'product_color', 'product_image');
             }, 'attr'=>function($query){
                 $query->select('id', 'size', 'price', 'color', 'v_color');
-            }])->where('user_id', Auth::user()->id)->orderBy('id','Desc')->get()->toArray();
+            }])->where(['session_id'=> Session::get('session_id'),'user_id'=> Auth::user()->id])->orderBy('id','Desc')->get()->toArray();
         }else{
             $items = Cart::with(['product'=>function($query){
                 $query->select('id', 'section_id', 'product_name', 'product_code', 'product_color', 'product_image');

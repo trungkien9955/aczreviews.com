@@ -85,6 +85,11 @@
                         <strong>Thành công:</strong><?php echo Session::get('success_message'); ?>
                         </div>
                         @endif
+                        @if(Session::has('error_message'))
+                        <div class = "alert alert-danger alert-dismissible fade show mt-3" role = "alert">
+                        <strong>Lỗi:</strong><?php echo Session::get('error_message'); ?>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">

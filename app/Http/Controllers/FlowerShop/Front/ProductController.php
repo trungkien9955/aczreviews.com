@@ -190,11 +190,13 @@ class ProductController extends Controller
                    }
                    if(Auth::check()){
                         $user_id = Auth::user()->id;
-                        $item_count = Cart::where(['product_id'=>$data['product_id'], 'user_id'=> $user_id])->count();
+                        $item_count = Cart::where(['product_id'=>$data['product_id'], 'user_id'=> $user_id, 'session_id'=> $session_id])->count();
                         if($item_count>0){
-                            $item = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->first()->toArray();
-                            $new_item_count = $item_count + $data['quantity'];
-                            DB::table('carts')->where(['user_id'=> $user_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_count]);   
+                            $item = Cart::where(['product_id'=>$data['product_id'],'user_id'=> $user_id, 'session_id'=> $session_id])->first()->toArray();
+                            $new_item_quantity = $item['quantity'] + $data['quantity'];
+                            // dd($data['quantity']);
+                            DB::table('carts')->where(['product_id'=>$data['product_id'],'user_id'=> $user_id,  'session_id'=> $session_id])->update(['quantity'=>$new_item_quantity]);   
+                            return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
                         }else{
                             $item = new Cart;
                             $item->session_id = $session_id;
@@ -214,12 +216,12 @@ class ProductController extends Controller
                         $item_count = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->count();
                         if($item_count>0){
                             $item = Cart::where(['product_id'=>$data['product_id'], 'session_id'=> $session_id])->first()->toArray();
-                            $new_item_count = $item['quantity'] + $data['quantity'];
-                            if( $new_item_count>$product_details['product_stock']) {
+                            $new_item_quantity = $item['quantity'] + $data['quantity'];
+                            if( $new_item_quantity>$product_details['product_stock']) {
                                 return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
                             }else{
-                                $new_sub_total = $new_item_count * $data['price'];
-                                DB::table('carts')->where(['session_id'=> $session_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_count, 'sub_total'=>$new_sub_total]);
+                                $new_sub_total = $new_item_quantity * $data['price'];
+                                DB::table('carts')->where(['session_id'=> $session_id, 'product_id'=>$data['product_id']])->update(['quantity'=>$new_item_quantity, 'sub_total'=>$new_sub_total]);
                                 return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
                             }
                         }else{
@@ -258,11 +260,13 @@ class ProductController extends Controller
                    }
                    if(Auth::check()){
                     $user_id = Auth::user()->id;
-                    $item_count = Cart::where(['attr_sku'=>$data['product_id'], 'user_id'=> $user_id])->count();
+                    $item_count = Cart::where(['attr_sku'=>$attr_sku, 'user_id'=> $user_id, 'session_id'=> $session_id])->count();
                     if($item_count>0){
-                        $new_item_count = $item_count + $data['quantity'];
-                        if($new_item_count< $attr_stock) {
-                            DB::table('carts')->where(['attr_sku'=> $attr_sku, 'session_id'=>$session_id])->update(['quantity'=>$new_item_count]);
+                        $item = Cart::where(['attr_sku'=>$attr_sku, 'user_id'=> $user_id, 'session_id'=> $session_id])->first()->toArray();
+                        $new_item_quantity = $item['quantity'] + $data['quantity'];
+                        if($new_item_quantity< $attr_stock) {
+                            DB::table('carts')->where(['attr_sku'=> $attr_sku, 'user_id'=>$user_id,  'session_id'=> $session_id])->update(['quantity'=>$new_item_quantity]);
+                            return redirect()->back()->with('success_message', ' Đã thêm vào giỏ hàng!');
                         }else{
                             return redirect()->back()->with('error_message', ' Không đủ hàng trong kho!');
                         }
@@ -451,12 +455,14 @@ class ProductController extends Controller
         }
     }
     public function checkout(){
-        $provinces = Province::orderBy('name', 'Asc')->get()->toArray();
-        $districts = District::get()->toArray();
-        $wards = Ward::get()->toArray();
-        $total_price = Cart::get_total_price();
-        $items = Cart::get_items();
-        return view('FlowerShop.front.products.checkout', compact('items', 'total_price', 'provinces', 'districts', 'wards'));
+
+            $provinces = Province::orderBy('name', 'Asc')->get()->toArray();
+            $districts = District::get()->toArray();
+            $wards = Ward::get()->toArray();
+            $total_price = Cart::get_total_price();
+            $items = Cart::get_items();
+            return view('FlowerShop.front.products.checkout', compact('items', 'total_price', 'provinces', 'districts', 'wards'));
+        
     }
     public function get_districts_after_province(Request $request){
         if($request->ajax()){
@@ -492,9 +498,27 @@ class ProductController extends Controller
         $ward = Ward::find($data['ward_id']);
         $shipping_charges =  $province['shipping_charges'];
         if(!empty(Auth::user()->id)){
+            $coupon_count = Coupon::where(['session_id'=> Session::get('session_id'), 'user_id'=>Auth::user()->id])->count();
+            if($coupon_count >0){
             $coupon = Coupon::where(['session_id'=> Session::get('session_id'), 'user_id'=>Auth::user()->id])->first();
+            $coupon_code = $coupon['coupon_code'];
+            $coupon_amount = $coupon['amount'];
+
+            }else{
+                $coupon_code = '';
+                $coupon_amount = 0;
+
+            }
         }else{
-            $coupon = Coupon::where('session_id', Session::get('session_id'))->first();
+            $coupon_count = Coupon::where('session_id', Session::get('session_id'))->count();
+            if($coupon_count >0){
+                $coupon = Coupon::where(['session_id'=> Session::get('session_id')])->first();
+                $coupon_code = $coupon['coupon_code'];
+                $coupon_amount = $coupon['amount'];
+                }else{
+                    $coupon_code = '';
+                    $coupon_amount = 0;
+                }
         }
         $order = new Order;
         $order->order_code = 'FS'.substr($data['mobile'], -3).rand(111,999);
@@ -508,11 +532,11 @@ class ProductController extends Controller
         $order->mobile =  $data['mobile'];
         $order->email =  $data['email'];
         $order->shipping_charges =  $shipping_charges;
-        $order->coupon_code =   $coupon['coupon_code'];
-        $order->coupon_amount =  $coupon['amount'];
+        $order->coupon_code =    $coupon_code;
+        $order->coupon_amount =  $coupon_amount;
         $order->order_status =  'confirming';
         $order->payment_method =  $data['payment_method'];
-        $order->total_price =  $data['total_price'];
+        $order->total_price =  $data['total_price']+$shipping_charges;
         $order->save();
         //email details
         if(!empty(Auth::user()->id)){
@@ -563,7 +587,7 @@ class ProductController extends Controller
             Cart::find($item['id'])->delete();
             Session::forget('session_id');
         }
-        return redirect()->back()->with('success_message', ' Đặt hàng thành công, vui lòng chờ shop liên hệ xác nhận đơn hàng! Xem chi tiết <a href="/order-details/" style = "color: #0000FF; text-decoration:underline;">Tại đây</a> hoặc kiểm tra email của bạn!');
+        return redirect()->back()->with('success_message', ' Đặt hàng thành công, vui lòng chờ shop liên hệ xác nhận đơn hàng! Xem chi tiết <a href="/order-details/'.$order_details['id'].'" style = "color: #0000FF; text-decoration:underline;">Tại đây</a> hoặc kiểm tra email của bạn!');
     }
     public function order_details($id){
         $order_details = Order::find($id);

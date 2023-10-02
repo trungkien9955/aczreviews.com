@@ -2,6 +2,20 @@
         
         <div class="shop-page mb-5">
             <div class="container">
+                <div class="newsletter-wrapper">
+                    <di class="newsletter-header">
+                        <h3><b>Đăng ký nhận email, giảm giá, ưu đãi</b></h3>
+                        <h6>Mời bạn nhập email</h6>
+                        <form action="">
+                            <div class="coupon-input input-group">
+                                <input type="text" class="form-control"  name = "coupon_code" id = "coupon_code" placeholder = "Nhập mã giảm giá (nếu có)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary mr-2" id = "coupon-submit-btn">Xác nhận</button>
+                            </div>
+                            </div>
+                        </form>
+                    </di>
+                </div>
                 <div class="head">
                     <h2 class="title" style = "color: var(--color-5)">HỆ THỐNG CỬA HÀNG HOA TƯƠI</h2>
                 </div>

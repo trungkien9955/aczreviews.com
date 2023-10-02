@@ -50,6 +50,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         //order
         Route::get('orders', 'OrderController@orders');
         Route::get('order-pdf/{id}', 'OrderController@view_pdf_order');
+        //subscribers
+        Route::get('subscribers', 'NewsletterController@subscribers');
+        Route::get('export-subscribers', 'NewsletterController@export_subscribers');
+
     });
 });
 Route::get('order/invoice/download/{id}', 'OrderController@view_pdf_order');
@@ -82,7 +86,7 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::get('/checkout', 'ProductController@checkout');
     Route::post('/place-order', 'ProductController@place_order');
     //order
-    Route::get('/order-details', 'ProductController@order_details');
+    Route::get('/order-details/{id}', 'ProductController@order_details');
 
     //select province
     Route::post('/province-selected', 'ProductController@get_districts_after_province');
@@ -95,4 +99,8 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('user/logout', 'UserController@user_logout');
     //confirm user account
     Route::get('/user/confirm/{code}', 'UserController@user_confirm');
+    //subscriber email
+    Route::post('/subscriber-email', 'NewsletterController@get_subscriber_email');
+    //export subscribers
+
 });

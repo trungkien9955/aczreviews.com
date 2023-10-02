@@ -384,5 +384,32 @@ $(document).on('change','.quantity-input',function(){
         }
     })
 })
-
+$(document).on('click', '#subscriber-submit-btn', function(){
+    var subscriber_email = $('#subscriber-email').val();
+    var mail_format = /\S+@\S+\.\S+/;
+    if(subscriber_email.match(mail_format)){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'post',
+            url: 'subscriber-email',
+            data: {subscriber_email:subscriber_email},
+            success: function(resp){
+                $("#ajax_loading_overlay").fadeOut(300);
+                if(resp.case == "success"){
+                    $('#subscriber-email-message').html(`<div class = "alert alert-success alert-dismissible fade show mt-3" role = "alert"><strong>Thành công:${resp.success_message}</strong></div>`);
+                }else if (resp.case == "error"){
+                    $('#subscriber-email-message').html(`<div class = "alert alert-danger alert-dismissible fade show mt-3" role = "alert"><strong>Lỗi:${resp.error_message}</strong></div>`);
+                }
+            },
+            error: function(){
+                $("#ajax_loading_overlay").fadeOut(300);
+                alert('error');
+            }
+        })
+    }else{
+        alert('Email không hợp lệ!')
+    }
+})
 
