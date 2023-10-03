@@ -53,6 +53,11 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\FlowerShop\Admin')->gro
         //subscribers
         Route::get('subscribers', 'NewsletterController@subscribers');
         Route::get('export-subscribers', 'NewsletterController@export_subscribers');
+        //ratings
+        Route::get('ratings', 'RatingController@ratings');
+        Route::post('add-rating', 'RatingController@add_rating');
+        //users
+        Route::get('users', 'UserController@users');
 
     });
 });
@@ -102,5 +107,10 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     //subscriber email
     Route::post('/subscriber-email', 'NewsletterController@get_subscriber_email');
     //export subscribers
-
+    //add rating
+    Route::post('add-rating', 'RatingController@add_rating');
+    Route::post('user-rating', 'RatingController@user_rating');
+    Route::post('guest-rating', 'RatingController@guest_rating');
+    //search
+    Route::get('/search', 'ProductController@search');
 });

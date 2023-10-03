@@ -29,8 +29,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="slider-bottom">
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -386,6 +384,22 @@
                             <div class="news-item col-lg-6 col-xs-12">
                                 <div class="news-item-image">
                                 <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-2.jpg')}}" alt="">
+                                </div>
+                                <div class="news-item-title">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class="news-item col-lg-6 col-xs-12">
+                                <div class="news-item-image">
+                                <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-2.jpg')}}" alt="">
+                                </div>
+                                <div class="news-item-title">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class="news-item col-lg-6 col-xs-12">
+                                <div class="news-item-image">
+                                    <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">
                                 </div>
                                 <div class="news-item-title">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>

@@ -1,6 +1,7 @@
 <header class="header-section">
-    <div class="top-bar" style = "background-color: green;">
+    <div class="top-bar">
         <div class = "top-bar-slider owl-carousel owl-carousel-top-bar">
+            <a href=""><img src="{{url('Flowershop/front/images-3/banner_images/top-banner-2.png')}}" alt=""></a>
             <a href=""><img src="{{url('front/images/topbar_images/topbar-banner1.webp')}}" alt=""></a>
         </div>
     </div>
@@ -32,7 +33,7 @@
                         <i class="fa-solid fa-bars"></i>
                         <span>DANH MỤC THÔNG TIN</span>
                     </div>
-                    <div class="nav-sidebar-dropdown d-none d-md-block">
+                    <div class="nav-sidebar-dropdown ">
                         <ul class="nav-sidebar-list">
                             <li class="li-child">
                                 <a href="">
@@ -93,7 +94,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="nav-menu d-none d-sm-block">
+                <div class="nav-menu">
                     <ul class="nav-menu-list">
                         <li>
                             <a href="">

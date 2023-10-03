@@ -1,3 +1,20 @@
+if (window.location.pathname !== '/') {
+    $('.dropdown').hide();
+    $('.nav-sidebar-head').hover(function(){
+        $('.dropdown').show();
+    })
+    $('.dropdown').hover(function(){
+        $('.dropdown').show();
+    })
+    $('.nav-sidebar-head').mouseleave(function(){
+        $('.dropdown').hide();
+    })
+    $('.dropdown').mouseleave(function(){
+        $('.dropdown').hide();
+    })
+}else{
+    $('.dropdown').show();
+}
 $(document).ready(function(){
     $('.size_option').on('click', function(){
        var product_id = $('#product_id').val();
@@ -411,5 +428,65 @@ $(document).on('click', '#subscriber-submit-btn', function(){
     }else{
         alert('Email không hợp lệ!')
     }
+})
+$('#user-rating-form').submit(function(event){
+    event.preventDefault();
+    var product_id = $('#user-rating-form #user_rating_product_id').val();
+    var rating = $('#user-rating-form input[name=user_rating]:checked').val();
+    var review = $('#user-rating-form #review').val();
+    var user_id = $('#user-rating-form #user_rating_user_id').val();
+    // alert(user_id);
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/user-rating',
+        data: {product_id:product_id, rating:rating, review:review, user_id:user_id},
+        success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            // alert(resp);
+            if(resp.case == "success"){
+                $('#user-rating-message').html(`<div class = "alert alert-success alert-dismissible fade show mt-3" role = "alert"><strong>Thành công:${resp.user_rating_success_message}</strong></div>`);
+            }else if (resp.case == "error"){
+                $('#user-rating-message').html(`<div class = "alert alert-danger alert-dismissible fade show mt-3" role = "alert"><strong>Lỗi:${resp.user_rating_error_message}</strong></div>`);
+            }
+        },
+        error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
+            alert('error');
+        }
+    })
+})
+$('#guest-rating-form').submit(function(event){
+    event.preventDefault();
+    var product_id = $('#guest-rating-form #guest_rating_product_id').val();
+    var name = $('#guest-rating-form #review_author').val();
+    var email = $('#guest-rating-form #review_email').val();
+    var phone = $('#guest-rating-form #review_phone').val();
+    var comment = $('#guest-rating-form #comment').val();
+    var rating = $('#guest-rating-form input[name=guest_rating]:checked').val();
+    // alert(rating); return false;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/guest-rating',
+        data: {product_id:product_id, name:name, email:email,phone:phone, comment:comment, rating:rating},
+        success: function(resp){
+            $("#ajax_loading_overlay").fadeOut(300);
+            // alert(resp);
+            if(resp.case == "success"){
+                $('#guest-rating-message').html(`<div class = "alert alert-success alert-dismissible fade show mt-3" role = "alert"><strong>Thành công:${resp.guest_rating_success_message}</strong></div>`);
+            }else if (resp.case == "error"){
+                $('#guest-rating-message').html(`<div class = "alert alert-danger alert-dismissible fade show mt-3" role = "alert"><strong>Lỗi:${resp.guest_rating_error_message}</strong></div>`);
+            }
+        },
+        error: function(){
+            $("#ajax_loading_overlay").fadeOut(300);
+            alert('error');
+        }
+    })
 })
 

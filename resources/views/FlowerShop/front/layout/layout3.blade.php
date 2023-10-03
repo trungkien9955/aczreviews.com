@@ -30,6 +30,9 @@
     <!-- <link rel="stylesheet" href="slider.css"> -->
     <title>Flower shop</title>
 </head>
+<header>
+@include('FlowerShop.front.web_components3.header')
+</header>
 <body>
     <div id="loading">
     <img id="loading-image" src="{{url('FlowerShop/front/images-3/Iphone-spinner-2.gif')}}" alt="Loading..." />
@@ -40,10 +43,11 @@
         </div>
     </div>
     <div id="app">
-        @include('FlowerShop.front.web_components3.header')
         @yield('content')
-        @include('FlowerShop.front.web_components3.footer')
     </div>
+    <footer>
+    @include('FlowerShop.front.web_components3.footer')
+    </footer>
     <script src="{{url('FlowerShop/front/js/script-3.js')}}" ></script>
     <script src="{{url('FlowerShop/front/js/custom.js')}}" ></script>
     <script src="{{url('FlowerShop/front/js/jquery-3.7.0.min.js')}}" ></script>

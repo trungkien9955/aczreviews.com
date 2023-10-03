@@ -35,14 +35,22 @@ class Product extends Model
         $description = ProductDescription::where('product_id', $id)->first()->toArray();
         return $description;
     }
-    public static function get_rating_info($id){
-        $rating_info = RatingInfo::where('product_id', $id)->get()->toArray();
-        $rating_comment = RatingInfo::where('product_id', $id)->get()->toArray();
+    public static function get_guest_rating($id){
+        $guest_rating_info = RatingInfo::where('product_id', $id)->get()->toArray();
+        $guest_rating_comment = RatingInfo::where('product_id', $id)->get()->toArray();
         // dd($rating_info);
-        $product_rate_count =count(RatingInfo::where('product_id', $id)->get()->toArray());
-        $product_total_score = array_sum(RatingInfo::where('product_id', $id)->pluck('rating')->toArray());
-        $product_rating_float = $product_total_score/$product_rate_count;
-        $product_rating = round($product_rating_float, 1);
-        return array('rating_info'=> $rating_info,'product_rate_count'=> $product_rate_count, 'product_rating'=> $product_rating);
+        $guest_rating_count =count(RatingInfo::where('product_id', $id)->get()->toArray());
+        $guest_total_score = array_sum(RatingInfo::where('product_id', $id)->pluck('rating')->toArray());
+        $guest_rating_float = $guest_total_score/$guest_rating_count;
+        $guest_product_rating = round($guest_rating_float, 1);
+        return array('guest_rating_info'=> $guest_rating_info,'guest_rating_count'=> $guest_rating_count, 'guest_product_rating'=> $guest_product_rating);
+    }
+    public static function get_rating($id){
+        $rating_info = Rating::with('user')->where('product_id', $id)->get()->toArray();
+        $product_rating_count =count(Rating::where('product_id', $id)->get()->toArray());
+        $product_total_score = array_sum(Rating::where('product_id', $id)->pluck('rating')->toArray());
+        $product_rating_float = $product_total_score/$product_rating_count;
+        $product_rating = round($product_rating_float, 1, PHP_ROUND_HALF_UP);
+        return array('rating_info'=> $rating_info,'product_rating_count'=> $product_rating_count, 'product_rating'=> $product_rating);
     }
 }

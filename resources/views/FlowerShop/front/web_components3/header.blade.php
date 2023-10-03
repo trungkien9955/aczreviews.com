@@ -1,22 +1,19 @@
-<header class="header-section">
-    <div class="top-bar" style = "background-color: green;">
-        <div class = "top-bar-slider">
-            <a href=""><img src="{{url('front/images/topbar_images/topbar-banner1.webp')}}" alt=""></a>
-        </div>
+<div class="header-section">
+    <div class="header-section-first">
+        <div><i class="fa-solid fa-phone-volume"></i><span>Hotline: 0988 666 888</span></div>
     </div>
     <div class="header-content">
-        <div class="container">
+        <div class="container" style = "background-color:inherit;">
             <div class="header-wrapper">
                 <div class="header-logo">
                     <a href="/"><img  style = "width: 70px; height: 60px"src="{{url('front/images-3/icon_images/bouquet-5.png')}}" alt=""></a>
                 </div>
                 <div class="header-search">
                     <div class="search-wrapper">
-                        <form action="" class = "d-flex">
-                            <input type="text" class = "form-control" placeholder = "Tìm kiếm ...">
+                        <form action="{{url('/search')}}" class = "d-flex" method = "get">
+                            <input type="text" class = "form-control" placeholder = "Tìm kiếm ..." id = "search" name = "search">
                             <button type="submit" class="btn btn-warning" style = "background-color: #e62263; color: #fff; margin-left:6px;">Search</button>
                         </form>
-                        
                     </div>
                 </div>
                 <div class="cart-container">
@@ -48,12 +45,12 @@
                         <i class="fa-solid fa-bars"></i>
                         <span>DANH MỤC THÔNG TIN</span>
                     </div>
-                    <div class="nav-sidebar-dropdown">
+                    <div class="nav-sidebar-dropdown dropdown">
                         <ul class="nav-sidebar-list">
                             <li class="li-child">
                                 <a href="/hoa-giam-gia">
                                 <img src="{{url('front/images-3/icon_images/sale-tag.png')}}" alt="">
-                                <span>Hoa giảm giá giá</span>
+                                <span>Hoa giảm giá</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
@@ -109,7 +106,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="nav-menu d-none d-sm-block">
+                <!-- <div class="nav-menu d-none d-sm-block">
                     <ul class="nav-menu-list">
                         <li>
                             <a href="">
@@ -142,8 +139,8 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
-</header>
+</div>

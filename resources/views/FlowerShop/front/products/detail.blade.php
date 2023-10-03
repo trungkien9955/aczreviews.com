@@ -41,6 +41,21 @@ use App\Models\FlowerShop\ProductFilter;
                         <div class="information-title ">
                             <div class="product-title ">
                                 <h2>{{$product_details['product_name']}}</h2>
+                                <div class="info-rating">
+                                    <?php 
+                                    $rating_info = Product::get_rating($product_details['id']);
+                                    $count = 0;
+                                    $total_count = 5- $rating_info['product_rating'];
+                                    while($count< $rating_info['product_rating']) {
+                                        echo '<span style = "color:#ffc700; font-size: 36px;">&#9733;</span>';
+                                        $count++;
+                                    }
+                                    while($total_count>0) {
+                                        echo '<span style = "color:#ccc; font-size: 36px;">&#9733;</span>';
+                                        $total_count--;
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
                         <div class="information-price mt-4">
@@ -269,16 +284,16 @@ use App\Models\FlowerShop\ProductFilter;
                                 </div>
                             </div>
                             <div class="tab-pane fade"id="detail-tab-review"role="tabpanel">
-                                <?php $rating_info = Product::get_rating_info($product_details['id'])?>
                                     <h3 style = "text-align:center; font-weight: 600;color: #6C757D;margin-bottom: 24px;margin-top: 24px;">Đánh giá sản phẩm {{$product_details['product_name']}}</h3>
                                     <div class="row">
+                                    <?php $rating_info = Product::get_rating($product_details['id'])?>
                                         <div class="col-lg-6 col-md-6 col-xs-12 overflow-hidden">
                                             <div class="total-score-wrapper mt-5">
-                                                <h6>Điểm đánh giá</h6>
+                                                <h6>Điểm đánh giá (Thang điểm 5)</h6>
                                                 <div class="circle-wrapper">
                                                     <span>{{$rating_info['product_rating']}}</span>
                                                 </div>
-                                                <h6>{{$rating_info['product_rate_count']}} đánh giá</h6>
+                                                <h6>{{$rating_info['product_rating_count']}} đánh giá</h6>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-xs-12 ">
@@ -302,9 +317,10 @@ use App\Models\FlowerShop\ProductFilter;
                                                 </button>
                                                 </div>
                                                 @endif
-                                                <h5>Gửi đánh giá của bạn:</h5>
-                                                <form action="/product-rating-form" method= "post">@csrf
-                                                    <input type="hidden" id= "product_id" name = "product_id" value = "{{$product_details['id']}}">
+                                                @if(!Auth::check())
+                                                <h5>Gửi đánh giá của bạn (Không cần đăng nhập):</h5>
+                                                <form action="javascript:void(0);" id = "guest-rating-form">@csrf
+                                                    <input type="hidden" id= "guest_rating_product_id" name = "product_id" value = "{{$product_details['id']}}">
                                                     <div class="form-group">
                                                         <label for="review_author">Tên</label>
                                                         <input type="text" class="form-control" name = "review_author" id="review_author" required >
@@ -312,27 +328,81 @@ use App\Models\FlowerShop\ProductFilter;
                                                         <input type="email" class="form-control" name = "review_email" id="review_email" maxlength = "500" required>
                                                         <label for="review_phone">Số điện thoại (Không bắt buộc)</label>
                                                         <input type="text" class="form-control" name = "review_phone" id="review_phone" maxlength = "12">
-                                                        <label for="review_score">Nhập điểm đánh giá (Từ 5 đến 10)</label>
-                                                        <input type="number" class="form-control" name = "review_score" id="review_score" min = "5" max = "10" required>
-                                                        <label for="review_content">Nhập nội dung đánh giá</label>
-                                                        <textarea class="form-control" name = "review_content" id = "review_content" rows="2" maxlength = "500" required></textarea>
+                                                        <label for="">Chọn sao đánh giá</label><br>
+                                                        <div class="rate">
+                                                            <input style = "display:none;" type="radio" id="guest_rating_star5" name="guest_rating" value="5" />
+                                                            <label for="guest_rating_star5" title="text">5 stars</label>
+                                                            <input style = "display:none;" type="radio" id="guest_rating_star4" name="guest_rating" value="4" />
+                                                            <label for="guest_rating_star4" title="text">4 stars</label>
+                                                            <input style = "display:none;" type="radio" id="guest_rating_star3" name="guest_rating" value="3" />
+                                                            <label for="guest_rating_star3" title="text">3 stars</label>
+                                                            <input style = "display:none;" type="radio" id="guest_rating_star2" name="guest_rating" value="2" />
+                                                            <label for="guest_rating_star2" title="text">2 stars</label>
+                                                            <input style = "display:none;" type="radio" id="guest_rating_star1" name="guest_rating" value="1" />
+                                                            <label for="guest_rating_star1" title="text">1 star</label>
+                                                        </div><br>
+                                                        <textarea class="form-control" name = "comment" id = "comment" rows="2" maxlength = "500" placeholder = "Nhập nội dung đánh giá"required></textarea>
                                                     </div>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary mt-2">Gửi đánh giá</button>
                                                 </form>
+                                                <div id="guest-rating-message"></div>
+                                                @else
+                                                <h5>Gửi đánh giá của bạn:</h5>
+                                                <form action="javascript:void(0);" id = "user-rating-form">@csrf
+                                                    <input type="hidden" id= "user_rating_product_id" name = "product_id" value = "{{$product_details['id']}}">
+                                                    <input type="hidden" id= "user_rating_user_id" name = "user_id" value = "{{Auth::user()->id}}">
+                                                    <div class="form-group">
+                                                        <label for="">Chọn sao đánh giá</label><br>
+                                                        <div class="rate">
+                                                            <input style = "display:none;" type="radio" id="user_rating_star5" name="user_rating" value="7" />
+                                                            <label for="user_rating_star5" title="text">5 stars</label>
+                                                            <input style = "display:none;" type="radio" id="user_rating_star4" name="user_rating" value="8" />
+                                                            <label for="user_rating_star4" title="text">4 stars</label>
+                                                            <input style = "display:none;" type="radio" id="user_rating_star3" name="user_rating" value="3" />
+                                                            <label for="user_rating_star3" title="text">3 stars</label>
+                                                            <input style = "display:none;" type="radio" id="user_rating_star2" name="user_rating" value="2" />
+                                                            <label for="user_rating_star2" title="text">2 stars</label>
+                                                            <input style = "display:none;" type="radio" id="user_rating_star1" name="user_rating" value="1" />
+                                                            <label for="user_rating_star1" title="text">1 star</label>
+                                                        </div><br>
+                                                        <textarea class="form-control" name = "review" id = "review" rows="2" maxlength = "500" placeholder = "Nhập nội dung đánh giá"required></textarea>
+                                                    </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary mt-2">Gửi đánh giá</button>
+                                                </form>
+                                                <div id="user-rating-message"></div>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="row">
                                         <div class="col">
                                             <div class="review-data-wrapper m-auto">
                                                 <div class="review-data-header">
-                                                    <h6>Đánh giá (<span>{{$rating_info['product_rate_count']}}</span>):</h6>
+                                                    <h6>Đánh giá (<span>{{$rating_info['product_rating_count']}}</span>):</h6>
                                                 </div>
                                                 <div class="review-data-items">
                                                     @foreach($rating_info['rating_info'] as $rating)
                                                     <div class="review-item mb-2">
                                                         <div class="review-item-author">
-                                                            <h6><b>{{$rating['name']}}</b> (Điểm đánh giá: <span style = "color: #e62263;">{{$rating['rating']}}</span>)</h6>
+                                                            <h6>
+                                                                <b>{{$rating['user']['name']}}</b>
+                                                                @if(!empty($rating['user_id']))
+                                                                <span class="badge bg-primary">Thành viên</span>
+                                                                @endif
+                                                                <?php 
+                                                                $count = 0;
+                                                                $total_count= 5-$rating['rating'];
+                                                                while($count< $rating['rating']) {
+                                                                    echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                    $count++;
+                                                                }
+                                                                while($total_count>0){
+                                                                    echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                    $total_count--;
+                                                                }
+                                                                ?>
+                                                            </h6>
                                                             @if(!empty($rating['created_at']))
                                                             <h6>{{$rating['created_at']}}</h6>
                                                             @else
@@ -340,7 +410,38 @@ use App\Models\FlowerShop\ProductFilter;
                                                             @endif
                                                         </div>
                                                         <div class="review-item-content">
-                                                            <p>{{$rating['comment']}} </p>
+                                                            <p>{{$rating['review']}} </p>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                    <?php $guest_rating_info = Product::get_guest_rating($product_details['id'])?>
+                                                    @foreach($guest_rating_info['guest_rating_info'] as $guest_rating)
+                                                    <div class="review-item mb-2">
+                                                        <div class="review-item-author">
+                                                            <h6>
+                                                                <b>{{$guest_rating['name']}}</b>
+                                                                <span class="badge bg-secondary">Khách</span>
+                                                                <?php 
+                                                                $count = 0;
+                                                                $total_count= 5-$guest_rating['rating'];
+                                                                while($count< $guest_rating['rating']) {
+                                                                    echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                    $count++;
+                                                                }
+                                                                while($total_count>0){
+                                                                    echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                    $total_count--;
+                                                                }
+                                                                ?>
+                                                            </h6>
+                                                            @if(!empty($guest_rating['created_at']))
+                                                            <h6>{{$guest_rating['created_at']}}</h6>
+                                                            @else
+                                                            <h6>...</h6>
+                                                            @endif
+                                                        </div>
+                                                        <div class="review-item-content">
+                                                            <p>{{$guest_rating['comment']}} </p>
                                                         </div>
                                                     </div>
                                                     @endforeach

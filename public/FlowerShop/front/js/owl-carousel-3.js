@@ -85,7 +85,8 @@ $(document).ready(function() {
 		margin: 10,
 		autoplay: true,
 		autoplayTimeout: 3000,
-		autoplayHoverPause: true
+		autoplayHoverPause: true, 
+		autoWidth:true
 	});
 	owl_wedding.owlCarousel({
 		items: 4,

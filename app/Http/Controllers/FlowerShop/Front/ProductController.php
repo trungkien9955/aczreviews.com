@@ -72,23 +72,38 @@ class ProductController extends Controller
             return view('FlowerShop.front.products.ajax_products_listing', compact('products'));
         }
         else {
-            $url = Route::getFacadeRoot()->current()->uri(); 
-            $section = Section::select('id', 'section_name', 'url')->where('url', $url)->first()->toArray();
-            $products = Product::where('section_id', $section['id']);
-            if(isset($_GET['sorter']) && !empty($_GET['sorter'])){
-                if($_GET['sorter'] == "lowest") {
-                    $products = $products->orderBy('product_price', 'Asc');
+                $url = Route::getFacadeRoot()->current()->uri(); 
+                $section = Section::select('id', 'section_name', 'url')->where('url', $url)->first()->toArray();
+                $products = Product::where('section_id', $section['id']);
+                if(isset($_GET['sorter']) && !empty($_GET['sorter'])){
+                    if($_GET['sorter'] == "lowest") {
+                        $products = $products->orderBy('product_price', 'Asc');
+                    }
+                    else if ($_GET['sorter'] == "highest") {
+                        $products = $products->orderBy('product_price', 'Desc');
+                    }
                 }
-                else if ($_GET['sorter'] == "highest") {
-                    $products = $products->orderBy('product_price', 'Desc');
-                }
-            }
-            $products = $products->get()->toArray();
-            $count = count($products);
-            // dd($products);
-            return view('FlowerShop.front.products.listing', compact('products', 'section', 'count', 'url'));
+                $products = $products->get()->toArray();
+                $count = count($products);
+                // dd($products);
+                return view('FlowerShop.front.products.listing', compact('products', 'section', 'count', 'url'));
         }
         // dd($url);
+    }
+    public function search(Request $request){
+        if($request->isMethod("get")){
+            $data = $request->all();
+            $query = $data['search'];
+            $count =  Product::where('product_name', 'like', '%'.$query.'%')->count();
+            if($count==0){
+                $count==0;
+                return view('FlowerShop.front.products.search', compact( 'count'));
+            }else{
+                $products =  Product::where('product_name', 'like', '%'.$query.'%')->get()->toArray();
+                return view('FlowerShop.front.products.search', compact('products', 'count'));
+
+            }
+        }
     }
     public function detail(Request $request, $id){
         $product_details = Product::with(['section', 'brand', 'attributes' => function($query){

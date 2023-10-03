@@ -42,9 +42,12 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     font-family: 'Arial', sans-serif!important;
-    background: #f4f8fa;
+    background: #f5c9dd;
     color: #333333;
     vertical-align: baseline;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 ul {

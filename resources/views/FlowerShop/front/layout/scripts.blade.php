@@ -31,10 +31,12 @@ $filters = ProductFilter::filters();
                 url:url,
                 data: {brand:brand, size:size, color:color, sorter:sorter, url, @foreach($filters as $filter) {{$filter['filter_column']}}:{{$filter['filter_column']}}, @endforeach},
                 success: function(resp){
+                    $("#ajax_loading_overlay").fadeOut(300);
                     // alert(resp);
                     $('.filter-products-container').html(resp);
                 },
                 error: function(){
+                    $("#ajax_loading_overlay").fadeOut(300);
                     alert('error');
                 }
             })
