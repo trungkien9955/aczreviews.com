@@ -23,7 +23,7 @@
                 <ul class="header-list">
                     <li>
                         <div class="header-item-wrapper">
-                            <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/order-2.png')}}" alt="" width= "36" height = "36"><span>Đơn hàng</span></a>
+                            <a href="/checkout"><img src="{{url('FlowerShop/front/images-3/icon_images/order-2.png')}}" alt="" width= "36" height = "36"><span>Đơn hàng</span></a>
                         </div>
                     </li>
                     <li>

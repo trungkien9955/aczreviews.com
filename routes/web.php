@@ -113,4 +113,9 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::post('guest-rating', 'RatingController@guest_rating');
     //search
     Route::get('/search', 'ProductController@search');
+    //all homepage ratings
+    Route::get('/all-ratings', 'IndexController@get_all_ratings');
+    Route::get('/all-articles', 'IndexController@get_all_articles');
+    Route::get('/article/{id}', 'IndexController@get_article');
+
 });

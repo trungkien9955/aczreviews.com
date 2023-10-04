@@ -10,8 +10,8 @@ footer {
     background-color: #fff;
 }
 .header-section-second {
-    background-color: #111111;
-    color: #fff;
+    background-color: #1e1e1e;
+    color: #e1e1e1;
     display: flex;
     padding-top: 20px;
 }
@@ -142,7 +142,11 @@ footer {
     margin:0;
 }
 .header-list li {
-    margin-right: 16px;
+    margin-right: 12px;
+    padding: 0 4px;
+}
+.header-list li:not(:first-child){
+    border-left: 1px solid #e1e1e1;
 }
 .header-item-wrapper {
     flex:1;
@@ -489,34 +493,92 @@ footer {
     top: 0;
     transform: skew(45deg);
 }
-
-.comment-item {
+.home-comment-item-wrapper {
+    padding:0 36px;
+}
+.home-comment-item {
     background-color: #fff;
     z-index: 2;
-    border-top: 1px solid var(--color-5);
+    border-top: 1px solid #e62263;
     padding: 6px 36px; 
+    color: var(--text-color);
 }
-.comment-item:last-child {
+.home-comment-item p {
+    margin:0; 
+    padding:0;
+}
+.home-comment-item:last-child {
     margin-bottom: 12px;
 }
-.comment-author-name {
+.home-comment-author-name {
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 16px;
 }
 /* comment section */
-
+.home-article-item-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.homepage-ratings-wrapper {
+    padding-top: 48px;
+    width: 75%;
+    margin:auto;
+}
+.homepage-ratings-header {
+    margin-bottom: 48px;
+}
 .news {
     position:relative;
     background-color: var(--color-5);
 }
-.news-header {
+.home-articles-header {
     position: relative;
 }
 
 .news-content {
     position: relative;
     background-color: #fff;
+}
+/* listing */
+.home-articles-section {
+    padding-bottom: 24px;
+}
+.homepage-ratings-wrapper {
+    padding-top: 24px;
+    margin-bottom: 24px;
+    padding-left: 36px;
+}
+.articles-wrapper {
+    padding-top: 24px;
+    margin-left: 48px;
+    margin-bottom: 24px;
+    width: 75%;
+}
+.articles-content .news-item-wrapper{
+    margin-bottom: 36px;
+    /* width: 75%; */
+}
+.news-item-wrapper .news-item-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.article-wrapper {
+    padding: 60px 36px 36px 36px;
+    width: 75%;
+    margin:auto;
+}
+.article-wrapper .article-header h4 {
+    font-size: 36px;
+    font-weight:bold;
+}
+.article-wrapper .article-header {
+    margin-bottom: 12px;
+}
+.article-wrapper .article-desc {
+    font-weight:bold;
+    font-size: 18px;
+    margin-bottom: 12px;
 }
 /* listing */
 

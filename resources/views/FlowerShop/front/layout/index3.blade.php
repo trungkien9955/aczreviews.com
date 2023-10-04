@@ -261,150 +261,65 @@
                     </div>
                 </div>
             </div>
-            <div class="comment-section mt-3">
+            <div class="home-comment-section mt-3">
                 <div class="container">
-                    <div class="comment-section-wrapper overflow-hidden">
+                    <div class="home-comment-section-wrapper overflow-hidden">
                         <div class="row mt-2">
-                            <div class="comment-header block-header-2 col-lg-12 d-flex">
-                                <div class = "comment-header-title block-title-2">Nhận xét của khách hàng </div>
+                            <div class="home-comment-header block-header-2 col-lg-12 d-flex">
+                                <div class = "home-comment-header-title block-title-2">Nhận xét của khách hàng </div>
                                 <div class="underline"></div>
                             </div>
                         </div>
-                        <div class="comment-item-wrapper row mt-3 gy-3">
-                            <div class="col-lg-12 comment-item">
+                        <div class="home-comment-item-wrapper row mt-2 gy-2">
+                            @foreach($homepage_ratings as $rating)
+                            <div class="col-lg-6 col-md-6 col-xs-12 home-comment-item">
                                 <div class="comment-author-image my-1">
                                     <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
                                 </div>
-                                <div class="comment-author-name my-0 py-0">
-                                    <span>NGUYỄN LỆ THỦY</span>
+                                <div class="home-comment-author-name my-0 py-0">
+                                    <span>{{$rating['name']}}</span>
+                                    <span class="badge bg-success">Đã mua hàng tại FlowerShop</span>
                                 </div>
-                                <div class="comment-author-address my-0  py-0">
-                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
+                                <div class="home-comment-author-address my-0  py-0">
+                                    <p><strong>Địa chỉ:</strong>&nbsp;{{$rating['address']}}, &nbsp;{{$rating['ward']}},&nbsp;{{$rating['district']}},&nbsp;{{$rating['province']}},</p>
                                 </div>
-                                <div class="comment-content mt-2">
-                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+                                <div class="home-comment-date my-0  py-0">
+                                    <span>{{ \Carbon\Carbon::parse($rating['created_at'])->format('Y-m-d H:i'); }}</span>
+                                </div>
+                                <div class="home-comment-content mt-2">
+                                    <p><i>"{{$rating['feedback']}}"</i></p>
                                 </div> 
                             </div>
-                            <div class="col-lg-12 comment-item">
-                                <div class="comment-author-image my-1">
-                                    <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
-                                </div>
-                                <div class="comment-author-name my-0 py-0">
-                                    <span>NGUYỄN LỆ THỦY</span>
-                                </div>
-                                <div class="comment-author-address my-0  py-0">
-                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
-                                </div>
-                                <div class="comment-content mt-2">
-                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12 comment-item">
-                                <div class="comment-author-image my-1">
-                                    <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
-                                </div>
-                                <div class="comment-author-name my-0 py-0">
-                                    <span>NGUYỄN LỆ THỦY</span>
-                                </div>
-                                <div class="comment-author-address my-0  py-0">
-                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
-                                </div>
-                                <div class="comment-content mt-2">
-                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12 comment-item">
-                                <div class="comment-author-image my-1">
-                                    <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
-                                </div>
-                                <div class="comment-author-name my-0 py-0">
-                                    <span>NGUYỄN LỆ THỦY</span>
-                                </div>
-                                <div class="comment-author-address my-0  py-0">
-                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
-                                </div>
-                                <div class="comment-content mt-2">
-                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12 comment-item">
-                                <div class="comment-author-image my-1">
-                                    <img width = "50" height = "50" src="{{asset('front/images/comment_images/comment-author1.jpg')}}" alt="">
-                                </div>
-                                <div class="comment-author-name my-0 py-0">
-                                    <span>NGUYỄN LỆ THỦY</span>
-                                </div>
-                                <div class="comment-author-address my-0  py-0">
-                                    <p><strong>Địa chỉ:</strong> <i>215 Long Biên, Hà Nội</i></p>
-                                </div>
-                                <div class="comment-content mt-2">
-                                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
-                                </div> 
-                            </div>
-                            <a style = "text-decoration: underline; margin-left:10px;"href="">Xem tất cả</a>
+                            @endforeach
+                            <a style = "text-decoration: underline; margin-left:10px;"href="/all-ratings">Xem tất cả</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="news-section mt-3">
+            <div class="home-articles-section mt-3">
                 <div class="container overflow-hidden">
-                    <div class="news-section-wrapper mt-2 ">
+                    <div class="home-articles-section-wrapper mt-2 ">
                         <div class="row ">
-                            <div class="news-header col-lg-12 d-flex block-header-2">
-                                    <div class = "news-header-title block-title-2">TIN TỨC, KINH NGHIỆM CHỌN HOA </div>
+                            <div class="home-articles-header col-lg-12 d-flex block-header-2">
+                                    <div class = "home-articles-header-title block-title-2">TIN TỨC, KINH NGHIỆM CHỌN HOA </div>
                                     <div class="underline"></div>
                             </div>
                         </div>
-                        <div class="news-item-wrapper row mt-2">
-                            <div class="news-item col-lg-6 col-xs-12">
-                                <div class="news-item-image">
-                                    <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">
+                        <div class="home-article-item-wrapper row mt-2">
+                            @foreach($articles as $article)
+                                <div class="home-article-item col-lg-6 col-xs-12">
+                                    <a href="{{url('/article/'.$article['id'])}}">
+                                    <div class="home-article-item-image">
+                                        <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">
+                                    </div>
+                                    <div class="home-article-item-title">
+                                        <p>{{$article['name']}}</p>
+                                    </div>
+                                    </a>
                                 </div>
-                                <div class="news-item-title">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                            <div class="news-item col-lg-6 col-xs-12">
-                                <div class="news-item-image">
-                                <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-2.jpg')}}" alt="">
-                                </div>
-                                <div class="news-item-title">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                            <div class="news-item col-lg-6 col-xs-12">
-                                <div class="news-item-image">
-                                    <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">
-                                </div>
-                                <div class="news-item-title">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                            <div class="news-item col-lg-6 col-xs-12">
-                                <div class="news-item-image">
-                                <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-2.jpg')}}" alt="">
-                                </div>
-                                <div class="news-item-title">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                            <div class="news-item col-lg-6 col-xs-12">
-                                <div class="news-item-image">
-                                <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-2.jpg')}}" alt="">
-                                </div>
-                                <div class="news-item-title">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                            <div class="news-item col-lg-6 col-xs-12">
-                                <div class="news-item-image">
-                                    <img style = "max-height: 360px; border-radius:6px;"src="{{asset('front/images-3/banner_images/home-slider-1.jpg')}}" alt="">
-                                </div>
-                                <div class="news-item-title">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
+                            @endforeach
+                            <a style = "text-decoration: underline; margin-left:10px;"href="/all-articles">Xem tất cả</a>
                         </div>
                     </div>
                 </div>
