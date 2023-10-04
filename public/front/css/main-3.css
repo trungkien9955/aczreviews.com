@@ -9,8 +9,14 @@ footer {
 .container {
     background-color: #fff;
 }
-.header-content {
-    background-color: #fff;
+.header-section-second {
+    background-color: #111111;
+    color: #fff;
+    display: flex;
+    padding-top: 20px;
+}
+.header-section-second a:hover{
+    color: #e62263;
 }
 .header-section-first {
     background-color: #e62263;
@@ -77,55 +83,77 @@ footer {
       transform: rotate(360deg); 
     }
   }
-  /* .is-hide{
-    display:none;
-  } */
-.header-page__wrapper {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 10px 0;
-    /* background-color: rgba(0, 0, 0, 0.3); */
-}
-/* .container {
-    width: 1200px;
-
-} */
-
 /* header */
 
-.header-wrapper {
+.header-second-wrapper {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     padding: 10px 0;
     justify-content: space-between;
+    background-color: #111111;
+}
+.header-second-left {
+    flex:1;
+    flex-grow: 2;
+    display: flex;
+    align-items: center;
+
+}
+.header-second-middle {
+    flex: 1;
+    flex-grow: 6;
+
 }
 .header-logo {
-    flex: 0 0 120px;
     max-width: 120px;
     max-height: 90px;
     text-align: center;
 }
-.header-search {
-    flex: 1;
-    max-width: 600px;
+.logo-wrapper {
+    padding-right: 60px;
+    padding-left:30px;
+    color: rgb(230, 34, 99);
+    font-size:30px;
+    font-weight: 700;
+    position:relative;
+    text-align: center;
 }
-.cart-container {
+
+.logo-wrapper img {
+    width: 60px;
+    height: 60px;
+    position:absolute;
+    right:8px;
+    top:-18px;
+}
+.header-search {
+    /* max-width: 480px; */
+    margin-left:12px;
+    min-width: 360px;
+}
+.header-list {
+    flex:1;
+    flex-grow:5;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
+    margin:0;
+}
+.header-list li {
+    margin-right: 16px;
+}
+.header-item-wrapper {
     flex:1;
     text-align: right;
-    max-width: 200px;
-    margin-left:auto;
-}
-.cart-wrapper {
-    position: relative;
     display: inline-block;
+    /* margin-left:auto; */
 }
-.cart-wrapper i {
-    font-size: 24px;
-    color: #333333;
+.header-cart-wrapper {
+    position: relative;
 }
-.cart-wrapper .cart-count {
+.header-item-wrapper .cart-count {
     position: absolute;
     top: -12px;
     right: -12px;
@@ -139,17 +167,25 @@ footer {
     padding: 0;
     font-size:12px
 }
-.cart-container span {
+.header-item-wrapper span {
     display: inline-block;
-    margin-left: 4px;
 }
 .header-action {
-    flex: 0 0 240px;
+    flex: 1;
     max-width: 240px;
-    padding: 0 20px;
+    padding: 0 6px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+.header-action-wrapper .header-btn {
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 4px 8px;
+}
+.header-action-wrapper .header-btn:hover{
+    background-color: #e62263;
+    border: 1px solid #e62263;
 }
 .header-nav {
     display: flex;
@@ -179,7 +215,7 @@ footer {
 .nav-sidebar-head {
     padding: 0;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     width: 100%;
     color: #fff;
     font-size: 14px;
@@ -187,7 +223,7 @@ footer {
     text-transform: uppercase;
     background: #e62263;
     border-radius: 4px;
-    height: 35px;
+    height: 32px;
     align-items: center;
 }
 .nav-sidebar-head img {
@@ -210,10 +246,10 @@ footer {
 }
 .nav-sidebar-list li {
     padding: 2px 0;
-
 }
 .nav-sidebar-list li a i {
     font-size: 18px;
+    color: #fff;
 }
 .nav-sidebar-list li a img {
     width: 24px;
@@ -503,7 +539,7 @@ footer {
     margin-bottom: 24px;
 }
 /* detail */
-.product-detail-image img {
+.product-detail-image-container img {
     border: 1px solid #cccccc;
 }
 .gallery li {
@@ -559,8 +595,10 @@ footer {
     display:inline-block;
     /* max-width: 150px; */
 }
-
-.variant_selection input[type="checkbox"] {
+.variant_selection {
+    padding-top: 6px;
+}
+.variant_selection input[type="radio"] {
     display: none;
   }
   
@@ -570,12 +608,19 @@ footer {
     text-transform: uppercase;
     border-radius: 3px;
     border: 1px solid var(--primary_color);
+    min-width: 80px;
+    text-align: center;
   }
   
-  .variant_selection input[type="checkbox"]:checked + span {
+  .variant_selection input[type="radio"]:checked + span {
     background-color: var(--primary_color);
     color: #fff;
   }
+  .variant_selection input[type="radio"]:not(:checked) + span {
+    background-color: #fff;
+    color: var(--primary_color);
+  }
+
 .info-action button {
     color: #fff;
     padding: 12px 36px;

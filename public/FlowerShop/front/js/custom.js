@@ -60,7 +60,7 @@ $(document).ready(function(){
              success: function(resp){
                 $("#ajax_loading_overlay").fadeOut(300);
                  $image = resp.image;
-                 $('.product-detail-image img').attr('src',"/FlowerShop/front/images-3/product_images/medium/"+ $image)
+                 $('.product-detail-image-container img').attr('src',"/FlowerShop/front/images-3/product_images/medium/"+ $image)
              },
              error: function(){
                 $("#ajax_loading_overlay").fadeOut(300);
@@ -490,3 +490,8 @@ $('#guest-rating-form').submit(function(event){
     })
 })
 
+// gallery
+$(document).on('click', '.gallery-image', function(){
+    $src = $(this).attr('src');
+    $('.product-detail-image').attr('src', $src);
+})

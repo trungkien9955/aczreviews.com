@@ -2,47 +2,67 @@
     <div class="header-section-first">
         <div><i class="fa-solid fa-phone-volume"></i><span>Hotline: 0988 666 888</span></div>
     </div>
-    <div class="header-content">
+    <div class="header-section-second">
         <div class="container" style = "background-color:inherit;">
-            <div class="header-wrapper">
-                <div class="header-logo">
-                    <a href="/"><img  style = "width: 70px; height: 60px"src="{{url('front/images-3/icon_images/bouquet-5.png')}}" alt=""></a>
+            <div class="header-second-wrapper">
+                <div class="header-second-left">
+                    <div class="logo-wrapper">
+                            <a href="/"><span>Flowershop</span><img src="{{url('FlowerShop/front/images-3/icon_images/logo-4.png')}}" alt=""></a>
+                        </div>
                 </div>
-                <div class="header-search">
-                    <div class="search-wrapper">
-                        <form action="{{url('/search')}}" class = "d-flex" method = "get">
-                            <input type="text" class = "form-control" placeholder = "Tìm kiếm ..." id = "search" name = "search">
-                            <button type="submit" class="btn btn-warning" style = "background-color: #e62263; color: #fff; margin-left:6px;">Search</button>
-                        </form>
+                <div class="header-second-middle">
+                    <div class="header-search">
+                        <div class="search-wrapper">
+                            <form action="{{url('/search')}}" class = "d-flex" method = "get">
+                                <input type="text" class = "form-control" placeholder = "Tìm kiếm ..." id = "search" name = "search">
+                                <button type="submit" style = "background-color: #e62263; color: #fff; margin-left:6px; border: 1px solid #e62263;width: 100px; border-radius: 4px;">Tìm kiếm</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="cart-container">
-                    <div class="cart-wrapper">
-                        <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
-                        <div class="cart-count">1</div>
-                    </div>
-                    <span>Giỏ hàng</span>
-                </div>
-                <div class="header-action">
-                    @if(Auth::check())
-                    <div class="profile-image">
-                        <img style = "width: 40px; height:40px;border-radius: 50%;" src="{{url('FlowerShop/front/images-3/profile_images/profile-image-1.jpg')}}" alt="">
-                    </div>
-                    <div class="logout" style = "margin-left: 6px;">
-                        <button class="user-logout-btn" style = "font-size:24px;border:none;"><i class="fa-solid fa-power-off"></i></button>
-                    </div>
-                    @else
-                    <div class="header-action-wrapper">
-                        <a href = "/user/login-register"class="btn btn-outline-dark">Đăng ký</a>
-                        <a href = "/user/login-register" class="btn btn-outline-dark">Đăng nhập</a>
-                    </div>
-                    @endif
-                </div>
+                <ul class="header-list">
+                    <li>
+                        <div class="header-item-wrapper">
+                            <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/order-2.png')}}" alt="" width= "36" height = "36"><span>Đơn hàng</span></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-item-wrapper">
+                            <div class="header-cart-wrapper">
+                                <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/cart-1.png')}}" alt="" width= "36" height = "36"><span>Giỏ hàng</span></a>
+                                <div class="cart-count">1</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-item-wrapper">
+                            <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/contact-1.png')}}" alt="" width= "36" height = "36"><span>Liên hệ</span></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="header-item-wrapper">
+                            @if(Auth::check())
+                            <div class="profile-image">
+                                <img style = "width: 40px; height:40px;border-radius: 50%;" src="{{url('FlowerShop/front/images-3/profile_images/profile-image-1.jpg')}}" alt="">
+                            </div>
+                            <div class="logout" style = "margin-left: 6px;">
+                                <button class="user-logout-btn" style = "font-size:24px;border:none;"><i class="fa-solid fa-power-off"></i></button>
+                            </div>
+                            @else
+                            <div class="header-account-wrapper">
+                                <a href=""><img src="{{url('FlowerShop/front/images-3/icon_images/account-1.png')}}" width= "36" height = "36" alt=""><span>Tài khoản</span></a>
+                                <!-- <a href = "/user/login-register"class="btn header-btn">Đăng ký</a> -->
+                                <!-- <a href = "/user/login-register" class="btn header-btn">Đăng nhập</a> -->
+                            </div>
+                            @endif
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="header-nav">
                 <div class="nav-sidebar">
                     <div class="nav-sidebar-head">
-                        <i class="fa-solid fa-bars"></i>
+                    <img src="{{url('FlowerShop/front/images-3/icon_images/menu-1.png')}}" width= "36" height = "36" alt="">
                         <span>DANH MỤC THÔNG TIN</span>
                     </div>
                     <div class="nav-sidebar-dropdown dropdown">

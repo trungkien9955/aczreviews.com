@@ -21,17 +21,17 @@ use App\Models\FlowerShop\ProductFilter;
     </div>
 </div>
 <div class="detail-section">
-    <div class="container overflow-hidden">
+    <div class="container">
         <div class="detail-wrapper">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-xs-12">
-                    <div class="product-detail-image" style = "overflow:hidden">
-                            <img src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product_details['product_image'])}}" alt="" width = "640" height = "360"/>
+                    <div class="product-detail-image-container ">
+                            <img src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product_details['product_image'])}}" class="product-detail-image" alt="" width = "640" height = "360"/>
                     </div>
                     <ul class="gallery mt-2">
                         @foreach($product_details['images'] as $image)
                         <li style = "margin-right: 4px;" class = "d-xs-inline-flex">
-                                <img width = "120" height = "120" src="{{url('FlowerShop/front/images-3/product_images/small/'.$image['image'])}}" alt="" />
+                                <img width = "120" height = "120" src="{{url('FlowerShop/front/images-3/product_images/small/'.$image['image'])}}" class = "gallery-image" alt="" />
                         </li>
                         @endforeach
                     </ul>
@@ -188,7 +188,7 @@ use App\Models\FlowerShop\ProductFilter;
                                     <p style = "margin: 0"><b>Chọn màu:</b></p>
                                     <div class="variant_selection">
                                         @foreach($attr_with_color as $attr)
-                                        <label><input type="checkbox" name="color" class = "color_option" value="{{$attr['color']}}"><span>{{$attr['v_color']}}</span></label>
+                                        <label><input type="radio" name="color" class = "color_option" value="{{$attr['color']}}"><span>{{$attr['v_color']}}</span></label>
                                         @endforeach
                                     </div>
                                 </div>
@@ -199,7 +199,7 @@ use App\Models\FlowerShop\ProductFilter;
                                     <p style = "margin: 0"><b>Chọn size:</b></p>
                                     <div class="variant_selection">
                                         @foreach( $attr_with_size as $attr)
-                                        <label><input type="checkbox" name="size" class = "size_option" value="{{$attr['size']}}"><span>{{$attr['size']}}</span></label>
+                                        <label><input type="radio" name="size" class = "size_option" value="{{$attr['size']}}"><span>{{$attr['size']}}</span></label>
                                         @endforeach
                                     </div>
                                 </div>
@@ -239,14 +239,6 @@ use App\Models\FlowerShop\ProductFilter;
                             <div class="tab-pane fade show active"id="detail-tab-description" role="tabpanel" aria-labelledby="detail-tab-description-tab">
                                 <div class="product_desc m-auto p-3 mt-2">
                                     <h3 style = "text-align:center; font-weight: 600;color: #6C757D;margin-bottom: 24px;">Mô tả sản phẩm {{$product_details['product_name']}}</h3>
-                                    <p><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</b> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <i>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</i>.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            <div style = "text-align:center"><img src = "/FlowerShop/front/images-3/new_images/new-flower-2.jpg"></div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            <div style = "text-align:center"> <img src = "/FlowerShop/front/images-3/new_images/new-flower-3.jpg"></div>
                                     <?php 
                                     $description = Product::get_description($product_details['id']);
                                     // dd($description);
