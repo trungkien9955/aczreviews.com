@@ -117,5 +117,6 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     Route::get('/all-ratings', 'IndexController@get_all_ratings');
     Route::get('/all-articles', 'IndexController@get_all_articles');
     Route::get('/article/{id}', 'IndexController@get_article');
-
+    //home-contact
+    Route::get('/contact', 'IndexController@contact');
 });

@@ -45,8 +45,8 @@ use App\Models\FlowerShop\ProductFilter;
                                     <?php 
                                     $rating_info = Product::get_rating($product_details['id']);
                                     $count = 0;
-                                    $total_count = 5- $rating_info['product_rating'];
-                                    while($count< $rating_info['product_rating']) {
+                                    $total_count = 5- $rating_info['product_rating_for_star'];
+                                    while($count< $rating_info['product_rating_for_star']) {
                                         echo '<span style = "color:#ffc700; font-size: 36px;">&#9733;</span>';
                                         $count++;
                                     }
@@ -407,6 +407,7 @@ use App\Models\FlowerShop\ProductFilter;
                                                     </div>
                                                     @endforeach
                                                     <?php $guest_rating_info = Product::get_guest_rating($product_details['id'])?>
+                                                    @if($guest_rating_info['is_rated_by_guest']=="yes")
                                                     @foreach($guest_rating_info['guest_rating_info'] as $guest_rating)
                                                     <div class="review-item mb-2">
                                                         <div class="review-item-author">
@@ -437,6 +438,7 @@ use App\Models\FlowerShop\ProductFilter;
                                                         </div>
                                                     </div>
                                                     @endforeach
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

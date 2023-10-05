@@ -1,3 +1,4 @@
+<?php use App\Models\FlowerShop\Product; ?>
 @extends('FlowerShop.front.layout.layout3')
 @section('content')
 <div class="main-section">
@@ -9,10 +10,10 @@
                                     <div class="slider-top-left">
                                         <div class=" owl-carousel owl-carousel-home-slider">
                                             <div class="home-slider-image-container">
-                                            <a href=""><img src="{{url('front/images-3/banner_images/home-slider-1.jpg')}}" alt=""></a>
+                                            <a href="/hoa-cuoi"><img src="{{url('front/images-3/banner_images/home-slider-1.jpg')}}" alt=""></a>
                                             </div>
                                             <div class="home-slider-image-container">
-                                            <a href=""><img src="{{url('front/images-3/banner_images/home-slider-1.jpg')}}" alt=""></a>
+                                            <a href="/hoa-hoi-nghi"><img src="{{url('front/images-3/banner_images/home-slider-2.jpg')}}" alt=""></a>
                                             </div>
                                         </div>
                                     </div>
@@ -20,10 +21,10 @@
                                         <div class="slider-top-right-wrapper">
                                             <ul>
                                                 <li>
-                                                    <a href=""><img src="{{url('front/images/banner_images/home-slider-left-1.webp')}}" alt=""></a>
+                                                    <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-slider-left-1.webp')}}" alt=""></a>
                                                 </li>
                                                 <li>
-                                                    <a href=""><img src="{{url('front/images/banner_images/slider-top-right-2.webp')}}" alt=""></a>
+                                                    <a href="/hoa-hoi-nghi"><img src="{{url('front/images/banner_images/slider-top-right-2.webp')}}" alt=""></a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -37,16 +38,16 @@
                 <div class="container">
                     <div class="banner-wrapper">
                             <div class="banner-item">
-                                <a href=""><img src="{{url('front/images/banner_images/home-banner-1.webp')}}" alt=""></a>
+                                <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-banner-1.webp')}}" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href=""><img src="{{url('front/images/banner_images/home-banner-2.webp')}}" alt=""></a>
+                                <a href="/hoa-hoi-nghi"><img src="{{url('front/images/banner_images/home-banner-2.webp')}}" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href=""><img src="{{url('front/images/banner_images/home-banner-3.webp')}}" alt=""></a>
+                                <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-banner-3.webp')}}" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href=""><img src="{{url('front/images/banner_images/home-banner-4.webp')}}" alt=""></a>
+                                <a href="/hoa-hoi-nghi"><img src="{{url('front/images/banner_images/home-banner-4.webp')}}" alt=""></a>
                             </div>
                     </div>
                 </div>
@@ -72,6 +73,23 @@
                                                 <div class="block-items-slider owl-carousel owl-carousel-new-flowers">
                                                 @foreach($featured_products as $product)
                                                 <div class="item m-auto">
+                                                            <div class="home-product-discount">
+                                                                @if($product['product_discount']>0)
+                                                                <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="product-features">
+                                                                <?php $is_new = Product::is_new($product['id'])?>
+                                                                @if($is_new = "yes")
+                                                                <span class="product-feature-new">New</span>
+                                                                @endif
+                                                                @if(!empty($product['gifts']))
+                                                                <span class="product-feature-gift">Quà tặng</span>
+                                                                @endif
+                                                                @if($product['is_featured']=="Yes")
+                                                                <span class="product-feature-hot">Trending</span>
+                                                                @endif
+                                                            </div>
                                                             <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                                                                 <div class="item-image">
                                                                     <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -79,8 +97,41 @@
                                                             </a>
                                                             <div class="item-details mt-2">
                                                                 <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <div class="">
+                                                                    <?php 
+                                                                        $rating_info = Product::get_rating($product['id']);
+                                                                        $is_rated = $rating_info['is_rated'];
+                                                                        if($is_rated=="no"){
+                                                                            $count = 5;
+                                                                            while($count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $count--;
+                                                                            }
+                                                                        }else{
+                                                                            $count = 0;
+                                                                            $total_count = 5- $rating_info['product_rating'];
+                                                                            while($count< $rating_info['product_rating']) {
+                                                                                echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                                $count++;
+                                                                            }
+                                                                            while($total_count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $total_count--;
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </div>
                                                                 <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                                @if($product['product_discount']==0)
+                                                                    <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                                                    @else
+                                                                    <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                                                    <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                                                    <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="home-item-action">
+                                                                <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -113,6 +164,23 @@
                                                 <div class="block-items-slider  owl-carousel owl-carousel-wedding-flowers">
                                                     @foreach($wedding_flowers as $product)
                                                         <div class="item m-auto">
+                                                            <div class="home-product-discount">
+                                                                @if($product['product_discount']>0)
+                                                                <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="product-features">
+                                                                <?php $is_new = Product::is_new($product['id'])?>
+                                                                @if($is_new = "yes")
+                                                                <span class="product-feature-new">New</span>
+                                                                @endif
+                                                                @if(!empty($product['gifts']))
+                                                                <span class="product-feature-gift">Quà tặng</span>
+                                                                @endif
+                                                                @if($product['is_featured']=="Yes")
+                                                                <span class="product-feature-hot">Trending</span>
+                                                                @endif
+                                                            </div>
                                                             <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                                                                 <div class="item-image">
                                                                     <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -120,8 +188,41 @@
                                                             </a>
                                                             <div class="item-details mt-2">
                                                                 <h3 class="item-name">{{$product['product_name']}}</h3>
-                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                                <div class="">
+                                                                <?php 
+                                                                    $rating_info = Product::get_rating($product['id']);
+                                                                    $is_rated = $rating_info['is_rated'];
+                                                                    if($is_rated=="no"){
+                                                                        $count = 5;
+                                                                        while($count>0) {
+                                                                            echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                            $count--;
+                                                                        }
+                                                                    }else{
+                                                                        $count = 0;
+                                                                        $total_count = 5- $rating_info['product_rating'];
+                                                                        while($count< $rating_info['product_rating']) {
+                                                                            echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                            $count++;
+                                                                        }
+                                                                        while($total_count>0) {
+                                                                            echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                            $total_count--;
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                </div>
+                                                                <p class="item-desc"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                @if($product['product_discount']==0)
+                                                                    <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                                                    @else
+                                                                    <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                                                    <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                                                    <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="home-item-action">
+                                                                <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -155,6 +256,23 @@
                                                 <div class="block-items-slider  owl-carousel owl-carousel-wedding-trays">
                                                     @foreach($wedding_trays as $product)
                                                         <div class="item m-auto">
+                                                        <div class="home-product-discount">
+                                                                @if($product['product_discount']>0)
+                                                                <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="product-features">
+                                                                <?php $is_new = Product::is_new($product['id'])?>
+                                                                @if($is_new = "yes")
+                                                                <span class="product-feature-new">New</span>
+                                                                @endif
+                                                                @if(!empty($product['gifts']))
+                                                                <span class="product-feature-gift">Quà tặng</span>
+                                                                @endif
+                                                                @if($product['is_featured']=="Yes")
+                                                                <span class="product-feature-hot">Trending</span>
+                                                                @endif
+                                                            </div>
                                                             <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                                                                 <div class="item-image">
                                                                     <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -162,9 +280,42 @@
                                                             </a>
                                                             <div class="item-details mt-2">
                                                                 <h3 class="item-name">{{$product['product_name']}}</h3>
-                                                                <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
-                                                            </div>
+                                                                <div class="">
+                                                                    <?php 
+                                                                        $rating_info = Product::get_rating($product['id']);
+                                                                        $is_rated = $rating_info['is_rated'];
+                                                                        if($is_rated=="no"){
+                                                                            $count = 5;
+                                                                            while($count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $count--;
+                                                                            }
+                                                                        }else{
+                                                                            $count = 0;
+                                                                            $total_count = 5- $rating_info['product_rating'];
+                                                                            while($count< $rating_info['product_rating']) {
+                                                                                echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                                $count++;
+                                                                            }
+                                                                            while($total_count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $total_count--;
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                    </div>
+                                                                    <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                                                                    @if($product['product_discount']==0)
+                                                                        <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                                                        @else
+                                                                        <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                                                        <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                                                        <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="home-item-action">
+                                                                <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
+                                                                </div>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -197,6 +348,23 @@
                                                 <div class="block-items-slider  owl-carousel owl-carousel-meeting-flowers">
                                                     @foreach($meeting_flowers as $product)
                                                         <div class="item m-auto">
+                                                        <div class="home-product-discount">
+                                                                @if($product['product_discount']>0)
+                                                                <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="product-features">
+                                                                <?php $is_new = Product::is_new($product['id'])?>
+                                                                @if($is_new = "yes")
+                                                                <span class="product-feature-new">New</span>
+                                                                @endif
+                                                                @if(!empty($product['gifts']))
+                                                                <span class="product-feature-gift">Quà tặng</span>
+                                                                @endif
+                                                                @if($product['is_featured']=="Yes")
+                                                                <span class="product-feature-hot">Trending</span>
+                                                                @endif
+                                                            </div>
                                                             <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                                                                 <div class="item-image">
                                                                     <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -204,8 +372,41 @@
                                                             </a>
                                                             <div class="item-details mt-2">
                                                                 <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <div class="">
+                                                                    <?php 
+                                                                        $rating_info = Product::get_rating($product['id']);
+                                                                        $is_rated = $rating_info['is_rated'];
+                                                                        if($is_rated=="no"){
+                                                                            $count = 5;
+                                                                            while($count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $count--;
+                                                                            }
+                                                                        }else{
+                                                                            $count = 0;
+                                                                            $total_count = 5- $rating_info['product_rating'];
+                                                                            while($count< $rating_info['product_rating']) {
+                                                                                echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                                $count++;
+                                                                            }
+                                                                            while($total_count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $total_count--;
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </div>
                                                                 <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                                @if($product['product_discount']==0)
+                                                                    <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                                                    @else
+                                                                    <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                                                    <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                                                    <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="home-item-action">
+                                                                <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -239,6 +440,23 @@
                                                 <div class="block-items-slider  owl-carousel owl-carousel-wedding-cars">
                                                     @foreach($wedding_cars as $product)
                                                         <div class="item m-auto">
+                                                        <div class="home-product-discount">
+                                                                @if($product['product_discount']>0)
+                                                                <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="product-features">
+                                                                <?php $is_new = Product::is_new($product['id'])?>
+                                                                @if($is_new = "yes")
+                                                                <span class="product-feature-new">New</span>
+                                                                @endif
+                                                                @if(!empty($product['gifts']))
+                                                                <span class="product-feature-gift">Quà tặng</span>
+                                                                @endif
+                                                                @if($product['is_featured']=="Yes")
+                                                                <span class="product-feature-hot">Trending</span>
+                                                                @endif
+                                                            </div>
                                                             <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                                                                 <div class="item-image">
                                                                     <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -246,8 +464,41 @@
                                                             </a>
                                                             <div class="item-details mt-2">
                                                                 <h3 class="item-name">{{$product['product_name']}}</h3>
+                                                                <div class="">
+                                                                    <?php 
+                                                                        $rating_info = Product::get_rating($product['id']);
+                                                                        $is_rated = $rating_info['is_rated'];
+                                                                        if($is_rated=="no"){
+                                                                            $count = 5;
+                                                                            while($count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $count--;
+                                                                            }
+                                                                        }else{
+                                                                            $count = 0;
+                                                                            $total_count = 5- $rating_info['product_rating'];
+                                                                            while($count< $rating_info['product_rating']) {
+                                                                                echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                                                                $count++;
+                                                                            }
+                                                                            while($total_count>0) {
+                                                                                echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                                                                $total_count--;
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </div>
                                                                 <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                                                                <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                                                                @if($product['product_discount']==0)
+                                                                    <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                                                    @else
+                                                                    <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                                                    <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                                                    <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="home-item-action">
+                                                                <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
                                                             </div>
                                                         </div>
                                                     @endforeach

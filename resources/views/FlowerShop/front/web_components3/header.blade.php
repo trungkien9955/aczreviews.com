@@ -1,3 +1,4 @@
+<!-- valid -->
 <div class="header-section">
     <div class="header-section-first">
         <div><i class="fa-solid fa-phone-volume"></i><span>Hotline: 0988 666 888</span></div>
@@ -30,13 +31,13 @@
                         <div class="header-item-wrapper">
                             <div class="header-cart-wrapper">
                                 <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/cart-1.png')}}" alt="" width= "36" height = "36"><span>Giỏ hàng</span></a>
-                                <div class="cart-count">1</div>
+                                <div class="cart-count">12</div>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="header-item-wrapper">
-                            <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/contact-1.png')}}" alt="" width= "36" height = "36"><span>Liên hệ</span></a>
+                            <a href="/contact"><img src="{{url('FlowerShop/front/images-3/icon_images/contact-1.png')}}" alt="" width= "36" height = "36"><span>Liên hệ</span></a>
                         </div>
                     </li>
                     <li>
@@ -51,8 +52,10 @@
                             @else
                             <div class="header-account-wrapper">
                                 <a href=""><img src="{{url('FlowerShop/front/images-3/icon_images/account-1.png')}}" width= "36" height = "36" alt=""><span>Tài khoản</span></a>
-                                <!-- <a href = "/user/login-register"class="btn header-btn">Đăng ký</a> -->
-                                <!-- <a href = "/user/login-register" class="btn header-btn">Đăng nhập</a> -->
+                                <div class="header-account-hover-wrapper">
+                                    <a href="/user/login-register">Đăng nhập</a>
+                                    <a href="/user/login-register">Đăng ký</a>
+                                </div>
                             </div>
                             @endif
                         </div>
@@ -96,28 +99,28 @@
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="">
+                                <a href="/hoa-cuoi">
                                 <img src="{{url('front/images-3/icon_images/wedding-dress.png')}}" alt="">
                                 <span>Áo cưới cô dâu</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="">
+                                <a href="/hoa-cuoi">
                                 <img src="{{url('front/images-3/icon_images/wedding-suit.png')}}" alt="">
                                 <span>Bộ đồ chú rể</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="">
+                                <a href="/trap-an-hoi">
                                 <img src="{{url('front/images-3/icon_images/photo-camera-interface-symbol-for-button.png')}}" alt="">
                                 <span>Dịch vụ chụp ảnh, quay phim</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="">
+                                <a href="/trap-an-hoi">
                                 <img src="{{url('front/images-3/icon_images/car (1).png')}}" alt="">
                                 <span>Cho thuê xe dịch vụ</span>
                                 <i class="fa-solid fa-chevron-right"></i>

@@ -16,11 +16,11 @@ class IndexController extends Controller
     public function index(){
         Session::put('page', 'home');
         $sections = Section::select('id', 'section_name')->get()->toArray();
-        $featured_products = Product::select('id', 'product_name', 'product_image', 'product_code', 'product_price')->where(['is_featured'=> "Yes", 'status'=> 1])->inRandomOrder()->limit(4)->get()->toArray();
-        $wedding_flowers = Product::select('id', 'product_name', 'product_image', 'product_code', 'product_price')->where(['section_id'=> 2, 'status'=> 1])->limit(4)->get()->toArray();
-        $wedding_trays = Product::select('id', 'product_name', 'product_image', 'product_code', 'product_price')->where(['section_id'=> 4, 'status'=> 1])->limit(4)->get()->toArray();
-        $meeting_flowers = Product::select('id', 'product_name', 'product_image', 'product_code', 'product_price')->where(['section_id'=> 3, 'status'=> 1])->limit(4)->get()->toArray();
-        $wedding_cars = Product::select('id', 'product_name', 'product_image', 'product_code', 'product_price')->where(['section_id'=> 5, 'status'=> 1])->limit(4)->get()->toArray();
+        $featured_products = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['is_featured'=> "Yes", 'status'=> 1])->inRandomOrder()->limit(4)->get()->toArray();
+        $wedding_flowers = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['section_id'=> 2, 'status'=> 1])->limit(4)->get()->toArray();
+        $wedding_trays = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['section_id'=> 4, 'status'=> 1])->limit(4)->get()->toArray();
+        $meeting_flowers = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['section_id'=> 3, 'status'=> 1])->limit(4)->get()->toArray();
+        $wedding_cars = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['section_id'=> 5, 'status'=> 1])->limit(4)->get()->toArray();
         $homepage_ratings = Order::whereNotNull('feedback')->orWhere('feedback', '<>','')->orderBy('id', 'Desc')->limit(6)->get()->toArray();
         $articles = Article::orderBy('id', 'Desc')->limit(6)->get()->toArray();
         // dd($homepage_ratings);
@@ -41,5 +41,8 @@ class IndexController extends Controller
     public function get_article($id){
         $article_details = Article::find($id)->toArray();
         return view('FlowerShop.front.homepage.article', compact('article_details'));
+    }
+    public function contact(){
+        return view('FlowerShop.front.homepage.contact');
     }
 }

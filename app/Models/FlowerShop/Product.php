@@ -23,6 +23,9 @@ class Product extends Model
     public function descriptions(){
         return $this->hasMany('App\Models\FlowerShop\ProductDescription');
     }
+    public function gifts(){
+        return $this->hasMany('App\Models\FlowerShop\Gift', 'product_id');
+    }
     public static function discounted_price($id){
         $product_details = Product::select('id', 'product_price', 'product_discount')->where('id', $id)->first()->toArray();
         if($product_details['product_discount']> 0){
@@ -36,21 +39,44 @@ class Product extends Model
         return $description;
     }
     public static function get_guest_rating($id){
-        $guest_rating_info = RatingInfo::where('product_id', $id)->get()->toArray();
-        $guest_rating_comment = RatingInfo::where('product_id', $id)->get()->toArray();
-        // dd($rating_info);
-        $guest_rating_count =count(RatingInfo::where('product_id', $id)->get()->toArray());
-        $guest_total_score = array_sum(RatingInfo::where('product_id', $id)->pluck('rating')->toArray());
-        $guest_rating_float = $guest_total_score/$guest_rating_count;
-        $guest_product_rating = round($guest_rating_float, 1);
-        return array('guest_rating_info'=> $guest_rating_info,'guest_rating_count'=> $guest_rating_count, 'guest_product_rating'=> $guest_product_rating);
+        $count = RatingInfo::where('product_id', $id)->count();
+        if($count ==0){
+            $is_rated_by_guest = "no";
+            return array('is_rated_by_guest'=> $is_rated_by_guest);
+        }else{
+            $is_rated_by_guest = "yes";
+            $guest_rating_info = RatingInfo::where('product_id', $id)->get()->toArray();
+            $guest_rating_comment = RatingInfo::where('product_id', $id)->get()->toArray();
+            // dd($rating_info);
+            $guest_rating_count = $count;
+            $guest_total_score = array_sum(RatingInfo::where('product_id', $id)->pluck('rating')->toArray());
+            $guest_rating_float = $guest_total_score/$guest_rating_count;
+            $guest_product_rating = round($guest_rating_float, 1);
+            return array('is_rated_by_guest'=> $is_rated_by_guest,'guest_rating_info'=> $guest_rating_info,'guest_rating_count'=> $guest_rating_count, 'guest_product_rating'=> $guest_product_rating);
+        }
     }
     public static function get_rating($id){
-        $rating_info = Rating::with('user')->where('product_id', $id)->get()->toArray();
-        $product_rating_count =count(Rating::where('product_id', $id)->get()->toArray());
-        $product_total_score = array_sum(Rating::where('product_id', $id)->pluck('rating')->toArray());
-        $product_rating_float = $product_total_score/$product_rating_count;
-        $product_rating = round($product_rating_float, 1, PHP_ROUND_HALF_UP);
-        return array('rating_info'=> $rating_info,'product_rating_count'=> $product_rating_count, 'product_rating'=> $product_rating);
+        $product_rating_count =Rating::where('product_id', $id)->count();
+        if($product_rating_count==0){
+            $is_rated = "no";
+            return $is_rated;
+        }else{
+            $is_rated = "yes";
+            $rating_info = Rating::with('user')->where('product_id', $id)->get()->toArray();
+            $product_total_score = array_sum(Rating::where('product_id', $id)->pluck('rating')->toArray());
+            $product_rating_float = $product_total_score/$product_rating_count;
+            $product_rating = round($product_rating_float, 1);
+            $product_rating_for_star = round($product_rating_float);
+            return array('is_rated'=> $is_rated,'rating_info'=> $rating_info,'product_rating_count'=> $product_rating_count, 'product_rating'=> $product_rating, 'product_rating_for_star'=>$product_rating_for_star);
+        }
+    }
+    public static function is_new($id){
+        $new_product_id_collection = Product::select('id')->where('status', 1)->orderBy('id', 'Desc')->limit(5)->pluck('id')->toArray();
+        if(in_array($id, $new_product_id_collection)){
+            $is_new = "yes";
+        }else{
+            $is_new = "no";
+        }
+        return $is_new;
     }
 }

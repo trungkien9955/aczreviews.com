@@ -1,6 +1,8 @@
 @extends('FlowerShop.front.layout.layout3')
 @section('content')
 <div class="login-register-section">
+    <div class="login-register-hero-image" style = "background-image: url('{{url('FlowerShop/front/images-3/background_images/background-6.png')}}'); width: 100%; height: 300px;" >
+    </div>
     <div class="container overflow-hidden">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12">
