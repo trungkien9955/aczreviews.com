@@ -38,10 +38,10 @@
                 <div class="container">
                     <div class="banner-wrapper">
                             <div class="banner-item">
-                                <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-banner-1.webp')}}" alt=""></a>
+                                <a href="/hoa-cuoi"><img src="{{url('FlowerShop/front/images-3/banner_images/lower-banner-2.png')}}"width = "360" height = "165" style = "border-radius: 4px;" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href="/hoa-hoi-nghi"><img src="{{url('front/images/banner_images/home-banner-2.webp')}}" alt=""></a>
+                                <a href="/hoa-hoi-nghi"><img src="{{url('FlowerShop/front/images-3/banner_images/banner-2.png')}}" alt=""></a>
                             </div>
                             <div class="banner-item">
                                 <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-banner-3.webp')}}" alt=""></a>
