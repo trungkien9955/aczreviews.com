@@ -1,4 +1,9 @@
-<?php use App\Models\FlowerShop\Product; ?>
+<?php 
+use App\Models\FlowerShop\Product; 
+use App\Models\FlowerShop\ProductFilter;
+use App\Models\FlowerShop\Brand;
+
+?>
 @extends('FlowerShop.front.layout.layout3')
 @section('content')
 <div class="main-section">
@@ -21,10 +26,10 @@
                                         <div class="slider-top-right-wrapper">
                                             <ul>
                                                 <li>
-                                                    <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-slider-left-1.webp')}}" alt=""></a>
+                                                    <a href="/hoa-cuoi"><img src="{{url('FlowerShop/front/images-3/banner_images/banner-trapanhoi-2.png')}}" alt=""></a>
                                                 </li>
                                                 <li>
-                                                    <a href="/hoa-hoi-nghi"><img src="{{url('front/images/banner_images/slider-top-right-2.webp')}}" alt=""></a>
+                                                    <a href="/hoa-hoi-nghi"><img src="{{url('FlowerShop/front/images-3/banner_images/car-banner.png')}}" alt=""></a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -41,13 +46,13 @@
                                 <a href="/hoa-cuoi"><img src="{{url('FlowerShop/front/images-3/banner_images/lower-banner-2.png')}}"width = "360" height = "165" style = "border-radius: 4px;" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href="/hoa-hoi-nghi"><img src="{{url('FlowerShop/front/images-3/banner_images/banner-2.png')}}" alt=""></a>
+                                <a href="/hoa-hoi-nghi"><img src="{{url('FlowerShop/front/images-3/banner_images/banner-4.png')}}" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href="/hoa-cuoi"><img src="{{url('front/images/banner_images/home-banner-3.webp')}}" alt=""></a>
+                                <a href="/hoa-cuoi"><img src="{{url('FlowerShop/front/images-3/banner_images/lower-banner-2.png')}}" alt=""></a>
                             </div>
                             <div class="banner-item">
-                                <a href="/hoa-hoi-nghi"><img src="{{url('front/images/banner_images/home-banner-4.webp')}}" alt=""></a>
+                                <a href="/hoa-hoi-nghi"><img src="{{url('FlowerShop/front/images-3/banner_images/banner-4.png')}}" alt=""></a>
                             </div>
                     </div>
                 </div>
@@ -57,13 +62,7 @@
                     <div class="container">
                         <div class="block-wrapper">
                             <div class="block-title">
-                                <a href="/hoa-moi-ve"><h2>Sản phẩm hot</h2></a>
-                                <ul class="block-links d-none d-md-block">
-                                    <li><a href="">Size S</a></li>
-                                    <li><a href="">Size M</a></li>
-                                    <li><a href="">Size L</a></li>
-                                    <li><a href="">Size XL</a></li>
-                                </ul>
+                                <a href="/featured"><h2>Sản phẩm hot</h2></a>
                             </div>
                             <div class="block-content">
                                 <div class="row">
@@ -150,10 +149,10 @@
                             <div class="block-title">
                                 <a href="/hoa-cuoi"><h2>Hoa cưới hạnh phúc</h2></a>
                                 <ul class="block-links d-none d-md-block">
-                                    <li><a href="">Size S</a></li>
-                                    <li><a href="">Size M</a></li>
-                                    <li><a href="">Size L</a></li>
-                                    <li><a href="">Size XL</a></li>
+                                    <?php $sizes = ProductFilter::sizes('hoa-cuoi'); ?>
+                                    @foreach($sizes as $size)
+                                    <li><a href="">Size {{$size}}</a></li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="block-content">
@@ -241,11 +240,11 @@
                             <div class="block-title">
                                 <a href="trap-an-hoi"><h2>TRÁP ĂN HỎI RỒNG PHƯỢNG</h2></a>
                                 <ul class="block-links d-none d-md-block">
-                                    <li><a href="">Size S</a></li>
-                                    <li><a href="">Size M</a></li>
-                                    <li><a href="">Size L</a></li>
-                                    <li><a href="">Size XL</a></li>
-                                    <li><a href="">Xem tất cả</a></li>
+                                    <?php $sizes = ProductFilter::sizes('trap-an-hoi'); ?>
+                                    @foreach($sizes as $size)
+                                    <li><a href="">Size {{$size}}</a></li>
+                                    @endforeach
+                                    <li><a href="/trap-an-hoi">Xem tất cả</a></li>
                                 </ul>
                             </div>
                             <div class="block-content">
@@ -333,11 +332,11 @@
                             <div class="block-title">
                                 <a href="/hoa-hoi-nghi"><h2>Hoa hội nghị</h2></a>
                                 <ul class="block-links d-none d-md-block">
-                                    <li><a href="">Size S</a></li>
-                                    <li><a href="">Size M</a></li>
-                                    <li><a href="">Size L</a></li>
-                                    <li><a href="">Size XL</a></li>
-                                    <li><a href="">Xem tất cả</a></li>
+                                    <?php $sizes = ProductFilter::sizes('hoa-hoi-nghi'); ?>
+                                    @foreach($sizes as $size)
+                                    <li><a href="">Size {{$size}}</a></li>
+                                    @endforeach
+                                    <li><a href="/hoa-hoi-nghi">Xem tất cả</a></li>
                                 </ul>
                             </div>
                             <div class="block-content">
@@ -425,11 +424,11 @@
                             <div class="block-title">
                                 <a href="/xe-cuoi"><h2>Cho thuê xe cưới</h2></a>
                                 <ul class="block-links d-none d-md-block">
-                                    <li><a href="">Mercedes</a></li>
-                                    <li><a href="">Audi</a></li>
-                                    <li><a href="">Roll Royce</a></li>
-                                    <li><a href="">Toyota</a></li>
-                                    <li><a href="">Xem tất cả</a></li>
+                                    <?php $brands = ProductFilter::brands('xe-cuoi'); ?>
+                                    @foreach($brands as $brand)
+                                    <li><a href="">{{$brand['name']}}</a></li>
+                                    @endforeach
+                                    <li><a href="/xe-cuoi">Xem tất cả</a></li>
                                 </ul>
                             </div>
                             <div class="block-content">

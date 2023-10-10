@@ -72,6 +72,7 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
         Route::match(['get', 'post'],'/'.$url, 'ProductController@listing');
     }
     // Route::match(['get', 'post'],'/{url}', 'ProductController@listing');
+    Route::get('/featured', 'ProductController@get_featured_products');
     Route::match(['get', 'post'],'/product/{id}', 'ProductController@detail');
     Route::post('/size-selection', 'ProductController@display_price_on_size_selection');
     Route::post('/color-selection', 'ProductController@display_image_on_color_selection');

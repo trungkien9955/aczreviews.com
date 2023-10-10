@@ -105,28 +105,6 @@ footer {
     flex-grow: 6;
 
 }
-.header-logo {
-    max-width: 120px;
-    max-height: 90px;
-    text-align: center;
-}
-.logo-wrapper {
-    padding-right: 60px;
-    padding-left:30px;
-    color: rgb(230, 34, 99);
-    font-size:30px;
-    font-weight: 700;
-    position:relative;
-    text-align: center;
-}
-
-.logo-wrapper img {
-    width: 60px;
-    height: 60px;
-    position:absolute;
-    right:8px;
-    top:-16px;
-}
 .header-search {
     /* max-width: 480px; */
     margin-left:12px;
@@ -151,11 +129,12 @@ footer {
 .header-item-wrapper {
     flex:1;
     text-align: right;
-    display: inline-block;
     /* margin-left:auto; */
 }
 .header-cart-wrapper {
     position: relative;
+    display: inline-block;
+
 }
 .header-cart-wrapper .cart-count {
     position: absolute;
@@ -356,7 +335,9 @@ footer {
 }
 /* header end */
 /* home-slider */
-
+.home-slider {
+    margin-bottom: 2px;
+}
 .slider-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -373,29 +354,35 @@ footer {
 .slider-top-left {
     flex: 0 0 66.66666667%;
     max-width: 66.66666667%;
+    max-height: 456px;
 }
 .home-slider-image-container a img {
     object-fit: fill;
     height: 100%;
+    min-height: 456px;
 }
 .slider-top-right {
     flex: 0 0 33%;
     max-width: 33%;
+   /* max-height: 456px; */
+    overflow: hidden;
 }
 .slider-top-right ul {
     flex: 1;
-    padding-left: 5px;
+    padding-left: 3px;
 }
 .slider-top-right-wrapper li {
-    margin-bottom: 16px;
+    margin-bottom: 2px;
+    height: 228px;
+}
+.slider-top-right-wrapper li a{
+    display: block;
 }
 .slider-top-right-wrapper img {
     object-fit: cover;
+    height: 228px;
 }
-.slider-bottom ul {
-    display: flex;
-    flex-wrap: wrap;
-}
+
 /* home-banner */
 .banner-wrapper {
     display: flex;
@@ -404,6 +391,13 @@ footer {
  .banner-item {
     flex-basis: 0;
     flex-grow: 1;
+    margin-left: 4px;
+}
+.banner-wrapper .banner-item:first-child {
+    margin-left:0;
+}
+.banner-item img {
+    border-radius: 6px;
 }
 /* main data */
 .block-title {
@@ -765,6 +759,18 @@ footer {
 .info-offer span {
     margin-left: 12px;
 }
+.info-gift {
+    background-color: var(--primary_color);
+    padding: 12px !important;
+}
+.info-gift-inner-wrapper {
+    background-color: #fff;
+    padding: 6px;
+}
+.info-gift-inner-wrapper img {
+    width: 30px;
+    height: 30px;
+}
 .information-sku div {
     display: inline-block;
     margin-right: 12px;
@@ -916,6 +922,13 @@ footer {
 .similar-products-header h5 {
     font-weight: 600;
     /* text-transform: uppercase; */
+}
+.similar-products-wrapper {
+    padding: 24px 0 ;
+}
+.recent-products-wrapper {
+    padding: 24px 0 ;
+
 }
 .recent-products-header h5 {
     font-weight: 600;

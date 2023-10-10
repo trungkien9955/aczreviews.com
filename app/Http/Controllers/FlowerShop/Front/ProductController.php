@@ -90,6 +90,10 @@ class ProductController extends Controller
         }
         // dd($url);
     }
+    public function get_featured_products(){
+        $featured_products = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['is_featured'=> "Yes", 'status'=> 1])->get()->toArray();
+        return view('FlowerShop.front.products.featured_products', compact('featured_products'));
+    }
     public function search(Request $request){
         if($request->isMethod("get")){
             $data = $request->all();
@@ -108,7 +112,7 @@ class ProductController extends Controller
     public function detail(Request $request, $id){
         $product_details = Product::with(['section', 'brand', 'attributes' => function($query){
             $query->where('status', 1);
-        }, 'images'])->find($id)->toArray();
+        }, 'images', 'gifts', 'offers'])->find($id)->toArray();
         $section_details = Section::where('id', $product_details['section_id'])->first()->toArray();
         $similar_products = Product::where('section_id', $product_details['section_id'])->where('id', '!=', $id)->limit(4)->inRandomOrder()->get()->toArray();
         if(empty(Session::get('session_id'))){

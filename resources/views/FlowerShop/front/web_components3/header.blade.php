@@ -8,7 +8,7 @@
             <div class="header-second-wrapper">
                 <div class="header-second-left">
                     <div class="logo-wrapper">
-                            <a href="/"><span>Flowershop</span><img src="{{url('FlowerShop/front/images-3/icon_images/logo-4.png')}}" alt=""></a>
+                            <a href="/"><img src="{{url('FlowerShop/front/images-3/icon_images/logo-pts-5.png')}}" alt=""></a>
                         </div>
                 </div>
                 <div class="header-second-middle">
@@ -29,10 +29,15 @@
                     </li>
                     <li>
                         <div class="header-item-wrapper">
-                            <div class="header-cart-wrapper">
-                                <a href="/cart"><img src="{{url('FlowerShop/front/images-3/icon_images/cart-1.png')}}" alt="" width= "36" height = "36"><span>Giỏ hàng</span></a>
-                                <div class="cart-count">12</div>
-                            </div>
+                            <a href="/cart">
+                                <div class="">
+                                    <div class="header-cart-wrapper">
+                                    <img src="{{url('FlowerShop/front/images-3/icon_images/cart-1.png')}}" alt="" width= "36" height = "36">
+                                    <div class="cart-count">12</div>
+                                    </div>
+                                    <span>Giỏ hàng</span>
+                                </div>
+                            </a>
                         </div>
                     </li>
                     <li>

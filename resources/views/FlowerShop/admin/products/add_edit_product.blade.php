@@ -107,6 +107,9 @@
                         <label for="is_featured">Featured Items</label>
                         <input type="checkbox" name = "is_featured" id = "is_featured" value = "Yes" @if(!empty($product['is_featured']) && $product['is_featured'] == 'Yes') checked @endif>
                         </div>
+                        <label for="has_attribute">Has attribute?</label>
+                        <input type="checkbox" name = "has_attribute" id = "has_attribute" value = "yes" @if(!empty($product['has_attribute']) && $product['has_attribute'] == 'yes') checked @endif>
+                        </div>
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
                         <button class="btn btn-light">Cancel</button>
                     </form>

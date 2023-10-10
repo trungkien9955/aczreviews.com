@@ -26,6 +26,9 @@ class Product extends Model
     public function gifts(){
         return $this->hasMany('App\Models\FlowerShop\Gift', 'product_id');
     }
+    public function offers(){
+        return $this->hasMany('App\Models\FlowerShop\Offer', 'product_id');
+    }
     public static function discounted_price($id){
         $product_details = Product::select('id', 'product_price', 'product_discount')->where('id', $id)->first()->toArray();
         if($product_details['product_discount']> 0){

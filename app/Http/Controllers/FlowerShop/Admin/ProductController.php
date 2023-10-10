@@ -114,6 +114,11 @@ class ProductController extends Controller
             }else {
                 $product->is_featured = 'No';
             }
+            if(!empty($data['has_attribute'])) {
+                $product->product_attribute = $data['has_attribute'];
+            }else {
+                $product->product_attribute = 'no';
+            }
             $product->status = 1;
             $product->save();
             return redirect('admin/products')->with('success_message', $message);

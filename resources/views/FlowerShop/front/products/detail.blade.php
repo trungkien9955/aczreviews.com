@@ -147,26 +147,40 @@ use App\Models\FlowerShop\ProductFilter;
                                 @endif
                             </div>
                         </div>
+                        @if(!empty($product_details['offers']))
                         <div class="info-offer mt-2">
                             <div class="offer-header">
                                 <i class="fa-solid fa-gift"></i>
                                 <span><b>KHUYẾN MẠI:</b></span>
                             </div>
                             <div class="offer-content mt-1">
+                                @foreach($product_details['offers'] as $offer)
                                 <div class="offer-item">
                                     <i class="fa-solid fa-check"></i>
-                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+                                    <span>{{ $offer['name']}}</span>
                                 </div>
-                                <div class="offer-item">
-                                    <i class="fa-solid fa-check"></i>
-                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                        @if(!empty($product_details['gifts']))
+                        <div class="info-gift mt-2">
+                            <div class="info-gift-inner-wrapper">
+                                <div class="gift-header">
+                                    <img src="{{url('FlowerShop/front/images-3/icon_images/gift-2.png')}}" alt="">
+                                    <span><b>QUÀ TẶNG:</b></span>
                                 </div>
-                                <div class="offer-item">
-                                    <i class="fa-solid fa-check"></i>
-                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+                                <div class="gift-content mt-1">
+                                    @foreach($product_details['gifts'] as $gift)
+                                    <div class="gift-item">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>{{$gift['name']}}&nbsp;(Trị giá:&nbsp; <span style = "color:#e02027;"><?php echo number_format($gift['price']) ?></span>đ)</span>
+                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
+                        @endif
                         @if(Session::has('success_message'))
                         <div class = "alert alert-success alert-dismissible fade show" role = "alert">
                         <strong>Thành công:</strong>{{Session::get('success_message')}}
@@ -463,10 +477,27 @@ use App\Models\FlowerShop\ProductFilter;
                     </div>
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 similar-products-content">
                 @foreach($similar_products as $product)
                 <div class="col-lg-3 col-md-4 col-xs-6">
                     <div class="item m-auto">
+                        <div class="home-product-discount">
+                            @if($product['product_discount']>0)
+                            <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                            @endif
+                        </div>
+                        <div class="product-features">
+                            <?php $is_new = Product::is_new($product['id'])?>
+                            @if($is_new = "yes")
+                            <span class="product-feature-new">New</span>
+                            @endif
+                            @if(!empty($product['gifts']))
+                            <span class="product-feature-gift">Quà tặng</span>
+                            @endif
+                            @if($product['is_featured']=="Yes")
+                            <span class="product-feature-hot">Trending</span>
+                            @endif
+                        </div>
                         <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                             <div class="item-image">
                                 <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -474,8 +505,41 @@ use App\Models\FlowerShop\ProductFilter;
                         </a>
                         <div class="item-details mt-2">
                             <h3 class="item-name">{{$product['product_name']}}</h3>
-                            <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                            <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                            <div class="">
+                            <?php 
+                                $rating_info = Product::get_rating($product['id']);
+                                $is_rated = $rating_info['is_rated'];
+                                if($is_rated=="no"){
+                                    $count = 5;
+                                    while($count>0) {
+                                        echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                        $count--;
+                                    }
+                                }else{
+                                    $count = 0;
+                                    $total_count = 5- $rating_info['product_rating'];
+                                    while($count< $rating_info['product_rating']) {
+                                        echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                        $count++;
+                                    }
+                                    while($total_count>0) {
+                                        echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                        $total_count--;
+                                    }
+                                }
+                            ?>
+                            </div>
+                            <p class="item-desc"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                            @if($product['product_discount']==0)
+                                <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                @else
+                                <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                            @endif
+                        </div>
+                        <div class="home-item-action">
+                            <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
@@ -497,7 +561,24 @@ use App\Models\FlowerShop\ProductFilter;
             <div class="row mt-3">
                 @foreach($viewed_products as $product)
                 <div class="col-lg-3 col-md-4 col-xs-6">
-                    <div class="item m-auto">
+                <div class="item m-auto">
+                        <div class="home-product-discount">
+                            @if($product['product_discount']>0)
+                            <span class="product-feature-discount">-{{$product['product_discount']}}%</span>
+                            @endif
+                        </div>
+                        <div class="product-features">
+                            <?php $is_new = Product::is_new($product['id'])?>
+                            @if($is_new = "yes")
+                            <span class="product-feature-new">New</span>
+                            @endif
+                            @if(!empty($product['gifts']))
+                            <span class="product-feature-gift">Quà tặng</span>
+                            @endif
+                            @if($product['is_featured']=="Yes")
+                            <span class="product-feature-hot">Trending</span>
+                            @endif
+                        </div>
                         <a href="{{url('/product/'.$product['id'])}}" class="item-image-wrapper">
                             <div class="item-image">
                                 <img  src="{{url('FlowerShop/front/images-3/product_images/medium/'.$product['product_image'])}}" alt="">
@@ -505,8 +586,41 @@ use App\Models\FlowerShop\ProductFilter;
                         </a>
                         <div class="item-details mt-2">
                             <h3 class="item-name">{{$product['product_name']}}</h3>
-                            <p class="item-description"><strong>Mã:</strong> {{$product['product_code']}}</p>
-                            <p class="item-description"><strong>Giá:</strong> {{$product['product_price']}}đ</p>
+                            <div class="">
+                            <?php 
+                                $rating_info = Product::get_rating($product['id']);
+                                $is_rated = $rating_info['is_rated'];
+                                if($is_rated=="no"){
+                                    $count = 5;
+                                    while($count>0) {
+                                        echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                        $count--;
+                                    }
+                                }else{
+                                    $count = 0;
+                                    $total_count = 5- $rating_info['product_rating'];
+                                    while($count< $rating_info['product_rating']) {
+                                        echo '<span style = "color:#ffc700; font-size: 24px;">&#9733;</span>';
+                                        $count++;
+                                    }
+                                    while($total_count>0) {
+                                        echo '<span style = "color:#ccc; font-size: 24px;">&#9733;</span>';
+                                        $total_count--;
+                                    }
+                                }
+                            ?>
+                            </div>
+                            <p class="item-desc"><strong>Mã:</strong> {{$product['product_code']}}</p>
+                            @if($product['product_discount']==0)
+                                <span ><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($product['product_price'])?>đ</span></span>
+                                @else
+                                <?php $discounted_price = Product::discounted_price($product['id'])?>
+                                <span class="item-price"><strong>Giá:</strong> <span class="home-item-price"><?php echo number_format($discounted_price['discounted_price'])?></span>đ</span>
+                                <span class = "home-item-old-price"><?php echo number_format($product['product_price'])?>đ<span>
+                            @endif
+                        </div>
+                        <div class="home-item-action">
+                            <a href="{{url('/product/'.$product['id'])}}">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
