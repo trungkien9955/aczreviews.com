@@ -15,19 +15,27 @@ if (window.location.pathname !== '/') {
 }else{
     $('.dropdown').show();
 }
+var windowWidth = $(window).width();
+if ( windowWidth < 600 ) {
+    $('.nav-sidebar-head').on('click', function(){
+        $('.dropdown').css("left", "0");
+    })
+}
 $(document).ready(function(){
     $('.size_option').on('click', function(){
        var product_id = $('#product_id').val();
         var size = $(this).val();
+        var color = $('.color_option:checked').val();
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             method: "post",
             url: "/size-selection",
-            data: {product_id: product_id, size:size},
+            data: {product_id: product_id, size:size, color:color},
             success: function(resp){
                 $("#ajax_loading_overlay").fadeOut(300);
+                // alert(resp); return false;
                 $('.information-price').html(resp.view);
                 $('.info-code .attr-sku').html(resp.attr_sku);
 
@@ -42,13 +50,15 @@ $(document).ready(function(){
                 // $('.product-detail-image img').attr('src',"/FlowerShop/front/images-3/product_images/medium/"+ $image)
             },
             error: function(){
+                $("#ajax_loading_overlay").fadeOut(300);
                 alert('error');
             }
         })
     })
     $('.color_option').on('click', function(){
         var color = $(this).val();
-        // alert(color);
+        var size = $('.size_option:checked').val();
+        // alert(size);return false;
         var product_id = $('#product_id').val();
          $.ajax({
              headers: {
@@ -56,11 +66,20 @@ $(document).ready(function(){
              },
              method: "post",
              url: "/color-selection",
-             data: {product_id: product_id, color:color},
+             data: {product_id: product_id, color:color, size:size},
              success: function(resp){
                 $("#ajax_loading_overlay").fadeOut(300);
                  $image = resp.image;
                  $('.product-detail-image-container img').attr('src',"/FlowerShop/front/images-3/product_images/medium/"+ $image)
+                 $('.information-price').html(resp.view);
+                 $('.info-code .attr-sku').html(resp.attr_sku);
+                 if(resp.attr_stock > 0) {
+                    $('.info-stock span.stock-data').html(resp.attr_stock);
+                    $('.stock-check').html("<span style = 'color: #5CB85C;font-weight: 700;'>Còn hàng</span>");
+                }else{
+                    $('.info-stock span.stock-data').html("0");
+                    $('.stock-check').html("<span style = 'color: #e02027;font-weight: 700;' >Tạm hết hàng</span>");
+                }
              },
              error: function(){
                 $("#ajax_loading_overlay").fadeOut(300);
@@ -95,9 +114,11 @@ $(document).on('click', '.info-action .buy-button', function(){
     var attr_sku = $('.attr-sku').html();
     var price_string = price_element.replace(',', '');
     var price = parseInt(price_string);
+    var product_img_src = $('.product-detail-image-container img').attr('src');
     // alert(price);
     $('#cart_form').append(`<input type = "hidden" name = "price" id = "price_${price} "value= "${price}">`);
     $('#cart_form').append(`<input type = "hidden" name = "attr_sku" id = "sku_${attr_sku} "value= "${attr_sku}">`);
+    $('#cart_form').append(`<input type = "hidden" name = "product_img_src" id = "img_${attr_sku}" value= "${product_img_src}">`);
 
 })
 $(document).on('click', '.cart-item-delete-btn', function(){

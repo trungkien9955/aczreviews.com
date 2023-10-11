@@ -15,13 +15,17 @@
                     <td>
                         <div class="cart-item">
                             <a href="/product/{{$item['product']['id']}}">
+                                @if(empty($item['image']))
                                 <img src="{{url('FlowerShop/front/images-3/product_images/medium/'.$item['product']['product_image'])}}" alt="">
+                                @else
+                                <img src="{{$item['image']}}" alt="">
+                                @endif
                                 <h5>{{$item['product']['product_name']}}</h5>
                                 <div class="cart-item-versions pb-3">
                                 @if(!empty($item['attr']['size']))
                                 Size: <span>{{$item['attr']['size']}}</span><br>
                                 @endif
-                                @if(!empty($item['attr']['color']))
+                                @if(!empty($item['attr']['v_color']))
                                 Màu: <span>{{$item['attr']['v_color']}}</span>
                                 @endif
                                 </div>

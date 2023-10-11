@@ -178,20 +178,30 @@ class ProductController extends Controller
                         Image::make($image_tmp)->resize(1000, 1000)->save($small_image_path);
                         $attribute->image = $image_name;
                     }
-                    if($data['color'][$key] == "red"){
-                        $v_color = "Đỏ";
-                    }
-                    else if ($data['color'][$key] == "pink") {
-                        $v_color = "Hồng";
-                    }else if ($data['color'][$key] == "green") {
-                        $v_color = "Xanh lục";
+                    if(!empty($data['color'][$key])){
+                        if($data['color'][$key] == "red"){
+                            $v_color = "Đỏ";
+                        }
+                        else if ($data['color'][$key] == "pink") {
+                            $v_color = "Hồng";
+                        }else if ($data['color'][$key] == "green") {
+                            $v_color = "Xanh lục";
+                        }
                     }
                     $attribute->product_id = $id;
                     $attribute->sku = $value;
-                    $attribute->size = $data['size'][$key];
+                    if(!empty($data['size'][$key])) {
+                        $attribute->size = $data['size'][$key];
+                    }else{
+                        $attribute->size = '';
+                    }
                     $attribute->price = $data['price'][$key];
                     $attribute->color = $data['color'][$key];
-                    $attribute->v_color = $v_color;
+                    if(!empty($data['color'][$key])) {
+                        $attribute->v_color = $data['color'][$key];
+                    }else{
+                        $attribute->v_color = '';
+                    }
                     $attribute->stock = $data['stock'][$key];
                     $attribute->status = 1;
                     $attribute->save();

@@ -71,11 +71,15 @@ Route::namespace('App\Http\Controllers\FlowerShop\Front')->group(function(){
     foreach($section_url as $key => $url) {
         Route::match(['get', 'post'],'/'.$url, 'ProductController@listing');
     }
+    Route::get('/coming-soon', 'IndexController@coming_soon');
+    Route::get('/home/{section}/{size}', 'ProductController@home_size_listing');
+
+    // dd($routes);
     // Route::match(['get', 'post'],'/{url}', 'ProductController@listing');
     Route::get('/featured', 'ProductController@get_featured_products');
     Route::match(['get', 'post'],'/product/{id}', 'ProductController@detail');
-    Route::post('/size-selection', 'ProductController@display_price_on_size_selection');
-    Route::post('/color-selection', 'ProductController@display_image_on_color_selection');
+    Route::post('/size-selection', 'ProductController@display_on_size_selection');
+    Route::post('/color-selection', 'ProductController@display_on_color_selection');
     //product rating form 
     Route::post('/product-rating-form', 'ProductController@rating_form_handler');
     Route::post('/product-comment', 'ProductController@product_comment');

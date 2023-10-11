@@ -1,4 +1,7 @@
 <!-- valid -->
+<?php 
+use App\Models\FlowerShop\Cart;
+?>
 <div class="header-section">
     <div class="header-section-first">
         <div><i class="fa-solid fa-phone-volume"></i><span>Hotline: 0988 666 888</span></div>
@@ -33,7 +36,10 @@
                                 <div class="">
                                     <div class="header-cart-wrapper">
                                     <img src="{{url('FlowerShop/front/images-3/icon_images/cart-1.png')}}" alt="" width= "36" height = "36">
-                                    <div class="cart-count">12</div>
+                                    <?php $cart_count = Cart::get_items();?>
+                                    @if(count($cart_count) > 0)
+                                    <div class="cart-count"> {{count($cart_count)}}</div>
+                                    @endif
                                     </div>
                                     <span>Giỏ hàng</span>
                                 </div>
@@ -69,16 +75,20 @@
             </div>
             <div class="header-nav">
                 <div class="nav-sidebar">
-                    <div class="nav-sidebar-head">
-                    <img src="{{url('FlowerShop/front/images-3/icon_images/menu-1.png')}}" width= "36" height = "36" alt="">
+                    <div class="nav-sidebar-head hide-on-mobile show-on-desktop">
+                        <img src="{{url('FlowerShop/front/images-3/icon_images/menu-1.png')}}" width= "36" height = "36" alt="">
                         <span>DANH MỤC THÔNG TIN</span>
                     </div>
-                    <div class="nav-sidebar-dropdown dropdown">
+                    <div class="nav-sidebar-head-mobile show-on-mobile hide-on-desktop">
+                        <img src="{{url('FlowerShop/front/images-3/icon_images/menu-1.png')}}" width= "36" height = "36" alt="">
+                        <span>MENU</span>
+                    </div>
+                    <div class="nav-sidebar-dropdown dropdown ">
                         <ul class="nav-sidebar-list">
                             <li class="li-child">
-                                <a href="/hoa-giam-gia">
+                                <a href="/featured">
                                 <img src="{{url('front/images-3/icon_images/sale-tag.png')}}" alt="">
-                                <span>Hoa giảm giá</span>
+                                <span>Sản phẩm nổi bật</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
@@ -104,21 +114,21 @@
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="/hoa-cuoi">
+                                <a href="/coming-soon">
                                 <img src="{{url('front/images-3/icon_images/wedding-dress.png')}}" alt="">
                                 <span>Áo cưới cô dâu</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="/hoa-cuoi">
+                                <a href="/coming-soon">
                                 <img src="{{url('front/images-3/icon_images/wedding-suit.png')}}" alt="">
                                 <span>Bộ đồ chú rể</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                                 </a>
                             </li>
                             <li class="li-child">
-                                <a href="/trap-an-hoi">
+                                <a href="/coming-soon">
                                 <img src="{{url('front/images-3/icon_images/photo-camera-interface-symbol-for-button.png')}}" alt="">
                                 <span>Dịch vụ chụp ảnh, quay phim</span>
                                 <i class="fa-solid fa-chevron-right"></i>

@@ -13,10 +13,20 @@ class ProductAttribute extends Model
         return $stock;
     }
     public static function get_attr_with_color($product_id){
-        return $attr_with_color = ProductAttribute::where('product_id', $product_id)->where('color', '!=', '')->get()->toArray();
+         $attr_with_color = ProductAttribute::select('v_color')->where('product_id', $product_id)->where('color', '!=', '')->groupBy('v_color')->get()->toArray();
+        //  dd($attr_with_color);
+         return  $attr_with_color;
     }
+    public static function get_colors($product_id){
+        $colors = ProductAttribute::where('product_id', $product_id)->where('color', '!=', '')->groupBy('color')->pluck('color');
+        return $colors;
+   }
     public static function get_attr_with_size($product_id){
-        return $attr_with_size = ProductAttribute::where('product_id', $product_id)->where('size', '!=', '')->get()->toArray();
+        return $attr_with_size = ProductAttribute::select('size')->where('product_id', $product_id)->where('size', '!=', '')->groupBy('size')->get()->toArray();
+    }
+    public static function get_sizes($product_id){
+         $sizes = ProductAttribute::where('product_id', $product_id)->where('size', '!=', '')->groupBy('size')->pluck('size');
+         return $sizes;
     }
     public static function get_lowest_attr_price($product_id){
         $attr_prices = ProductAttribute::select('price')->where('product_id', $product_id)->pluck('price')->toArray();

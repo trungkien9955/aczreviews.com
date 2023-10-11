@@ -83,7 +83,7 @@ $(document).ready(function(){
     var maxField = 10; //Input fields increment limitation
     var addButton = $('.add_button'); //Add button selector
     var wrapper = $('.field_wrapper'); //Input field wrapper
-    var fieldHTML = '<div><input type="text" name="size[]" placeholder="Size" required = "" style = "max-width: 240px;"/><input type="text" name="sku[]" placeholder="SKU" required = "" style = "max-width: 240px;"/><input type="text" name="color[]" placeholder="Color" required = "" style = "max-width: 240px;"/><input type="text" name="price[]" placeholder="Price" required = "" style = "max-width: 240px;"/><input type="text" name="stock[]" placeholder="Stock" required = "" style = "max-width: 240px;"/><br><label for="">Thêm hình ảnh</label><input type="file" name="image[]" placeholder="Image" required = "" style = "max-width: 240px;"/><br><a href="javascript:void(0);" class="remove_button" title="">Xóa</a></div>'; //New input field html 
+    var fieldHTML = '<div><input type="text" name="size[]" placeholder="Size" style = "max-width: 240px;"/><input type="text" name="sku[]" placeholder="SKU" required = "" style = "max-width: 240px;"/><input type="text" name="color[]" placeholder="Color" style = "max-width: 240px;"/><input type="text" name="price[]" placeholder="Price" required = "" style = "max-width: 240px;"/><input type="text" name="stock[]" placeholder="Stock" required = "" style = "max-width: 240px;"/><br><label for="">Thêm hình ảnh</label><input type="file" name="image[]" placeholder="Image" style = "max-width: 240px;"/><br><a href="javascript:void(0);" class="remove_button" title="">Xóa</a></div>'; //New input field html 
     var x = 1; //Initial field counter is 1
     
     //Once add button is clicked

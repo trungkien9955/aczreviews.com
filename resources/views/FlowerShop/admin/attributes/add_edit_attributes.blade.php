@@ -49,13 +49,13 @@
                         <div class="form-group">
                             <div class="field_wrapper">
                                 <div>
-                                    <input type="text" name="size[]" placeholder="Size" required = "" style = "max-width: 240px;"/>
+                                    <input type="text" name="size[]" placeholder="Size"  style = "max-width: 240px;"/>
                                     <input type="text" name="sku[]" placeholder="SKU" required = "" style = "max-width: 240px;"/>
-                                    <input type="text" name="color[]" placeholder="Màu" required = "" style = "max-width: 240px;"/>
+                                    <input type="text" name="color[]" placeholder="Màu"  style = "max-width: 240px;"/>
                                     <input type="text" name="price[]" placeholder="Giá" required = "" style = "max-width: 240px;"/>
                                     <input type="text" name="stock[]" placeholder="Trong kho" required = "" style = "max-width: 240px;"/><br>
                                     <label for="">Hình ảnh</label>
-                                    <input type="file" name="image[]" placeholder="Image" required = "" style = "max-width: 240px;"/>
+                                    <input type="file" name="image[]" placeholder="Image" style = "max-width: 240px;"/>
                                     <br>
                                     <a href="javascript:void(0);" class="add_button" title="Add attribute">Thêm</a>
                                 </div>

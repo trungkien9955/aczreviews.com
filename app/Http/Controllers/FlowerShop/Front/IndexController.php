@@ -45,4 +45,7 @@ class IndexController extends Controller
     public function contact(){
         return view('FlowerShop.front.homepage.contact');
     }
+    public function coming_soon(){
+        return view('FlowerShop.front.homepage.coming_soon');
+    }
 }

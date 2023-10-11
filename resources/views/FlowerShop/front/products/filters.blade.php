@@ -27,7 +27,7 @@ $filters = ProductFilter::filters();
         ?>
         @if(count($brands)>0)
         <div class="filter-item">
-            <span style = "font-weight:bold;">Brand</span>
+            <span style = "font-weight:bold;">Nhãn hiệu</span>
             <form action="" method = "post">
                 @foreach($brands as $key => $brand)
                 <div class="form-check">
@@ -63,7 +63,7 @@ $filters = ProductFilter::filters();
         ?>
         @if(count($colors)>0)
         <div class="filter-item">
-            <span style = "font-weight:bold;">Color</span>
+            <span style = "font-weight:bold;">Màu sắc</span>
             <form action="" method = "post">
                 @foreach($colors as $key => $color)
                 <div class="form-check">
@@ -76,7 +76,7 @@ $filters = ProductFilter::filters();
             </form>
         </div>
         @endif
-        <div class="filter-item">
+        <!-- <div class="filter-item">
             @foreach($filters as $filter)
             <?php
                 $is_available = ProductFilter::available_filters($section['url'], $filter['id']);
@@ -95,6 +95,6 @@ $filters = ProductFilter::filters();
             </form>
             @endif
             @endforeach
-        </div>
+        </div> -->
     </div>
 </div>

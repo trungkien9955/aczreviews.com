@@ -148,10 +148,10 @@ use App\Models\FlowerShop\Brand;
                         <div class="block-wrapper">
                             <div class="block-title">
                                 <a href="/hoa-cuoi"><h2>Hoa cưới hạnh phúc</h2></a>
-                                <ul class="block-links d-none d-md-block">
+                                <ul class="block-links">
                                     <?php $sizes = ProductFilter::sizes('hoa-cuoi'); ?>
                                     @foreach($sizes as $size)
-                                    <li><a href="">Size {{$size}}</a></li>
+                                    <li><a href="{{url('/home/hoa-cuoi/'.$size)}}" data-section = "hoa-cuoi">Size {{$size}}</a></li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -239,7 +239,7 @@ use App\Models\FlowerShop\Brand;
                         <div class="block-wrapper">
                             <div class="block-title">
                                 <a href="trap-an-hoi"><h2>TRÁP ĂN HỎI RỒNG PHƯỢNG</h2></a>
-                                <ul class="block-links d-none d-md-block">
+                                <ul class="block-links">
                                     <?php $sizes = ProductFilter::sizes('trap-an-hoi'); ?>
                                     @foreach($sizes as $size)
                                     <li><a href="">Size {{$size}}</a></li>
@@ -331,7 +331,7 @@ use App\Models\FlowerShop\Brand;
                         <div class="block-wrapper">
                             <div class="block-title">
                                 <a href="/hoa-hoi-nghi"><h2>Hoa hội nghị</h2></a>
-                                <ul class="block-links d-none d-md-block">
+                                <ul class="block-links">
                                     <?php $sizes = ProductFilter::sizes('hoa-hoi-nghi'); ?>
                                     @foreach($sizes as $size)
                                     <li><a href="">Size {{$size}}</a></li>
@@ -423,7 +423,7 @@ use App\Models\FlowerShop\Brand;
                         <div class="block-wrapper">
                             <div class="block-title">
                                 <a href="/xe-cuoi"><h2>Cho thuê xe cưới</h2></a>
-                                <ul class="block-links d-none d-md-block">
+                                <ul class="block-links">
                                     <?php $brands = ProductFilter::brands('xe-cuoi'); ?>
                                     @foreach($brands as $brand)
                                     <li><a href="">{{$brand['name']}}</a></li>

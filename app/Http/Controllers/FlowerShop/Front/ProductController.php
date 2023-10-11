@@ -90,6 +90,12 @@ class ProductController extends Controller
         }
         // dd($url);
     }
+    public function home_size_listing($section, $size){
+        $size_details = $size;
+        $section_details = Section::where('url', $section)->first()->toArray();
+        $home_size_products = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['section_id'=> $section_details['id'], 'status'=> 1])->get()->toArray();
+        return view('FlowerShop.front.products.home_size_listing', compact('home_size_products', 'section_details', 'size_details'));
+    }
     public function get_featured_products(){
         $featured_products = Product::with('gifts')->select('id', 'product_name', 'product_image', 'product_code', 'product_price', 'product_discount', 'is_featured')->where(['is_featured'=> "Yes", 'status'=> 1])->get()->toArray();
         return view('FlowerShop.front.products.featured_products', compact('featured_products'));
@@ -130,11 +136,16 @@ class ProductController extends Controller
        $viewed_products = Product::whereIn('id', $viewed_product_id_collection)->get()->toArray();
         return view('FlowerShop.front.products.detail', compact('product_details', 'section_details', 'similar_products', 'viewed_products'));
     }
-    public function display_price_on_size_selection(Request $request){
+    public function display_on_size_selection(Request $request){
         if($request->ajax()){
             $data=$request->all();
+            if(empty($data['color'])){
+                $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'size'=>$data['size'], 'status'=>1])->first()->toArray();
+            }else{
+                $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'size'=>$data['size'], 'v_color'=>$data['color'],'status'=>1])->first()->toArray();
+            }
+            // return print_r($attribute);
             $product_details = Product::select('product_price', 'product_discount')->find($data['product_id']);
-            $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'size'=>$data['size'], 'status'=>1])->first()->toArray();
             $attr_stock = $attribute['stock'];
             $attr_image = $attribute['image'];
             $attr_price =  $attribute['price'];
@@ -152,15 +163,31 @@ class ProductController extends Controller
             return response()->json(['view' => (String)View::make('FlowerShop.front.products.attribute_price_2', compact('product_discount','attr_price', 'attr_discounted_price', 'attr_saving')), 'attr_stock'=> $attr_stock, 'attr_sku'=>$attr_sku]);
         }
     }
-    public function display_image_on_color_selection(Request $request){
+    public function display_on_color_selection(Request $request){
         if($request->ajax()){
             // echo "hello"; die;
             $data=$request->all();
-            $product_details = Product::select('id')->find($data['product_id']);
-            $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'color'=>$data['color'], 'status'=>1])->first()->toArray();
+            if(empty($data['size'])){
+                $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'color'=>$data['color'], 'status'=>1])->first()->toArray();
+            }else{
+                $attribute = ProductAttribute::where(['product_id'=> $data['product_id'], 'size'=>$data['size'], 'v_color'=>$data['color'],'status'=>1])->first()->toArray();
+            }
+            $product_details = Product::select('id','product_price', 'product_discount')->find($data['product_id']);
             $attr_stock = $attribute['stock'];
             $attr_image = $attribute['image'];
-            return response()->json(['image'=>$attr_image, 'attr_stock'=>$attr_stock]);
+            $attr_price =  $attribute['price'];
+            $attr_sku =  $attribute['sku'];
+            if($product_details['product_discount']>0){
+                $product_discount= $product_details['product_discount'];
+                $attr_discounted_price = $attr_price - ($attr_price*$product_details['product_discount']/100);
+                $attr_saving = $attr_price - $attr_discounted_price;
+            }
+            else{
+                $product_discount= "";
+                $attr_discounted_price = "";
+                $attr_saving = "";
+            }
+            return response()->json(['view' => (String)View::make('FlowerShop.front.products.attribute_price_2', compact('product_discount','attr_price', 'attr_discounted_price', 'attr_saving')), 'attr_stock'=> $attr_stock, 'attr_sku'=>$attr_sku, 'image'=>$attr_image]);
         }
     }
     public function rating_form_handler(Request $request){
@@ -267,7 +294,7 @@ class ProductController extends Controller
                     $attr = ProductAttribute::where('sku', $attr_sku)->first()->toArray();
                     $attr_stock = $attr['stock'];  
                     $attr_size = $attr['size'];  
-                    $attr_color = $attr['color'];  
+                    $attr_color = $attr['v_color'];  
                 }else{
                     return redirect()->back()->with('error_message', ' Đã xảy ra lỗi. Vui lòng thử lại!');
                 }
@@ -297,6 +324,7 @@ class ProductController extends Controller
                         $item->product_id = $data['product_id'];
                         $item->attr_id = $attr['id'];
                         $item->attr_sku = $attr_sku;
+                        $item->image = $data['product_img_src'];
                         $item->size = $attr_size;
                         $item->color = $attr_color;
                         $item->price =   $data['price'];
@@ -326,8 +354,10 @@ class ProductController extends Controller
                         $item->product_id = $data['product_id'];
                         $item->attr_id = $attr['id'];
                         $item->attr_sku = $attr_sku;
+                        // return print_r($data['product_img_src']);
+                        $item->image = $data['product_img_src'];
                         $item->size = $attr['size'];
-                        $item->color = $attr['color'];
+                        $item->color = $attr['v_color'];
                         $item->price =   $data['price'];
                         $item->quantity = $data['quantity'];
                         $item->sub_total = $data['quantity']*$data['price'];
