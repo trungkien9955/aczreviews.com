@@ -108,6 +108,20 @@ $(document).ready(function(){
 //         }
 //     })
 // })
+$(document).on('click', '.info-action .cart-button', function(){
+    // event.preventDefault();
+    var price_element = $('.info-price h4 span').html();
+    var attr_sku = $('.attr-sku').html();
+    var price_string = price_element.replace(',', '');
+    var price = parseInt(price_string);
+    var product_img_src = $('.product-detail-image-container img').attr('src');
+    // alert(price);
+    $('#cart_form').append(`<input type = "hidden" name = "buy"  value= "not_yet">`);
+    $('#cart_form').append(`<input type = "hidden" name = "price" id = "price_${price} "value= "${price}">`);
+    $('#cart_form').append(`<input type = "hidden" name = "attr_sku" id = "sku_${attr_sku} "value= "${attr_sku}">`);
+    $('#cart_form').append(`<input type = "hidden" name = "product_img_src" id = "img_${attr_sku}" value= "${product_img_src}">`);
+
+})
 $(document).on('click', '.info-action .buy-button', function(){
     // event.preventDefault();
     var price_element = $('.info-price h4 span').html();
@@ -116,10 +130,10 @@ $(document).on('click', '.info-action .buy-button', function(){
     var price = parseInt(price_string);
     var product_img_src = $('.product-detail-image-container img').attr('src');
     // alert(price);
+    $('#cart_form').append(`<input type = "hidden" name = "buy"  value= "yes">`);
     $('#cart_form').append(`<input type = "hidden" name = "price" id = "price_${price} "value= "${price}">`);
     $('#cart_form').append(`<input type = "hidden" name = "attr_sku" id = "sku_${attr_sku} "value= "${attr_sku}">`);
     $('#cart_form').append(`<input type = "hidden" name = "product_img_src" id = "img_${attr_sku}" value= "${product_img_src}">`);
-
 })
 $(document).on('click', '.cart-item-delete-btn', function(){
     $confirm = confirm('Xóa sản phẩm này khỏi giỏ hàng?')
@@ -516,3 +530,10 @@ $(document).on('click', '.gallery-image', function(){
     $src = $(this).attr('src');
     $('.product-detail-image').attr('src', $src);
 })
+function openNav() {
+    document.getElementById("mySidenav").style.width = "100%";
+  }
+  
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }

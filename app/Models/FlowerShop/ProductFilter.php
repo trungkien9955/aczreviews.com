@@ -30,7 +30,7 @@ class ProductFilter extends Model
     public static function sizes($url){
         $section = Section::where('url', $url)->first()->toArray();
         $product_id_collection = Product::select('id')->where(['section_id'=> $section['id'], 'status' => 1])->pluck('id')->toArray();
-        $sizes = ProductAttribute::select('size')->whereIn('product_id', $product_id_collection)->pluck('size')->toArray();
+        $sizes = ProductAttribute::select('size')->whereIn('product_id', $product_id_collection)->groupBy('size')->pluck('size')->toArray();
         return $sizes;
     }
     public static function colors($url){

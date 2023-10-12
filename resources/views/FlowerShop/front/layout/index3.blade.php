@@ -39,7 +39,7 @@ use App\Models\FlowerShop\Brand;
                     </div>
                 </div>
             </div>
-            <div class="home-banner">
+            <div class="home-banner hide-on-mobile">
                 <div class="container">
                     <div class="banner-wrapper">
                             <div class="banner-item">

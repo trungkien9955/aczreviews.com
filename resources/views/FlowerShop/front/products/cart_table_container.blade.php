@@ -1,5 +1,5 @@
     <div class="cart-table-wrapper" >
-        <table class = "table" style = "border: 1px solid #e62263;">
+        <table class = "table table-responsive" style = "border: 1px solid #e62263;">
             <thead style = "background: #e62263; color: #fff; font-size: 16px;">
                 <tr>
                     <th>Sản phẩm</th>
@@ -43,7 +43,7 @@
                         </div>
                     </td>
                     <td style ="color: #e02027; font-size: 16px; font-weight: 700; "><?php echo number_format($item['sub_total']) ?></td>
-                    <td><a style = "margin-right: 6px;" href="/cart" class="btn btn-primary">Refresh</a><button class="btn btn-danger cart-item-delete-btn" data-cart-item-id = "{{$item['id']}}" >Xóa</button></td>
+                    <td><a style = "margin-right: 6px;" href="/cart" class="btn btn-primary hide-on-mobile">Refresh</a><button class="btn btn-danger cart-item-delete-btn hide-on-mobile" data-cart-item-id = "{{$item['id']}}" >Xóa</button><a href="javascript:void(0)" style = "color: #e02027; font-size: 36px;"class="cart-item-delete-btn-mobile hide-on-desktop">&times;</a></td>
                 </tr>
                 @endforeach
             </tbody>

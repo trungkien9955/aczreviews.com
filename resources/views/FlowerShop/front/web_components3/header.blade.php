@@ -79,11 +79,56 @@ use App\Models\FlowerShop\Cart;
                         <img src="{{url('FlowerShop/front/images-3/icon_images/menu-1.png')}}" width= "36" height = "36" alt="">
                         <span>DANH MỤC THÔNG TIN</span>
                     </div>
-                    <div class="nav-sidebar-head-mobile show-on-mobile hide-on-desktop">
+                    <div class="nav-sidebar-head-mobile show-on-mobile hide-on-desktop" onclick="openNav()">
                         <img src="{{url('FlowerShop/front/images-3/icon_images/menu-1.png')}}" width= "36" height = "36" alt="">
                         <span>MENU</span>
                     </div>
-                    <div class="nav-sidebar-dropdown dropdown ">
+                    <div id="mySidenav" class="sidenav">
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                        <ul class="nav-sidebar-list-mobile">
+                            <li class="li-child">
+                                <a href="/featured">
+                                <span>Sản phẩm nổi bật</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/hoa-cuoi">
+                                <span>Hoa cưới</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/hoa-hoi-nghi">
+                                <span>Hoa hội nghị</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/trap-an-hoi">
+                                <span>Trap ăn hỏi</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/coming-soon">
+                                <span>Áo cưới cô dâu</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/coming-soon">
+                                <span>Bộ đồ chú rể</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/coming-soon">
+                                <span>Dịch vụ chụp ảnh, quay phim</span>
+                                </a>
+                            </li>
+                            <li class="li-child">
+                                <a href="/trap-an-hoi">
+                                <span>Cho thuê xe dịch vụ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="nav-sidebar-dropdown dropdown hide-on-mobile">
                         <ul class="nav-sidebar-list">
                             <li class="li-child">
                                 <a href="/featured">
