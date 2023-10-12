@@ -20,7 +20,7 @@
     <!-- Icon -->
     <link rel="stylesheet" href="{{url('front/vendors/ti-icons/css/themify-icons.css')}}">
     <!-- <link rel="icon" type="image/x-icon" href="{{url('front/images/logo4.png')}}"> -->
-    <link rel="icon" type="image/x-icon" href="{{url('front/images/flower-logo2.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{url('FlowerShop/front/images-3/icon_images/logo-icon-2.png')}}">
     <!-- Easy zoom -->
     <link rel="stylesheet" href="{{url('FlowerShop/front/zoom/i-like-robots-EasyZoom-55afefc/css/easyzoom.css')}}"> 
 
@@ -56,7 +56,6 @@
     <script src="{{url('front/OwlCarousel2-2.3.4/docs/assets/owlcarousel/owl.carousel.min.js')}}" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
-    <script src="{{url('FlowerShop/front/zoom/i-like-robots-EasyZoom-55afefc/dist/easyzoom.js')}}"></script>
     @include('FlowerShop.front.layout.scripts')
     <script>
 		// Instantiate EasyZoom instances
